@@ -108,4 +108,5 @@ var logger = new LoggerConfiguration().WriteTo
 Change history
 --------------
 
+* **Version 1.0.1.0 (2019-06-23)** : Added icon to the nuget package.
 * **Version 1.0.0.0 (2019-05-31)** : 1.0 release.
