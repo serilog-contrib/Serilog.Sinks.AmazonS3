@@ -5,569 +5,587 @@
     </assembly>
     <members>
         <member name="T:Serilog.LoggerConfigurationAmazonS3Extensions">
-            <summary>
-                This class contains the Amazon S3 logger configuration.
-            </summary>
+            <summary>   This class contains the Amazon S3 logger configuration. </summary>
         </member>
         <member name="F:Serilog.LoggerConfigurationAmazonS3Extensions.DefaultFileSizeLimitBytes">
-            <summary>
-                The default file size limit bytes.
-            </summary>
+            <summary>   The default file size limit bytes. </summary>
         </member>
         <member name="F:Serilog.LoggerConfigurationAmazonS3Extensions.DefaultOutputTemplate">
-            <summary>
-                The default output template.
-            </summary>
+            <summary>   The default output template. </summary>
         </member>
         <member name="F:Serilog.LoggerConfigurationAmazonS3Extensions.DefaultRetainedFileCountLimit">
-            <summary>
-                The default retained file count limit.
-            </summary>
+            <summary>   The default retained file count limit. </summary>
         </member>
         <member name="M:Serilog.LoggerConfigurationAmazonS3Extensions.AmazonS3(Serilog.Configuration.LoggerSinkConfiguration,System.String,System.String,Amazon.RegionEndpoint,System.String,System.String,Serilog.Events.LogEventLevel,System.String,System.IFormatProvider,System.Nullable{System.Int64},Serilog.Core.LoggingLevelSwitch,System.Boolean,Serilog.Sinks.AmazonS3.RollingInterval,System.Nullable{System.Int32},System.Text.Encoding,Serilog.Sinks.AmazonS3.FileLifecycleHooks)">
-            <summary>
-            Write log events to the specified file.
-            </summary>
-            <param name="sinkConfiguration">
-            Logger sink configuration.
-            </param>
-            <param name="path">
-            Path to the file.
-            </param>
-            <param name="bucketName">
-            The Amazon S3 bucket name.
-            </param>
-            <param name="endpoint">
-            The Amazon S3 endpoint.
-            </param>
-            <param name="awsAccessKeyId">
-            The Amazon S3 access key id.
-            </param>
-            <param name="awsSecretAccessKey">
-            The Amazon S3 access key.
-            </param>
-            <param name="restrictedToMinimumLevel">
-            The minimum level for
-                events passed through the sink. Ignored when <paramref name="levelSwitch"/> is specified.
-            </param>
-            <param name="outputTemplate">
-            A message template describing the format used to write to the sink.
-                the default is "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}".
-            </param>
-            <param name="formatProvider">
-            Supplies culture-specific formatting information, or null.
-            </param>
-            <param name="fileSizeLimitBytes">
-            The approximate maximum size, in bytes, to which a log file will be allowed to grow.
-                For unrestricted growth, pass null. The default is 1 GB. To avoid writing partial events, the last event within the
-                limit
-                will be written in full even if it exceeds the limit.
-            </param>
-            <param name="levelSwitch">
-            A switch allowing the pass-through minimum level
-                to be changed at runtime.
-            </param>
-            <param name="buffered">
-            Indicates if flushing to the output file can be buffered or not. The default
-                is false.
-            </param>
-            <param name="rollingInterval">
-            The interval at which logging will roll over to a new file.
-            </param>
-            <param name="retainedFileCountLimit">
-            The maximum number of log files that will be retained,
-                including the current log file. For unlimited retention, pass null. The default is 31.
-            </param>
-            <param name="encoding">
-            Character encoding used to write the text file. The default is UTF-8 without BOM.
-            </param>
-            <param name="hooks">
-            Optionally enables hooking into log file lifecycle events.
-            </param>
-            <returns>
-            Configuration object allowing method chaining.
-            </returns>
+             <summary>   Write log events to the specified file. </summary>
+            
+             <exception cref="T:System.ArgumentNullException">    Thrown when one or more required arguments are
+                                                         null. </exception>
+             <exception cref="T:System.ArgumentException">        Thrown when one or more arguments have
+                                                         unsupported or illegal values. </exception>
+            
+             <param name="sinkConfiguration">        Logger sink configuration. </param>
+             <param name="path">                     Path to the file. </param>
+             <param name="bucketName">               The Amazon S3 bucket name. </param>
+             <param name="endpoint">                 The Amazon S3 endpoint. </param>
+             <param name="awsAccessKeyId">           The Amazon S3 access key id. </param>
+             <param name="awsSecretAccessKey">       The Amazon S3 access key. </param>
+             <param name="restrictedToMinimumLevel"> (Optional)
+                                                     The minimum level for
+                                                         events passed through the sink. Ignored when
+                                                         <paramref name="levelSwitch"/> is specified. </param>
+             <param name="outputTemplate">           (Optional)
+                                                     A message template describing the format used to
+                                                     write to the sink.
+                                                         the default is "{Timestamp:yyyy-MM-dd
+                                                         HH:mm:ss.fff zzz} [{Level:u3}]
+                                                         {Message:lj}{NewLine}{Exception}". </param>
+             <param name="formatProvider">           (Optional)
+                                                     Supplies culture-specific formatting information, or
+                                                     null. </param>
+             <param name="fileSizeLimitBytes">       (Optional)
+                                                     The approximate maximum size, in bytes, to which a
+                                                     log file will be allowed to grow.
+                                                         For unrestricted growth, pass null. The default
+                                                         is 1 GB. To avoid writing partial events, the
+                                                         last event within the limit will be written in
+                                                         full even if it exceeds the limit. </param>
+             <param name="levelSwitch">              (Optional)
+                                                     A switch allowing the pass-through minimum level
+                                                         to be changed at runtime. </param>
+             <param name="buffered">                 (Optional)
+                                                     Indicates if flushing to the output file can be
+                                                     buffered or not. The default
+                                                         is false. </param>
+             <param name="rollingInterval">          (Optional)
+                                                     The interval at which logging will roll over to a new
+                                                     file. </param>
+             <param name="retainedFileCountLimit">   (Optional)
+                                                     The maximum number of log files that will be retained,
+                                                         including the current log file. For unlimited
+                                                         retention, pass null. The default is 31. </param>
+             <param name="encoding">                 (Optional)
+                                                     Character encoding used to write the text file. The
+                                                     default is UTF-8 without BOM. </param>
+             <param name="hooks">                    (Optional)
+                                                     Optionally enables hooking into log file lifecycle
+                                                     events. </param>
+            
+             <returns>   Configuration object allowing method chaining. </returns>
+        </member>
+        <member name="M:Serilog.LoggerConfigurationAmazonS3Extensions.AmazonS3(Serilog.Configuration.LoggerSinkConfiguration,System.String,System.String,Amazon.RegionEndpoint,Serilog.Events.LogEventLevel,System.String,System.IFormatProvider,System.Nullable{System.Int64},Serilog.Core.LoggingLevelSwitch,System.Boolean,Serilog.Sinks.AmazonS3.RollingInterval,System.Nullable{System.Int32},System.Text.Encoding,Serilog.Sinks.AmazonS3.FileLifecycleHooks)">
+             <summary>   Write log events to the specified file. </summary>
+            
+             <exception cref="T:System.ArgumentNullException">    Thrown when one or more required arguments are
+                                                         null. </exception>
+             <exception cref="T:System.ArgumentException">        Thrown when one or more arguments have
+                                                         unsupported or illegal values. </exception>
+            
+             <param name="sinkConfiguration">        Logger sink configuration. </param>
+             <param name="path">                     Path to the file. </param>
+             <param name="bucketName">               The Amazon S3 bucket name. </param>
+             <param name="endpoint">                 The Amazon S3 endpoint. </param>
+             <param name="restrictedToMinimumLevel"> (Optional)
+                                                     The minimum level for
+                                                         events passed through the sink. Ignored when
+                                                         <paramref name="levelSwitch"/> is specified. </param>
+             <param name="outputTemplate">           (Optional)
+                                                     A message template describing the format used to
+                                                     write to the sink.
+                                                         the default is "{Timestamp:yyyy-MM-dd
+                                                         HH:mm:ss.fff zzz} [{Level:u3}]
+                                                         {Message:lj}{NewLine}{Exception}". </param>
+             <param name="formatProvider">           (Optional)
+                                                     Supplies culture-specific formatting information, or
+                                                     null. </param>
+             <param name="fileSizeLimitBytes">       (Optional)
+                                                     The approximate maximum size, in bytes, to which a
+                                                     log file will be allowed to grow.
+                                                         For unrestricted growth, pass null. The default
+                                                         is 1 GB. To avoid writing partial events, the
+                                                         last event within the limit will be written in
+                                                         full even if it exceeds the limit. </param>
+             <param name="levelSwitch">              (Optional)
+                                                     A switch allowing the pass-through minimum level
+                                                         to be changed at runtime. </param>
+             <param name="buffered">                 (Optional)
+                                                     Indicates if flushing to the output file can be
+                                                     buffered or not. The default
+                                                         is false. </param>
+             <param name="rollingInterval">          (Optional)
+                                                     The interval at which logging will roll over to a new
+                                                     file. </param>
+             <param name="retainedFileCountLimit">   (Optional)
+                                                     The maximum number of log files that will be retained,
+                                                         including the current log file. For unlimited
+                                                         retention, pass null. The default is 31. </param>
+             <param name="encoding">                 (Optional)
+                                                     Character encoding used to write the text file. The
+                                                     default is UTF-8 without BOM. </param>
+             <param name="hooks">                    (Optional)
+                                                     Optionally enables hooking into log file lifecycle
+                                                     events. </param>
+            
+             <returns>   Configuration object allowing method chaining. </returns>
         </member>
         <member name="T:Serilog.Sinks.AmazonS3.AmazonS3Sink">
-            <inheritdoc cref="T:Serilog.Core.ILogEventSink"/>
-            <summary>
-                This class is the main class and contains all options for the AmazonS3 sink.
-            </summary>
+             <summary>
+                 This class is the main class and contains all options for the AmazonS3 sink.
+             </summary>
+            
+             ### <inheritdoc cref="T:Serilog.Core.ILogEventSink"/>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.AmazonS3Sink.sink">
-            <summary>
-                The sink.
-            </summary>
+            <summary>   The sink. </summary>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.AmazonS3Sink.#ctor(Serilog.Formatting.ITextFormatter,System.String,System.Nullable{System.Int64},System.Boolean,System.Text.Encoding,Serilog.Sinks.AmazonS3.RollingInterval,System.Nullable{System.Int32},Serilog.Sinks.AmazonS3.FileLifecycleHooks,System.String,Amazon.RegionEndpoint,System.String,System.String)">
-            <summary>
-                Initializes a new instance of the <see cref="T:Serilog.Sinks.AmazonS3.AmazonS3Sink" /> class.
-            </summary>
-            <param name="formatter">The formatter.</param>
-            <param name="path">The path.</param>
-            <param name="fileSizeLimitBytes">The file size limit bytes.</param>
-            <param name="buffered">if set to <c>true</c> [buffered].</param>
-            <param name="encoding">The encoding.</param>
-            <param name="rollingInterval">The rolling interval.</param>
-            <param name="retainedFileCountLimit">The retained file count limit.</param>
-            <param name="hooks">The hooks.</param>
-            <param name="bucketName">The Amazon S3 bucket name.</param>
-            <param name="endpoint">The Amazon S3 endpoint.</param>
-            <param name="awsAccessKeyId">The Amazon S3 access key id.</param>
-            <param name="awsSecretAccessKey">The Amazon S3 secret access key.</param>
-            <returns>A <see cref="T:Serilog.LoggerConfiguration" /> to use with Serilog.</returns>
-            <exception cref="T:System.ArgumentNullException">
-                addSink
-                or
-                formatter
-                or
-                path
-            </exception>
-            <exception cref="T:System.ArgumentException">
-                Negative value provided; file size limit must be non-negative. - fileSizeLimitBytes
-                or
-                At least one file must be retained. - retainedFileCountLimit
-                or
-                Buffered writes are not available when file sharing is enabled. - buffered
-                or
-                File lifecycle hooks are not currently supported for shared log files. - hooks
-            </exception>
+             <summary>   Initializes a new instance of the <see cref="T:Serilog.Sinks.AmazonS3.AmazonS3Sink" /> class. </summary>
+            
+             <exception cref="T:System.ArgumentNullException">    addSink or formatter or path. </exception>
+             <exception cref="T:System.ArgumentException">        Negative value provided; file size limit must be
+                                                         non-negative. - fileSizeLimitBytes or At least one
+                                                         file must be retained. - retainedFileCountLimit or
+                                                         Buffered writes are not available when file sharing
+                                                         is enabled. - buffered or File lifecycle hooks are
+                                                         not currently supported for shared log files. -
+                                                         hooks. </exception>
+            
+             <param name="formatter">                The formatter. </param>
+             <param name="path">                     The path. </param>
+             <param name="fileSizeLimitBytes">       The file size limit bytes. </param>
+             <param name="buffered">                 if set to <c>true</c> [buffered]. </param>
+             <param name="encoding">                 The encoding. </param>
+             <param name="rollingInterval">          The rolling interval. </param>
+             <param name="retainedFileCountLimit">   The retained file count limit. </param>
+             <param name="hooks">                    The hooks. </param>
+             <param name="bucketName">               The Amazon S3 bucket name. </param>
+             <param name="endpoint">                 The Amazon S3 endpoint. </param>
+             <param name="awsAccessKeyId">           The Amazon S3 access key id. </param>
+             <param name="awsSecretAccessKey">       The Amazon S3 secret access key. </param>
+            
+             ### <returns>   A <see cref="T:Serilog.LoggerConfiguration" /> to use with Serilog. </returns>
+        </member>
+        <member name="M:Serilog.Sinks.AmazonS3.AmazonS3Sink.#ctor(Serilog.Formatting.ITextFormatter,System.String,System.Nullable{System.Int64},System.Boolean,System.Text.Encoding,Serilog.Sinks.AmazonS3.RollingInterval,System.Nullable{System.Int32},Serilog.Sinks.AmazonS3.FileLifecycleHooks,System.String,Amazon.RegionEndpoint)">
+             <summary>   Initializes a new instance of the <see cref="T:Serilog.Sinks.AmazonS3.AmazonS3Sink" /> class. </summary>
+            
+             <exception cref="T:System.ArgumentNullException">    addSink or formatter or path. </exception>
+             <exception cref="T:System.ArgumentException">        Negative value provided; file size limit must be
+                                                         non-negative. - fileSizeLimitBytes or At least one
+                                                         file must be retained. - retainedFileCountLimit or
+                                                         Buffered writes are not available when file sharing
+                                                         is enabled. - buffered or File lifecycle hooks are
+                                                         not currently supported for shared log files. -
+                                                         hooks. </exception>
+            
+             <param name="formatter">                The formatter. </param>
+             <param name="path">                     The path. </param>
+             <param name="fileSizeLimitBytes">       The file size limit bytes. </param>
+             <param name="buffered">                 if set to <c>true</c> [buffered]. </param>
+             <param name="encoding">                 The encoding. </param>
+             <param name="rollingInterval">          The rolling interval. </param>
+             <param name="retainedFileCountLimit">   The retained file count limit. </param>
+             <param name="hooks">                    The hooks. </param>
+             <param name="bucketName">               The Amazon S3 bucket name. </param>
+             <param name="endpoint">                 The Amazon S3 endpoint. </param>
+            
+             ### <returns>   A <see cref="T:Serilog.LoggerConfiguration" /> to use with Serilog. </returns>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.AmazonS3Sink.Emit(Serilog.Events.LogEvent)">
-            <inheritdoc cref="T:Serilog.Core.ILogEventSink"/>
-            <summary>
-            Emit the provided log event to the sink.
-            </summary>
-            <param name="logEvent">The log event to write.</param>
+             <summary>   Emit the provided log event to the sink. </summary>
+            
+             <param name="logEvent"> The log event to write. </param>
+            
+             <inheritdoc cref="T:Serilog.Core.ILogEventSink"/>
         </member>
         <member name="T:Serilog.Sinks.AmazonS3.FileLifecycleHooks">
-            <summary>
-                This class enables hooking into log file lifecycle events.
-            </summary>
+            <summary>   This class enables hooking into log file lifecycle events. </summary>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.FileLifecycleHooks.OnFileOpened(System.IO.Stream,System.Text.Encoding)">
-            <summary>
-                Initialize or wrap the <paramref name="underlyingStream" /> opened on the log file. This can be used to write
-                file headers, or wrap the stream in another that adds buffering, compression, encryption, etc. The underlying
-                file may or may not be empty when this method is called.
-            </summary>
-            <remarks>
-                A value must be returned from overrides of this method. Serilog will flush and/or dispose the returned value, but
-                will not
-                dispose the stream initially passed in unless it is itself returned.
-            </remarks>
-            <param name="underlyingStream">The underlying <see cref="T:System.IO.Stream" /> opened on the log file.</param>
-            <param name="encoding">The encoding to use when reading/writing to the stream.</param>
-            <returns>The <see cref="T:System.IO.Stream" /> Serilog should use when writing events to the log file.</returns>
+             <summary>
+                 Initialize or wrap the <paramref name="underlyingStream" /> opened on the log file. This
+                 can be used to write file headers, or wrap the stream in another that adds buffering,
+                 compression, encryption, etc. The underlying file may or may not be empty when this
+                 method is called.
+             </summary>
+            
+             <remarks>
+                 A value must be returned from overrides of this method. Serilog will flush and/or dispose
+                 the returned value, but will not dispose the stream initially passed in unless it is
+                 itself returned.
+             </remarks>
+            
+             <param name="underlyingStream"> The underlying <see cref="T:System.IO.Stream" /> opened on the log file. </param>
+             <param name="encoding">         The encoding to use when reading/writing to the stream. </param>
+            
+             <returns>
+                 The <see cref="T:System.IO.Stream" /> Serilog should use when writing events to the log file.
+             </returns>
         </member>
         <member name="T:Serilog.Sinks.AmazonS3.FileSink">
-            <inheritdoc cref="T:Serilog.Sinks.AmazonS3.IFileSink" />
-            <inheritdoc cref="T:System.IDisposable" />
-            <summary>
-                This class enables writing log events to a disk file.
-            </summary>
+             <summary>   This class enables writing log events to a disk file. </summary>
+            
+             ### <inheritdoc cref="T:Serilog.Sinks.AmazonS3.IFileSink"/>
+             <inheritdoc cref="T:System.IDisposable"/>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.FileSink.buffered">
-            <summary>
-                The buffered content.
-            </summary>
+            <summary>   The buffered content. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.FileSink.countingStreamWrapper">
-            <summary>
-                The counting stream wrapper.
-            </summary>
+            <summary>   The counting stream wrapper. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.FileSink.fileSizeLimitBytes">
-            <summary>
-                The file size limit bytes.
-            </summary>
+            <summary>   The file size limit bytes. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.FileSink.output">
-            <summary>
-                The output <see cref="T:System.IO.TextWriter" />.
-            </summary>
+            <summary>   The output <see cref="T:System.IO.TextWriter" />. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.FileSink.syncRoot">
-            <summary>
-                The synchronize root.
-            </summary>
+            <summary>   The synchronize root. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.FileSink.textFormatter">
-            <summary>
-                The text formatter.
-            </summary>
+            <summary>   The text formatter. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.FileSink.underlyingStream">
-            <summary>
-                The underlying <see cref="T:System.IO.FileStream" />.
-            </summary>
+            <summary>   The underlying <see cref="T:System.IO.FileStream" />. </summary>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.FileSink.#ctor(System.String,Serilog.Formatting.ITextFormatter,System.Nullable{System.Int64},System.Text.Encoding,System.Boolean,Serilog.Sinks.AmazonS3.FileLifecycleHooks)">
-            <summary>
-                Initializes a new instance of the <see cref="T:Serilog.Sinks.AmazonS3.FileSink" /> class.
-            </summary>
-            <param name="path">The path.</param>
-            <param name="textFormatter">The text formatter.</param>
-            <param name="fileSizeLimitBytes">The file size limit bytes.</param>
-            <param name="encoding">The encoding.</param>
-            <param name="buffered">if set to <c>true</c> [buffered].</param>
-            <param name="hooks">The hooks.</param>
-            <exception cref="T:System.ArgumentNullException">
-                path
-                or
-                textFormatter
-            </exception>
-            <exception cref="T:System.ArgumentException">Negative value provided; file size limit must be non-negative.</exception>
-            <exception cref="T:System.InvalidOperationException">The file lifecycle hook FileLifecycleHooks.OnFileOpened.</exception>
+             <summary>   Initializes a new instance of the <see cref="T:Serilog.Sinks.AmazonS3.FileSink" /> class. </summary>
+            
+             <exception cref="T:System.ArgumentNullException">        path or textFormatter. </exception>
+             <exception cref="T:System.ArgumentException">            Negative value provided; file size limit must
+                                                             be non-negative. </exception>
+             <exception cref="T:System.InvalidOperationException">    The file lifecycle hook
+                                                             FileLifecycleHooks.OnFileOpened. </exception>
+            
+             <param name="path">                 The path. </param>
+             <param name="textFormatter">        The text formatter. </param>
+             <param name="fileSizeLimitBytes">   The file size limit bytes. </param>
+             <param name="encoding">             The encoding. </param>
+             <param name="buffered">             if set to <c>true</c> [buffered]. </param>
+             <param name="hooks">                The hooks. </param>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.FileSink.Dispose">
-            <inheritdoc cref="T:Serilog.Sinks.AmazonS3.IFileSink" />
-            <summary>
-                Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            </summary>
+             <summary>
+                 Performs application-defined tasks associated with freeing, releasing, or resetting
+                 unmanaged resources.
+             </summary>
+            
+             <inheritdoc cref="T:Serilog.Sinks.AmazonS3.IFileSink"/>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.FileSink.Emit(Serilog.Events.LogEvent)">
-            <inheritdoc cref="T:Serilog.Sinks.AmazonS3.IFileSink" />
-            <summary>
-                Emit the provided log event to the sink.
-            </summary>
-            <param name="logEvent">The log event to write.</param>
+             <summary>   Emit the provided log event to the sink. </summary>
+            
+             <param name="logEvent"> The log event to write. </param>
+            
+             <inheritdoc cref="T:Serilog.Sinks.AmazonS3.IFileSink"/>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.FileSink.FlushToDisk">
-            <inheritdoc cref="T:Serilog.Sinks.AmazonS3.IFileSink" />
-            <summary>
-                Flush buffered contents to the disk.
-            </summary>
+             <summary>   Flush buffered contents to the disk. </summary>
+            
+             <inheritdoc cref="T:Serilog.Sinks.AmazonS3.IFileSink"/>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.FileSink.EmitOrOverflow(Serilog.Events.LogEvent)">
-            <inheritdoc cref="T:Serilog.Sinks.AmazonS3.IFileSink" />
-            <summary>
-                Emits the <see cref="T:Serilog.Events.LogEvent" /> or overflows.
-            </summary>
-            <param name="logEvent">The log event.</param>
-            <returns>
-                A <see cref="T:System.Boolean" /> indicating whether the emitting was a success or not.
-            </returns>
-            <exception cref="T:System.ArgumentNullException">logEvent</exception>
+             <summary>   Emits the <see cref="T:Serilog.Events.LogEvent" /> or overflows. </summary>
+            
+             <exception cref="T:System.ArgumentNullException">    logEvent. </exception>
+            
+             <param name="logEvent"> The log event. </param>
+            
+             <returns>
+                 A <see cref="T:System.Boolean" /> indicating whether the emitting was a success or not.
+             </returns>
+            
+             <inheritdoc cref="T:Serilog.Sinks.AmazonS3.IFileSink"/>
         </member>
         <member name="T:Serilog.Sinks.AmazonS3.IFileSink">
-            <inheritdoc cref="T:Serilog.Core.ILogEventSink" />
-            <inheritdoc cref="T:Serilog.Sinks.AmazonS3.IFlushableFileSink" />
-            <summary>
-                Exists only for the convenience of <see cref="T:Serilog.Sinks.AmazonS3.RollingFileSink" />, which
-                switches implementations based on sharing. Would refactor, but preserving
-                backwards compatibility.
-            </summary>
+             <summary>
+                 Exists only for the convenience of <see cref="T:Serilog.Sinks.AmazonS3.RollingFileSink" />, which switches
+                 implementations based on sharing. Would refactor, but preserving backwards compatibility.
+             </summary>
+            
+             ### <inheritdoc cref="T:Serilog.Core.ILogEventSink"/>
+             <inheritdoc cref="T:Serilog.Sinks.AmazonS3.IFlushableFileSink"/>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.IFileSink.EmitOrOverflow(Serilog.Events.LogEvent)">
-            <summary>
-            Emits the <see cref="T:Serilog.Events.LogEvent"/> or overflows.
-            </summary>
-            <param name="logEvent">The log event.</param>
-            <returns>A <see cref="T:System.Boolean"/> indicating whether the emitting was a success or not.</returns>
+             <summary>   Emits the <see cref="T:Serilog.Events.LogEvent"/> or overflows. </summary>
+            
+             <param name="logEvent"> The log event. </param>
+            
+             <returns>   A <see cref="T:System.Boolean"/> indicating whether the emitting was a success or not. </returns>
         </member>
         <member name="T:Serilog.Sinks.AmazonS3.IFlushableFileSink">
             <summary>
-            This class is supported by (file-based) sinks that can be explicitly flushed.
+                This class is supported by (file-based) sinks that can be explicitly flushed.
             </summary>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.IFlushableFileSink.FlushToDisk">
-            <summary>
-            Flush buffered contents to the disk.
-            </summary>
+            <summary>   Flush buffered contents to the disk. </summary>
         </member>
         <member name="T:Serilog.Sinks.AmazonS3.IoErrors">
-            <summary>
-            A class that simplifies the use of some I/O errors.
-            </summary>
+            <summary>   A class that simplifies the use of some I/O errors. </summary>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.IoErrors.IsLockedFile(System.IO.IOException)">
-            <summary>
-            Determines whether the file is locked or not.
-            </summary>
-            <param name="ex">The <see cref="T:System.IO.IOException"/> to check.</param>
-            <returns>
-              <c>true</c> if the file is locked; otherwise, <c>false</c>.
-            </returns>
+             <summary>   Determines whether the file is locked or not. </summary>
+            
+             <param name="ex">   The <see cref="T:System.IO.IOException"/> to check. </param>
+            
+             <returns>   <c>true</c> if the file is locked; otherwise, <c>false</c>. </returns>
         </member>
         <member name="T:Serilog.Sinks.AmazonS3.PathRoller">
-            <summary>
-                The class to apply the rolling path scenarios.
-            </summary>
+            <summary>   The class to apply the rolling path scenarios. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.PathRoller.PeriodMatchGroup">
-            <summary>
-                The period match group.
-            </summary>
+            <summary>   The period match group. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.PathRoller.SequenceNumberMatchGroup">
-            <summary>
-                The sequence number match group.
-            </summary>
+            <summary>   The sequence number match group. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.PathRoller.filenameMatcher">
-            <summary>
-                The filename matcher.
-            </summary>
+            <summary>   The filename matcher. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.PathRoller.filenamePrefix">
-            <summary>
-                The filename prefix.
-            </summary>
+            <summary>   The filename prefix. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.PathRoller.filenameSuffix">
-            <summary>
-                The filename suffix.
-            </summary>
+            <summary>   The filename suffix. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.PathRoller.interval">
-            <summary>
-                The rolling interval.
-            </summary>
+            <summary>   The rolling interval. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.PathRoller.periodFormat">
-            <summary>
-                The period format.
-            </summary>
+            <summary>   The period format. </summary>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.PathRoller.#ctor(System.String,Serilog.Sinks.AmazonS3.RollingInterval)">
-            <summary>
-                Initializes a new instance of the <see cref="T:Serilog.Sinks.AmazonS3.PathRoller" /> class.
-            </summary>
-            <param name="path">The path.</param>
-            <param name="interval">The interval.</param>
-            <exception cref="T:System.ArgumentNullException">An <see cref="T:System.ArgumentNullException"/> thrown when the path is null.</exception>
+             <summary>   Initializes a new instance of the <see cref="T:Serilog.Sinks.AmazonS3.PathRoller" /> class. </summary>
+            
+             <exception cref="T:System.ArgumentNullException">    An <see cref="T:System.ArgumentNullException"/> thrown
+                                                         when the path is null. </exception>
+            
+             <param name="path">     The path. </param>
+             <param name="interval"> The interval. </param>
         </member>
         <member name="P:Serilog.Sinks.AmazonS3.PathRoller.DirectorySearchPattern">
-            <summary>
-                Gets the directory search pattern.
-            </summary>
-            <value>
-                The directory search pattern.
-            </value>
+             <summary>   Gets the directory search pattern. </summary>
+            
+             <value> The directory search pattern. </value>
         </member>
         <member name="P:Serilog.Sinks.AmazonS3.PathRoller.LogFileDirectory">
-            <summary>
-                Gets the log file directory.
-            </summary>
-            <value>
-                The log file directory.
-            </value>
+             <summary>   Gets the log file directory. </summary>
+            
+             <value> The log file directory. </value>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.PathRoller.GetCurrentCheckpoint(System.DateTime)">
-            <summary>
-                Gets the current checkpoint.
-            </summary>
-            <param name="instant">The instant.</param>
-            <returns>A <see cref="T:System.DateTime"/> value that gives the current checkpoint.</returns>
+             <summary>   Gets the current checkpoint. </summary>
+            
+             <param name="instant">  The instant. </param>
+            
+             <returns>   A <see cref="T:System.DateTime"/> value that gives the current checkpoint. </returns>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.PathRoller.GetLogFilePath(System.DateTime,System.Nullable{System.Int32},System.String@)">
-            <summary>
-                Gets the log file path.
-            </summary>
-            <param name="date">The date.</param>
-            <param name="sequenceNumber">The sequence number.</param>
-            <param name="path">The path.</param>
+             <summary>   Gets the log file path. </summary>
+            
+             <param name="date">             The date. </param>
+             <param name="sequenceNumber">   The sequence number. </param>
+             <param name="path">             [out] The path. </param>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.PathRoller.GetNextCheckpoint(System.DateTime)">
-            <summary>
-                Gets the next checkpoint.
-            </summary>
-            <param name="instant">The instant.</param>
-            <returns>A <see cref="T:System.DateTime"/> value that gives the next checkpoint.</returns>
+             <summary>   Gets the next checkpoint. </summary>
+            
+             <param name="instant">  The instant. </param>
+            
+             <returns>   A <see cref="T:System.DateTime"/> value that gives the next checkpoint. </returns>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.PathRoller.SelectMatches(System.Collections.Generic.IEnumerable{System.String})">
-            <summary>
-                Selects the matches.
-            </summary>
-            <param name="fileNames">The file names.</param>
-            <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1" /> of <see cref="T:Serilog.Sinks.AmazonS3.RollingLogFile" />s.</returns>
+             <summary>   Selects the matches. </summary>
+            
+             <param name="fileNames">    The file names. </param>
+            
+             <returns>   An <see cref="T:System.Collections.Generic.IEnumerable`1" /> of <see cref="T:Serilog.Sinks.AmazonS3.RollingLogFile" />s. </returns>
         </member>
         <member name="T:Serilog.Sinks.AmazonS3.RollingFileSink">
-            <inheritdoc cref="T:Serilog.Core.ILogEventSink" />
-            <inheritdoc cref="T:Serilog.Sinks.AmazonS3.IFlushableFileSink" />
-            <inheritdoc cref="T:System.IDisposable" />
-            <summary>
-                A class to write rolling files.
-            </summary>
-            <seealso cref="T:Serilog.Core.ILogEventSink" />
-            <seealso cref="T:Serilog.Sinks.AmazonS3.IFlushableFileSink" />
-            <seealso cref="T:System.IDisposable" />
+             <summary>   A class to write rolling files. </summary>
+            
+             <seealso cref="T:Serilog.Core.ILogEventSink"/>
+             <seealso cref="T:Serilog.Sinks.AmazonS3.IFlushableFileSink"/>
+             <seealso cref="T:System.IDisposable"/>
+            
+             ### <inheritdoc cref="T:System.IDisposable"/>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.awsAccessKeyId">
-            <summary>
-                The aws access key identifier.
-            </summary>
+            <summary>   The aws access key identifier. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.awsSecretAccessKey">
-            <summary>
-                The aws secret access key.
-            </summary>
+            <summary>   The aws secret access key. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.bucketName">
-            <summary>
-                The Amazon S3 bucket name.
-            </summary>
+            <summary>   The Amazon S3 bucket name. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.buffered">
-            <summary>
-                The buffered bool value.
-            </summary>
+            <summary>   The buffered bool value. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.encoding">
-            <summary>
-                The encoding.
-            </summary>
+            <summary>   The encoding. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.endpoint">
-            <summary>
-                The Amazon S3 key endpoint.
-            </summary>
+            <summary>   The Amazon S3 key endpoint. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.fileLifecycleHooks">
-            <summary>
-                The file lifecycle hooks.
-            </summary>
+            <summary>   The file lifecycle hooks. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.fileSizeLimitBytes">
-            <summary>
-                The file size limit bytes.
-            </summary>
+            <summary>   The file size limit bytes. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.pathRoller">
-            <summary>
-                The path roller.
-            </summary>
+            <summary>   The path roller. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.retainedFileCountLimit">
-            <summary>
-                The retained file count limit.
-            </summary>
+            <summary>   The retained file count limit. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.rollOnFileSizeLimit">
-            <summary>
-                The roll on file size limit bool value.
-            </summary>
+            <summary>   The roll on file size limit bool value. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.syncRoot">
-            <summary>
-                The synchronize root.
-            </summary>
+            <summary>   The synchronize root. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.textFormatter">
-            <summary>
-                The text formatter.
-            </summary>
+            <summary>   The text formatter. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.currentFile">
-            <summary>
-                The current file.
-            </summary>
+            <summary>   The current file. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.currentFileName">
-            <summary>
-            The current file name.
-            </summary>
+            <summary>   The current file name. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.currentFileSequence">
-            <summary>
-                The current file sequence.
-            </summary>
+            <summary>   The current file sequence. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.isDisposed">
-            <summary>
-                The is disposed bool value.
-            </summary>
+            <summary>   The is disposed bool value. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.nextCheckpoint">
-            <summary>
-                The next checkpoint.
-            </summary>
+            <summary>   The next checkpoint. </summary>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.#ctor(System.String,Serilog.Formatting.ITextFormatter,System.Nullable{System.Int64},System.Nullable{System.Int32},System.Text.Encoding,System.Boolean,Serilog.Sinks.AmazonS3.RollingInterval,System.Boolean,Serilog.Sinks.AmazonS3.FileLifecycleHooks,System.String,Amazon.RegionEndpoint,System.String,System.String)">
-            <summary>
-                Initializes a new instance of the <see cref="T:Serilog.Sinks.AmazonS3.RollingFileSink" /> class.
-            </summary>
-            <param name="path">The path.</param>
-            <param name="textFormatter">The text formatter.</param>
-            <param name="fileSizeLimitBytes">The file size limit bytes.</param>
-            <param name="retainedFileCountLimit">The retained file count limit.</param>
-            <param name="encoding">The encoding.</param>
-            <param name="buffered">if set to <c>true</c> [buffered].</param>
-            <param name="rollingInterval">The rolling interval.</param>
-            <param name="rollOnFileSizeLimit">if set to <c>true</c> [roll on file size limit].</param>
-            <param name="fileLifecycleHooks">The file lifecycle hooks.</param>
-            <param name="bucketName">The Amazon S3 bucket name.</param>
-            <param name="endpoint">The Amazon S3 endpoint.</param>
-            <param name="awsAccessKeyId">The Amazon S3 access key id.</param>
-            <param name="awsSecretAccessKey">The Amazon S3 access key.</param>
-            <exception cref="T:System.ArgumentNullException">An <see cref="T:System.ArgumentNullException" /> thrown when the path is null.</exception>
-            <exception cref="T:System.ArgumentException">
-                Negative value provided; file size limit must be non-negative.
-                or
-                Zero or negative value provided; retained file count limit must be at least 1.
-            </exception>
+             <summary>   Initializes a new instance of the <see cref="T:Serilog.Sinks.AmazonS3.RollingFileSink" /> class. </summary>
+            
+             <exception cref="T:System.ArgumentNullException">    An <see cref="T:System.ArgumentNullException" /> thrown
+                                                         when the path is null. </exception>
+             <exception cref="T:System.ArgumentException">        Negative value provided; file size limit must be
+                                                         non-negative. or Zero or negative value provided;
+                                                         retained file count limit must be at least 1. </exception>
+            
+             <param name="path">                     The path. </param>
+             <param name="textFormatter">            The text formatter. </param>
+             <param name="fileSizeLimitBytes">       The file size limit bytes. </param>
+             <param name="retainedFileCountLimit">   The retained file count limit. </param>
+             <param name="encoding">                 The encoding. </param>
+             <param name="buffered">                 if set to <c>true</c> [buffered]. </param>
+             <param name="rollingInterval">          The rolling interval. </param>
+             <param name="rollOnFileSizeLimit">      if set to <c>true</c> [roll on file size limit]. </param>
+             <param name="fileLifecycleHooks">       The file lifecycle hooks. </param>
+             <param name="bucketName">               The Amazon S3 bucket name. </param>
+             <param name="endpoint">                 The Amazon S3 endpoint. </param>
+             <param name="awsAccessKeyId">           The Amazon S3 access key id. </param>
+             <param name="awsSecretAccessKey">       The Amazon S3 access key. </param>
+        </member>
+        <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.#ctor(System.String,Serilog.Formatting.ITextFormatter,System.Nullable{System.Int64},System.Nullable{System.Int32},System.Text.Encoding,System.Boolean,Serilog.Sinks.AmazonS3.RollingInterval,System.Boolean,Serilog.Sinks.AmazonS3.FileLifecycleHooks,System.String,Amazon.RegionEndpoint)">
+             <summary>   Initializes a new instance of the <see cref="T:Serilog.Sinks.AmazonS3.RollingFileSink" /> class. </summary>
+            
+             <exception cref="T:System.ArgumentNullException">    An <see cref="T:System.ArgumentNullException" /> thrown
+                                                         when the path is null. </exception>
+             <exception cref="T:System.ArgumentException">        Negative value provided; file size limit must be
+                                                         non-negative. or Zero or negative value provided;
+                                                         retained file count limit must be at least 1. </exception>
+            
+             <param name="path">                     The path. </param>
+             <param name="textFormatter">            The text formatter. </param>
+             <param name="fileSizeLimitBytes">       The file size limit bytes. </param>
+             <param name="retainedFileCountLimit">   The retained file count limit. </param>
+             <param name="encoding">                 The encoding. </param>
+             <param name="buffered">                 if set to <c>true</c> [buffered]. </param>
+             <param name="rollingInterval">          The rolling interval. </param>
+             <param name="rollOnFileSizeLimit">      if set to <c>true</c> [roll on file size limit]. </param>
+             <param name="fileLifecycleHooks">       The file lifecycle hooks. </param>
+             <param name="bucketName">               The Amazon S3 bucket name. </param>
+             <param name="endpoint">                 The Amazon S3 endpoint. </param>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.Dispose">
-            <inheritdoc cref="T:System.IDisposable" />
+             <summary>
+                 Performs application-defined tasks associated with freeing, releasing, or resetting
+                 unmanaged resources.
+             </summary>
+            
+             <inheritdoc cref="T:System.IDisposable"/>
+        </member>
+        <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.Dispose(System.Boolean)">
+             <summary>
+                 Performs application-defined tasks associated with freeing, releasing, or resetting
+                 unmanaged resources.
+             </summary>
+            
+             <param name="disposing">    True to release both managed and unmanaged resources; false to
+                                         release only unmanaged resources. </param>
+        </member>
+        <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.Finalize">
             <summary>
-                Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+                Use C# destructor syntax for finalization code. This destructor will run only if the
+                Dispose method does not get called. It gives your base class the opportunity to finalize.
+                Do not provide destructors in types derived from this class.
             </summary>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.Emit(Serilog.Events.LogEvent)">
-            <inheritdoc cref="T:Serilog.Core.ILogEventSink" />
-            <summary>
-                Emit the provided log event to the sink.
-            </summary>
-            <param name="logEvent">The log event to write.</param>
-            <exception cref="T:System.ArgumentNullException">logEvent</exception>
-            <exception cref="T:System.ObjectDisposedException">The log file has been disposed.</exception>
+             <summary>   Emit the provided log event to the sink. </summary>
+            
+             <exception cref="T:System.ArgumentNullException">    logEvent. </exception>
+             <exception cref="T:System.ObjectDisposedException">  The log file has been disposed. </exception>
+            
+             <param name="logEvent"> The log event to write. </param>
+            
+             <inheritdoc cref="T:Serilog.Core.ILogEventSink"/>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.FlushToDisk">
-            <inheritdoc cref="T:Serilog.Sinks.AmazonS3.IFlushableFileSink" />
-            <summary>
-                Flush buffered contents to the disk.
-            </summary>
+             <summary>   Flush buffered contents to the disk. </summary>
+            
+             <inheritdoc cref="T:Serilog.Sinks.AmazonS3.IFlushableFileSink"/>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.AlignCurrentFileTo(System.DateTime,System.Boolean)">
-            <summary>
-                Aligns the current file to the current <see cref="T:System.DateTime" />.
-            </summary>
-            <param name="now">The current <see cref="T:System.DateTime" />.</param>
-            <param name="nextSequence">Uses the next sequence if set to <c>true</c>.</param>
+             <summary>   Aligns the current file to the current <see cref="T:System.DateTime" />. </summary>
+            
+             <param name="now">          The current <see cref="T:System.DateTime" />. </param>
+             <param name="nextSequence"> (Optional) Uses the next sequence if set to <c>true</c>. </param>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.UploadFileToS3">
-            <summary>
-                Uploads the file to a specified Amazon S3 bucket.
-            </summary>
-            <exception cref="T:System.Exception">
-                Check the provided AWS Credentials.
-                or
-                Error occurred: " + amazonS3Exception.Message
-            </exception>
+             <summary>   Uploads the file to a specified Amazon S3 bucket. </summary>
+            
+             <exception cref="T:System.UnauthorizedAccessException">  Thrown when an Unauthorized Access error
+                                                             condition occurs. </exception>
+             <exception cref="T:Amazon.S3.AmazonS3Exception">            Thrown when an Amazon S 3 error condition
+                                                             occurs. </exception>
+             <exception cref="T:System.Exception">                    Check the provided AWS Credentials. or Error
+                                                             occurred: " + amazonS3Exception.Message. </exception>
+            
+             <returns>   An asynchronous result that yields a PutObjectResponse. </returns>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.ApplyRetentionPolicy(System.String)">
-            <summary>
-                Applies the retention policy.
-            </summary>
-            <param name="currentFilePath">The current file path.</param>
+             <summary>   Applies the retention policy. </summary>
+            
+             <param name="currentFilePath">  The current file path. </param>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.CloseFile">
-            <summary>
-                Closes the file.
-            </summary>
+            <summary>   Closes the file. </summary>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.OpenFile(System.DateTime,System.Nullable{System.Int32})">
-            <summary>
-                Opens the file.
-            </summary>
-            <param name="now">The now.</param>
-            <param name="minSequence">The minimum sequence.</param>
+             <summary>   Opens the file. </summary>
+            
+             <exception cref="T:System.IO.DirectoryNotFoundException">   Thrown when the requested directory is not
+                                                             present. </exception>
+             <exception cref="T:System.IO.IOException">                  Thrown when an IO failure occurred. </exception>
+            
+             <param name="now">          The now. </param>
+             <param name="minSequence">  (Optional) The minimum sequence. </param>
         </member>
         <member name="T:Serilog.Sinks.AmazonS3.RollingInterval">
-            <summary>
-            Specifies the frequency at which the log file should roll.
-            </summary>
+            <summary>   Specifies the frequency at which the log file should roll. </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingInterval.Year">
             <summary>
@@ -596,208 +614,213 @@
         </member>
         <member name="T:Serilog.Sinks.AmazonS3.RollingIntervalExtensions">
             <summary>
-            This class provides some extensions for the <see cref="T:Serilog.Sinks.AmazonS3.RollingInterval"/> class.
+                This class provides some extensions for the <see cref="T:Serilog.Sinks.AmazonS3.RollingInterval"/> class.
             </summary>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.RollingIntervalExtensions.GetFormat(Serilog.Sinks.AmazonS3.RollingInterval)">
-            <summary>
-            Gets the format for the <see cref="T:Serilog.Sinks.AmazonS3.RollingInterval"/>.
-            </summary>
-            <param name="interval">The interval.</param>
-            <returns>The format for the <see cref="T:Serilog.Sinks.AmazonS3.RollingInterval"/>.</returns>
-            <exception cref="T:System.ArgumentException">Invalid rolling interval.</exception>
+             <summary>   Gets the format for the <see cref="T:Serilog.Sinks.AmazonS3.RollingInterval"/>. </summary>
+            
+             <exception cref="T:System.ArgumentException">    Invalid rolling interval. </exception>
+            
+             <param name="interval"> The interval. </param>
+            
+             <returns>   The format for the <see cref="T:Serilog.Sinks.AmazonS3.RollingInterval"/>. </returns>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.RollingIntervalExtensions.GetCurrentCheckpoint(Serilog.Sinks.AmazonS3.RollingInterval,System.DateTime)">
-            <summary>
-            Gets the current checkpoint.
-            </summary>
-            <param name="interval">The interval.</param>
-            <param name="instant">The instant.</param>
-            <returns>A <see cref="T:System.DateTime"/> value that gives the current checkpoint.</returns>
-            <exception cref="T:System.ArgumentException">Invalid rolling interval</exception>
+             <summary>   Gets the current checkpoint. </summary>
+            
+             <exception cref="T:System.ArgumentException">    Invalid rolling interval. </exception>
+            
+             <param name="interval"> The interval. </param>
+             <param name="instant">  The instant. </param>
+            
+             <returns>   A <see cref="T:System.DateTime"/> value that gives the current checkpoint. </returns>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.RollingIntervalExtensions.GetNextCheckpoint(Serilog.Sinks.AmazonS3.RollingInterval,System.DateTime)">
-            <summary>
-            Gets the next checkpoint.
-            </summary>
-            <param name="interval">The interval.</param>
-            <param name="instant">The instant.</param>
-            <returns>A <see cref="T:System.DateTime"/> value that gives the next checkpoint.</returns>
-            <exception cref="T:System.ArgumentException">Invalid rolling interval</exception>
+             <summary>   Gets the next checkpoint. </summary>
+            
+             <exception cref="T:System.ArgumentException">    Invalid rolling interval. </exception>
+            
+             <param name="interval"> The interval. </param>
+             <param name="instant">  The instant. </param>
+            
+             <returns>   A <see cref="T:System.DateTime"/> value that gives the next checkpoint. </returns>
         </member>
         <member name="T:Serilog.Sinks.AmazonS3.RollingLogFile">
-            <summary>
-            A class that represents a rolling log file internally.
-            </summary>
+            <summary>   A class that represents a rolling log file internally. </summary>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.RollingLogFile.#ctor(System.String,System.Nullable{System.DateTime},System.Nullable{System.Int32})">
-            <summary>
-            Initializes a new instance of the <see cref="T:Serilog.Sinks.AmazonS3.RollingLogFile"/> class.
-            </summary>
-            <param name="filename">The filename.</param>
-            <param name="dateTime">The date time.</param>
-            <param name="sequenceNumber">The sequence number.</param>
+             <summary>   Initializes a new instance of the <see cref="T:Serilog.Sinks.AmazonS3.RollingLogFile"/> class. </summary>
+            
+             <param name="filename">         The filename. </param>
+             <param name="dateTime">         The date time. </param>
+             <param name="sequenceNumber">   The sequence number. </param>
         </member>
         <member name="P:Serilog.Sinks.AmazonS3.RollingLogFile.Filename">
-            <summary>
-            Gets the filename.
-            </summary>
-            <value>
-            The filename.
-            </value>
+             <summary>   Gets the filename. </summary>
+            
+             <value> The filename. </value>
         </member>
         <member name="P:Serilog.Sinks.AmazonS3.RollingLogFile.DateTime">
-            <summary>
-            Gets the date time.
-            </summary>
-            <value>
-            The date time.
-            </value>
+             <summary>   Gets the date time. </summary>
+            
+             <value> The date time. </value>
         </member>
         <member name="P:Serilog.Sinks.AmazonS3.RollingLogFile.SequenceNumber">
-            <summary>
-            Gets the sequence number.
-            </summary>
-            <value>
-            The sequence number.
-            </value>
+             <summary>   Gets the sequence number. </summary>
+            
+             <value> The sequence number. </value>
         </member>
         <member name="T:Serilog.Sinks.AmazonS3.WriteCountingStream">
-            <inheritdoc cref="T:System.IO.Stream" />
-            <summary>
-                This class is used to provide a write counting stream.
-            </summary>
-            <seealso cref="T:System.IO.Stream" />
+             <summary>   This class is used to provide a write counting stream. </summary>
+            
+             <seealso cref="T:System.IO.Stream"/>
+            
+             ### <inheritdoc cref="T:System.IO.Stream"/>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.WriteCountingStream.stream">
-            <summary>
-                The stream.
-            </summary>
+            <summary>   The stream. </summary>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.WriteCountingStream.#ctor(System.IO.Stream)">
-            <inheritdoc cref="T:System.IO.Stream" />
-            <summary>
-                Initializes a new instance of the <see cref="T:Serilog.Sinks.AmazonS3.WriteCountingStream" /> class.
-            </summary>
-            <param name="stream">The stream.</param>
-            <exception cref="T:System.ArgumentNullException">The stream is null.</exception>
+             <summary>
+                 Initializes a new instance of the
+                 <see cref="T:Serilog.Sinks.AmazonS3.WriteCountingStream" /> class.
+             </summary>
+            
+             <exception cref="T:System.ArgumentNullException">   The stream is null. </exception>
+            
+             <param name="stream">   The stream. </param>
+            
+             <inheritdoc cref="T:System.IO.Stream"/>
         </member>
         <member name="P:Serilog.Sinks.AmazonS3.WriteCountingStream.CanRead">
-            <inheritdoc cref="T:System.IO.Stream" />
-            <summary>
-                When overridden in a derived class, gets a value indicating whether the current stream supports reading.
-            </summary>
+             <summary>
+                 When overridden in a derived class, gets a value indicating whether the current stream
+                 supports reading.
+             </summary>
+            
+             <inheritdoc cref="T:System.IO.Stream"/>
         </member>
         <member name="P:Serilog.Sinks.AmazonS3.WriteCountingStream.CanSeek">
-            <inheritdoc cref="T:System.IO.Stream" />
-            <summary>
-                When overridden in a derived class, gets a value indicating whether the current stream supports seeking.
-            </summary>
+             <summary>
+                 When overridden in a derived class, gets a value indicating whether the current stream
+                 supports seeking.
+             </summary>
+            
+             <inheritdoc cref="T:System.IO.Stream"/>
         </member>
         <member name="P:Serilog.Sinks.AmazonS3.WriteCountingStream.CanWrite">
-            <inheritdoc cref="T:System.IO.Stream" />
-            <summary>
-                When overridden in a derived class, gets a value indicating whether the current stream supports writing.
-            </summary>
+             <summary>
+                 When overridden in a derived class, gets a value indicating whether the current stream
+                 supports writing.
+             </summary>
+            
+             <inheritdoc cref="T:System.IO.Stream"/>
         </member>
         <member name="P:Serilog.Sinks.AmazonS3.WriteCountingStream.CountedLength">
-            <summary>
-                Gets the length of the counted value.
-            </summary>
-            <value>
-                The length of the counted value.
-            </value>
+             <summary>   Gets or sets the length of the counted value. </summary>
+            
+             <value> The length of the counted value. </value>
         </member>
         <member name="P:Serilog.Sinks.AmazonS3.WriteCountingStream.Length">
-            <inheritdoc cref="T:System.IO.Stream" />
-            <summary>
-                When overridden in a derived class, gets the length in bytes of the stream.
-            </summary>
+             <summary>
+                 When overridden in a derived class, gets the length in bytes of the stream.
+             </summary>
+            
+             <inheritdoc cref="T:System.IO.Stream"/>
         </member>
         <member name="P:Serilog.Sinks.AmazonS3.WriteCountingStream.Position">
-            <inheritdoc cref="T:System.IO.Stream" />
-            <summary>
-                When overridden in a derived class, gets or sets the position within the current stream.
-            </summary>
-            <exception cref="T:System.NotSupportedException"></exception>
+             <summary>
+                 When overridden in a derived class, gets or sets the position within the current stream.
+             </summary>
+            
+             <exception cref="T:System.NotSupportedException">    . </exception>
+            
+             <inheritdoc cref="T:System.IO.Stream"/>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.WriteCountingStream.Flush">
-            <inheritdoc cref="T:System.IO.Stream" />
-            <summary>
-                When overridden in a derived class, clears all buffers for this stream and causes any buffered data to be written
-                to the underlying device.
-            </summary>
+             <summary>
+                 When overridden in a derived class, clears all buffers for this stream and causes any
+                 buffered data to be written to the underlying device.
+             </summary>
+            
+             <inheritdoc cref="T:System.IO.Stream"/>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.WriteCountingStream.Read(System.Byte[],System.Int32,System.Int32)">
-            <inheritdoc cref="T:System.IO.Stream" />
-            <summary>
-                When overridden in a derived class, reads a sequence of bytes from the current stream and advances the position
-                within the stream by the number of bytes read.
-            </summary>
-            <param name="buffer">
-                An array of bytes. When this method returns, the buffer contains the specified byte array with the
-                values between <paramref name="offset" /> and (<paramref name="offset" /> + <paramref name="count" /> - 1) replaced
-                by the bytes read from the current source.
-            </param>
-            <param name="offset">
-                The zero-based byte offset in <paramref name="buffer" /> at which to begin storing the data read
-                from the current stream.
-            </param>
-            <param name="count">The maximum number of bytes to be read from the current stream.</param>
-            <returns>
-                The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many
-                bytes are not currently available, or zero (0) if the end of the stream has been reached.
-            </returns>
-            <exception cref="T:System.NotSupportedException"></exception>
+             <summary>
+                 When overridden in a derived class, reads a sequence of bytes from the current stream and
+                 advances the position within the stream by the number of bytes read.
+             </summary>
+            
+             <exception cref="T:System.NotSupportedException">    . </exception>
+            
+             <param name="buffer">   An array of bytes. When this method returns, the buffer contains the
+                                     specified byte array with the values between
+                                     <paramref name="offset" /> and (<paramref name="offset" /> +
+                                     <paramref name="count" /> - 1) replaced by the bytes read from the
+                                     current source. </param>
+             <param name="offset">   The zero-based byte offset in <paramref name="buffer" /> at which to
+                                     begin storing the data read from the current stream. </param>
+             <param name="count">    The maximum number of bytes to be read from the current stream. </param>
+            
+             <returns>
+                 The total number of bytes read into the buffer. This can be less than the number of bytes
+                 requested if that many bytes are not currently available, or zero (0) if the end of the
+                 stream has been reached.
+             </returns>
+            
+             <inheritdoc cref="T:System.IO.Stream"/>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.WriteCountingStream.Seek(System.Int64,System.IO.SeekOrigin)">
-            <inheritdoc cref="T:System.IO.Stream" />
-            <summary>
-                When overridden in a derived class, sets the position within the current stream.
-            </summary>
-            <param name="offset">A byte offset relative to the <paramref name="origin" /> parameter.</param>
-            <param name="origin">
-                A value of type <see cref="T:System.IO.SeekOrigin" /> indicating the reference point used to
-                obtain the new position.
-            </param>
-            <returns>
-                The new position within the current stream.
-            </returns>
-            <exception cref="T:System.InvalidOperationException">Seek operations are not available through `{nameof(WriteCountingStream)}</exception>
+             <summary>
+                 When overridden in a derived class, sets the position within the current stream.
+             </summary>
+            
+             <exception cref="T:System.InvalidOperationException">    Seek operations are not available through
+                                                             `{nameof(WriteCountingStream)} </exception>
+            
+             <param name="offset">   A byte offset relative to the <paramref name="origin" /> parameter. </param>
+             <param name="origin">   A value of type <see cref="T:System.IO.SeekOrigin" /> indicating the
+                                     reference point used to obtain the new position. </param>
+            
+             <returns>   The new position within the current stream. </returns>
+            
+             <inheritdoc cref="T:System.IO.Stream"/>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.WriteCountingStream.SetLength(System.Int64)">
-            <inheritdoc cref="T:System.IO.Stream" />
-            <summary>
-                When overridden in a derived class, sets the length of the current stream.
-            </summary>
-            <param name="value">The desired length of the current stream in bytes.</param>
-            <exception cref="T:System.NotSupportedException"></exception>
+             <summary>   When overridden in a derived class, sets the length of the current stream. </summary>
+            
+             <exception cref="T:System.NotSupportedException">    . </exception>
+            
+             <param name="value">    The desired length of the current stream in bytes. </param>
+            
+             <inheritdoc cref="T:System.IO.Stream"/>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.WriteCountingStream.Write(System.Byte[],System.Int32,System.Int32)">
-            <inheritdoc cref="T:System.IO.Stream" />
-            <summary>
-                When overridden in a derived class, writes a sequence of bytes to the current stream and advances the current
-                position within this stream by the number of bytes written.
-            </summary>
-            <param name="buffer">
-                An array of bytes. This method copies <paramref name="count" /> bytes from
-                <paramref name="buffer" /> to the current stream.
-            </param>
-            <param name="offset">
-                The zero-based byte offset in <paramref name="buffer" /> at which to begin copying bytes to the
-                current stream.
-            </param>
-            <param name="count">The number of bytes to be written to the current stream.</param>
+             <summary>
+                 When overridden in a derived class, writes a sequence of bytes to the current stream and
+                 advances the current position within this stream by the number of bytes written.
+             </summary>
+            
+             <param name="buffer">   An array of bytes. This method copies <paramref name="count" /> bytes
+                                     from
+                                     <paramref name="buffer" /> to the current stream. </param>
+             <param name="offset">   The zero-based byte offset in <paramref name="buffer" /> at which to
+                                     begin copying bytes to the current stream. </param>
+             <param name="count">    The number of bytes to be written to the current stream. </param>
+            
+             <inheritdoc cref="T:System.IO.Stream"/>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.WriteCountingStream.Dispose(System.Boolean)">
-            <inheritdoc cref="T:System.IO.Stream" />
-            <summary>
-                Releases the unmanaged resources used by the <see cref="T:Stream" /> and optionally releases the managed resources.
-            </summary>
-            <param name="disposing">
-                true to release both managed and unmanaged resources; false to release only unmanaged
-                resources.
-            </param>
+             <summary>
+                 Releases the unmanaged resources used by the <see cref="T:Stream" /> and optionally
+                 releases the managed resources.
+             </summary>
+            
+             <param name="disposing">    true to release both managed and unmanaged resources; false to
+                                         release only unmanaged resources. </param>
+            
+             <inheritdoc cref="T:System.IO.Stream"/>
         </member>
     </members>
 </doc>
