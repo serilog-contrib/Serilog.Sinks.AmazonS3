@@ -206,6 +206,74 @@ namespace Serilog.Sinks.AmazonS3
             this.fileLifecycleHooks = fileLifecycleHooks;
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RollingFileSink" /> class.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="textFormatter">The text formatter.</param>
+        /// <param name="fileSizeLimitBytes">The file size limit bytes.</param>
+        /// <param name="retainedFileCountLimit">The retained file count limit.</param>
+        /// <param name="encoding">The encoding.</param>
+        /// <param name="buffered">if set to <c>true</c> [buffered].</param>
+        /// <param name="rollingInterval">The rolling interval.</param>
+        /// <param name="rollOnFileSizeLimit">if set to <c>true</c> [roll on file size limit].</param>
+        /// <param name="fileLifecycleHooks">The file lifecycle hooks.</param>
+        /// <param name="bucketName">The Amazon S3 bucket name.</param>
+        /// <param name="endpoint">The Amazon S3 endpoint.</param>
+        /// <param name="awsAccessKeyId">The Amazon S3 access key id.</param>
+        /// <param name="awsSecretAccessKey">The Amazon S3 access key.</param>
+        /// <exception cref="ArgumentNullException">An <see cref="ArgumentNullException" /> thrown when the path is null.</exception>
+        /// <exception cref="ArgumentException">
+        ///     Negative value provided; file size limit must be non-negative.
+        ///     or
+        ///     Zero or negative value provided; retained file count limit must be at least 1.
+        /// </exception>
+        public RollingFileSink(
+            string path,
+            ITextFormatter textFormatter,
+            long? fileSizeLimitBytes,
+            int? retainedFileCountLimit,
+            Encoding encoding,
+            bool buffered,
+            RollingInterval rollingInterval,
+            bool rollOnFileSizeLimit,
+            FileLifecycleHooks fileLifecycleHooks,
+            string bucketName,
+            RegionEndpoint endpoint)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
+            if (string.IsNullOrWhiteSpace(bucketName))
+            {
+                throw new ArgumentNullException(nameof(bucketName));
+            }
+
+            if (fileSizeLimitBytes.HasValue && fileSizeLimitBytes < 0)
+            {
+                throw new ArgumentException("Negative value provided; file size limit must be non-negative.");
+            }
+
+            if (retainedFileCountLimit.HasValue && retainedFileCountLimit < 1)
+            {
+                throw new ArgumentException(
+                    "Zero or negative value provided; retained file count limit must be at least 1.");
+            }
+
+            this.bucketName = bucketName;
+            this.endpoint = endpoint;
+            this.pathRoller = new PathRoller(path, rollingInterval);
+            this.textFormatter = textFormatter;
+            this.fileSizeLimitBytes = fileSizeLimitBytes;
+            this.retainedFileCountLimit = retainedFileCountLimit;
+            this.encoding = encoding;
+            this.buffered = buffered;
+            this.rollOnFileSizeLimit = rollOnFileSizeLimit;
+            this.fileLifecycleHooks = fileLifecycleHooks;
+        }
+
         /// <inheritdoc cref="IDisposable" />
         /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -311,17 +379,23 @@ namespace Serilog.Sinks.AmazonS3
         /// </exception>
         private async void UploadFileToS3()
         {
-            var client = new AmazonS3Client(this.awsAccessKeyId, this.awsSecretAccessKey, this.endpoint);
+            AmazonS3Client client = new AmazonS3Client(this.endpoint);
+
+            // In the case of AWSAccess is passed we use it, otherwize autorisation is given by roles in AWS directly
+            if (!string.IsNullOrEmpty(this.awsAccessKeyId) && !string.IsNullOrEmpty(this.awsSecretAccessKey))
+            {
+                client = new AmazonS3Client(this.awsAccessKeyId, this.awsSecretAccessKey, this.endpoint);
+            }
 
             try
             {
                 var putRequest = new PutObjectRequest
-                                     {
-                                         BucketName = this.bucketName,
-                                         Key = Path.GetFileName(this.currentFileName),
-                                         FilePath = this.currentFileName,
-                                         ContentType = "text/plain"
-                                     };
+                {
+                    BucketName = this.bucketName,
+                    Key = Path.GetFileName(this.currentFileName),
+                    FilePath = this.currentFileName,
+                    ContentType = "text/plain"
+                };
 
                 await client.PutObjectAsync(putRequest);
             }

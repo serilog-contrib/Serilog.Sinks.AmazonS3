@@ -50,5 +50,27 @@ namespace Serilog.Sinks.AmazonS3.Tests
                 logger.Error(ex.ToString());
             }
         }
+
+         /// <summary>
+        /// This method is used to test a basic file upload to Amazon S3.
+        /// </summary>
+        [TestMethod]
+        public void BasicFileUploadAuthorizedTest()
+        {
+            var logger = new LoggerConfiguration().WriteTo
+                .AmazonS3(
+                    "log.txt",
+                    BucketName,
+                    Amazon.RegionEndpoint.EUWest2,
+                    fileSizeLimitBytes: 200,
+                    rollingInterval: RollingInterval.Minute)
+                .CreateLogger();
+
+            for (var x = 0; x < 200; x++)
+            {
+                var ex = new Exception("Test");
+                logger.Error(ex.ToString());
+            }
+        }
     }
 }
