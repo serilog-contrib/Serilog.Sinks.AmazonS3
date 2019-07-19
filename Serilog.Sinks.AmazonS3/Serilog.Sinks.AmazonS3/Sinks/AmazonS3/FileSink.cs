@@ -16,64 +16,49 @@ namespace Serilog.Sinks.AmazonS3
     using Serilog.Events;
     using Serilog.Formatting;
 
-    /// <inheritdoc cref="IFileSink" />
-    /// <inheritdoc cref="IDisposable" />
-    /// <summary>
-    ///     This class enables writing log events to a disk file.
-    /// </summary>
+    /// <summary>   This class enables writing log events to a disk file. </summary>
+    ///
+    /// ### <inheritdoc cref="IFileSink"/>
+    /// <inheritdoc cref="IDisposable"/>
+
     public class FileSink : IFileSink, IDisposable
     {
-        /// <summary>
-        ///     The buffered content.
-        /// </summary>
+        /// <summary>   The buffered content. </summary>
         private readonly bool buffered;
 
-        /// <summary>
-        ///     The counting stream wrapper.
-        /// </summary>
+        /// <summary>   The counting stream wrapper. </summary>
         private readonly WriteCountingStream countingStreamWrapper;
 
-        /// <summary>
-        ///     The file size limit bytes.
-        /// </summary>
+        /// <summary>   The file size limit bytes. </summary>
         private readonly long? fileSizeLimitBytes;
 
-        /// <summary>
-        ///     The output <see cref="TextWriter" />.
-        /// </summary>
+        /// <summary>   The output <see cref="TextWriter" />. </summary>
         private readonly TextWriter output;
 
-        /// <summary>
-        ///     The synchronize root.
-        /// </summary>
+        /// <summary>   The synchronize root. </summary>
         private readonly object syncRoot = new object();
 
-        /// <summary>
-        ///     The text formatter.
-        /// </summary>
+        /// <summary>   The text formatter. </summary>
         private readonly ITextFormatter textFormatter;
 
-        /// <summary>
-        ///     The underlying <see cref="FileStream" />.
-        /// </summary>
+        /// <summary>   The underlying <see cref="FileStream" />. </summary>
         private readonly FileStream underlyingStream;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="FileSink" /> class.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="textFormatter">The text formatter.</param>
-        /// <param name="fileSizeLimitBytes">The file size limit bytes.</param>
-        /// <param name="encoding">The encoding.</param>
-        /// <param name="buffered">if set to <c>true</c> [buffered].</param>
-        /// <param name="hooks">The hooks.</param>
-        /// <exception cref="ArgumentNullException">
-        ///     path
-        ///     or
-        ///     textFormatter
-        /// </exception>
-        /// <exception cref="ArgumentException">Negative value provided; file size limit must be non-negative.</exception>
-        /// <exception cref="InvalidOperationException">The file lifecycle hook FileLifecycleHooks.OnFileOpened.</exception>
+        /// <summary>   Initializes a new instance of the <see cref="FileSink" /> class. </summary>
+        ///
+        /// <exception cref="ArgumentNullException">        path or textFormatter. </exception>
+        /// <exception cref="ArgumentException">            Negative value provided; file size limit must
+        ///                                                 be non-negative. </exception>
+        /// <exception cref="InvalidOperationException">    The file lifecycle hook
+        ///                                                 FileLifecycleHooks.OnFileOpened. </exception>
+        ///
+        /// <param name="path">                 The path. </param>
+        /// <param name="textFormatter">        The text formatter. </param>
+        /// <param name="fileSizeLimitBytes">   The file size limit bytes. </param>
+        /// <param name="encoding">             The encoding. </param>
+        /// <param name="buffered">             if set to <c>true</c> [buffered]. </param>
+        /// <param name="hooks">                The hooks. </param>
+
         public FileSink(
             string path,
             ITextFormatter textFormatter,
@@ -124,10 +109,13 @@ namespace Serilog.Sinks.AmazonS3
             this.output = new StreamWriter(outputStream, encoding);
         }
 
-        /// <inheritdoc cref="IFileSink" />
         /// <summary>
-        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting
+        ///     unmanaged resources.
         /// </summary>
+        ///
+        /// <inheritdoc cref="IFileSink"/>
+
         public void Dispose()
         {
             lock (this.syncRoot)
@@ -136,20 +124,21 @@ namespace Serilog.Sinks.AmazonS3
             }
         }
 
-        /// <inheritdoc cref="IFileSink" />
-        /// <summary>
-        ///     Emit the provided log event to the sink.
-        /// </summary>
-        /// <param name="logEvent">The log event to write.</param>
+        /// <summary>   Emit the provided log event to the sink. </summary>
+        ///
+        /// <param name="logEvent"> The log event to write. </param>
+        ///
+        /// <inheritdoc cref="IFileSink"/>
+
         public void Emit(LogEvent logEvent)
         {
             ((IFileSink)this).EmitOrOverflow(logEvent);
         }
 
-        /// <inheritdoc cref="IFileSink" />
-        /// <summary>
-        ///     Flush buffered contents to the disk.
-        /// </summary>
+        /// <summary>   Flush buffered contents to the disk. </summary>
+        ///
+        /// <inheritdoc cref="IFileSink"/>
+
         public void FlushToDisk()
         {
             lock (this.syncRoot)
@@ -159,15 +148,18 @@ namespace Serilog.Sinks.AmazonS3
             }
         }
 
-        /// <inheritdoc cref="IFileSink" />
-        /// <summary>
-        ///     Emits the <see cref="LogEvent" /> or overflows.
-        /// </summary>
-        /// <param name="logEvent">The log event.</param>
+        /// <summary>   Emits the <see cref="LogEvent" /> or overflows. </summary>
+        ///
+        /// <exception cref="ArgumentNullException">    logEvent. </exception>
+        ///
+        /// <param name="logEvent"> The log event. </param>
+        ///
         /// <returns>
         ///     A <see cref="bool" /> indicating whether the emitting was a success or not.
         /// </returns>
-        /// <exception cref="ArgumentNullException">logEvent</exception>
+        ///
+        /// <inheritdoc cref="IFileSink"/>
+
         public bool EmitOrOverflow(LogEvent logEvent)
         {
             if (logEvent == null)

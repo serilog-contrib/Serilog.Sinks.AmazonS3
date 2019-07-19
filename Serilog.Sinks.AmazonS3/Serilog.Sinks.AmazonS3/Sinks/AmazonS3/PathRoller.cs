@@ -15,52 +15,38 @@ namespace Serilog.Sinks.AmazonS3
     using System.IO;
     using System.Text.RegularExpressions;
 
-    /// <summary>
-    ///     The class to apply the rolling path scenarios.
-    /// </summary>
+    /// <summary>   The class to apply the rolling path scenarios. </summary>
     public class PathRoller
     {
-        /// <summary>
-        ///     The period match group.
-        /// </summary>
+        /// <summary>   The period match group. </summary>
         private const string PeriodMatchGroup = "period";
 
-        /// <summary>
-        ///     The sequence number match group.
-        /// </summary>
+        /// <summary>   The sequence number match group. </summary>
         private const string SequenceNumberMatchGroup = "sequence";
 
-        /// <summary>
-        ///     The filename matcher.
-        /// </summary>
+        /// <summary>   The filename matcher. </summary>
         private readonly Regex filenameMatcher;
 
-        /// <summary>
-        ///     The filename prefix.
-        /// </summary>
+        /// <summary>   The filename prefix. </summary>
         private readonly string filenamePrefix;
 
-        /// <summary>
-        ///     The filename suffix.
-        /// </summary>
+        /// <summary>   The filename suffix. </summary>
         private readonly string filenameSuffix;
 
-        /// <summary>
-        ///     The rolling interval.
-        /// </summary>
+        /// <summary>   The rolling interval. </summary>
         private readonly RollingInterval interval;
 
-        /// <summary>
-        ///     The period format.
-        /// </summary>
+        /// <summary>   The period format. </summary>
         private readonly string periodFormat;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="PathRoller" /> class.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="interval">The interval.</param>
-        /// <exception cref="ArgumentNullException">An <see cref="ArgumentNullException"/> thrown when the path is null.</exception>
+        /// <summary>   Initializes a new instance of the <see cref="PathRoller" /> class. </summary>
+        ///
+        /// <exception cref="ArgumentNullException">    An <see cref="ArgumentNullException"/> thrown
+        ///                                             when the path is null. </exception>
+        ///
+        /// <param name="path">     The path. </param>
+        /// <param name="interval"> The interval. </param>
+
         public PathRoller(string path, RollingInterval interval)
         {
             if (path == null)
@@ -88,38 +74,35 @@ namespace Serilog.Sinks.AmazonS3
             this.DirectorySearchPattern = $"{this.filenamePrefix}*{this.filenameSuffix}";
         }
 
-        /// <summary>
-        ///     Gets the directory search pattern.
-        /// </summary>
-        /// <value>
-        ///     The directory search pattern.
-        /// </value>
+        /// <summary>   Gets the directory search pattern. </summary>
+        ///
+        /// <value> The directory search pattern. </value>
+
         public string DirectorySearchPattern { get; }
 
-        /// <summary>
-        ///     Gets the log file directory.
-        /// </summary>
-        /// <value>
-        ///     The log file directory.
-        /// </value>
+        /// <summary>   Gets the log file directory. </summary>
+        ///
+        /// <value> The log file directory. </value>
+
         public string LogFileDirectory { get; }
 
-        /// <summary>
-        ///     Gets the current checkpoint.
-        /// </summary>
-        /// <param name="instant">The instant.</param>
-        /// <returns>A <see cref="DateTime"/> value that gives the current checkpoint.</returns>
+        /// <summary>   Gets the current checkpoint. </summary>
+        ///
+        /// <param name="instant">  The instant. </param>
+        ///
+        /// <returns>   A <see cref="DateTime"/> value that gives the current checkpoint. </returns>
+
         public DateTime? GetCurrentCheckpoint(DateTime instant)
         {
             return this.interval.GetCurrentCheckpoint(instant);
         }
 
-        /// <summary>
-        ///     Gets the log file path.
-        /// </summary>
-        /// <param name="date">The date.</param>
-        /// <param name="sequenceNumber">The sequence number.</param>
-        /// <param name="path">The path.</param>
+        /// <summary>   Gets the log file path. </summary>
+        ///
+        /// <param name="date">             The date. </param>
+        /// <param name="sequenceNumber">   The sequence number. </param>
+        /// <param name="path">             [out] The path. </param>
+
         public void GetLogFilePath(DateTime date, int? sequenceNumber, out string path)
         {
             var currentCheckpoint = this.GetCurrentCheckpoint(date);
@@ -134,21 +117,23 @@ namespace Serilog.Sinks.AmazonS3
             path = Path.Combine(this.LogFileDirectory, this.filenamePrefix + tok + this.filenameSuffix);
         }
 
-        /// <summary>
-        ///     Gets the next checkpoint.
-        /// </summary>
-        /// <param name="instant">The instant.</param>
-        /// <returns>A <see cref="DateTime"/> value that gives the next checkpoint.</returns>
+        /// <summary>   Gets the next checkpoint. </summary>
+        ///
+        /// <param name="instant">  The instant. </param>
+        ///
+        /// <returns>   A <see cref="DateTime"/> value that gives the next checkpoint. </returns>
+
         public DateTime? GetNextCheckpoint(DateTime instant)
         {
             return this.interval.GetNextCheckpoint(instant);
         }
 
-        /// <summary>
-        ///     Selects the matches.
-        /// </summary>
-        /// <param name="fileNames">The file names.</param>
-        /// <returns>An <see cref="IEnumerable{T}" /> of <see cref="RollingLogFile" />s.</returns>
+        /// <summary>   Selects the matches. </summary>
+        ///
+        /// <param name="fileNames">    The file names. </param>
+        ///
+        /// <returns>   An <see cref="IEnumerable{T}" /> of <see cref="RollingLogFile" />s. </returns>
+
         public IEnumerable<RollingLogFile> SelectMatches(IEnumerable<string> fileNames)
         {
             foreach (var filename in fileNames)

@@ -29,8 +29,7 @@ namespace Serilog.Sinks.AmazonS3
     /// <seealso cref="IFlushableFileSink"/>
     /// <seealso cref="IDisposable"/>
     ///
-    /// ### <inheritdoc cref="IFlushableFileSink"/>
-    /// <inheritdoc cref="IDisposable"/>
+    /// ### <inheritdoc cref="IDisposable"/>
 
     public class RollingFileSink : ILogEventSink, IFlushableFileSink, IDisposable
     {
@@ -374,8 +373,14 @@ namespace Serilog.Sinks.AmazonS3
 
         /// <summary>   Uploads the file to a specified Amazon S3 bucket. </summary>
         ///
-        /// <exception cref="Exception">    Check the provided AWS Credentials. or Error occurred: " +
-        ///                                 amazonS3Exception.Message. </exception>
+        /// <exception cref="UnauthorizedAccessException">  Thrown when an Unauthorized Access error
+        ///                                                 condition occurs. </exception>
+        /// <exception cref="AmazonS3Exception">            Thrown when an Amazon S 3 error condition
+        ///                                                 occurs. </exception>
+        /// <exception cref="Exception">                    Check the provided AWS Credentials. or Error
+        ///                                                 occurred: " + amazonS3Exception.Message. </exception>
+        ///
+        /// <returns>   An asynchronous result that yields a PutObjectResponse. </returns>
 
         private async Task<PutObjectResponse> UploadFileToS3()
         {

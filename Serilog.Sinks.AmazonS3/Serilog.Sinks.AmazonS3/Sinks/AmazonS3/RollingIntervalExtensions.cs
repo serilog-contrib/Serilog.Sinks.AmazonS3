@@ -12,16 +12,19 @@ namespace Serilog.Sinks.AmazonS3
     using System;
 
     /// <summary>
-    /// This class provides some extensions for the <see cref="RollingInterval"/> class.
+    ///     This class provides some extensions for the <see cref="RollingInterval"/> class.
     /// </summary>
+
     public static class RollingIntervalExtensions
     {
-        /// <summary>
-        /// Gets the format for the <see cref="RollingInterval"/>.
-        /// </summary>
-        /// <param name="interval">The interval.</param>
-        /// <returns>The format for the <see cref="RollingInterval"/>.</returns>
-        /// <exception cref="ArgumentException">Invalid rolling interval.</exception>
+        /// <summary>   Gets the format for the <see cref="RollingInterval"/>. </summary>
+        ///
+        /// <exception cref="ArgumentException">    Invalid rolling interval. </exception>
+        ///
+        /// <param name="interval"> The interval. </param>
+        ///
+        /// <returns>   The format for the <see cref="RollingInterval"/>. </returns>
+
         public static string GetFormat(this RollingInterval interval)
         {
             switch (interval)
@@ -41,13 +44,15 @@ namespace Serilog.Sinks.AmazonS3
             }
         }
 
-        /// <summary>
-        /// Gets the current checkpoint.
-        /// </summary>
-        /// <param name="interval">The interval.</param>
-        /// <param name="instant">The instant.</param>
-        /// <returns>A <see cref="DateTime"/> value that gives the current checkpoint.</returns>
-        /// <exception cref="ArgumentException">Invalid rolling interval</exception>
+        /// <summary>   Gets the current checkpoint. </summary>
+        ///
+        /// <exception cref="ArgumentException">    Invalid rolling interval. </exception>
+        ///
+        /// <param name="interval"> The interval. </param>
+        /// <param name="instant">  The instant. </param>
+        ///
+        /// <returns>   A <see cref="DateTime"/> value that gives the current checkpoint. </returns>
+
         public static DateTime? GetCurrentCheckpoint(this RollingInterval interval, DateTime instant)
         {
             switch (interval)
@@ -67,13 +72,15 @@ namespace Serilog.Sinks.AmazonS3
             }
         }
 
-        /// <summary>
-        /// Gets the next checkpoint.
-        /// </summary>
-        /// <param name="interval">The interval.</param>
-        /// <param name="instant">The instant.</param>
-        /// <returns>A <see cref="DateTime"/> value that gives the next checkpoint.</returns>
-        /// <exception cref="ArgumentException">Invalid rolling interval</exception>
+        /// <summary>   Gets the next checkpoint. </summary>
+        ///
+        /// <exception cref="ArgumentException">    Invalid rolling interval. </exception>
+        ///
+        /// <param name="interval"> The interval. </param>
+        /// <param name="instant">  The instant. </param>
+        ///
+        /// <returns>   A <see cref="DateTime"/> value that gives the next checkpoint. </returns>
+
         public static DateTime? GetNextCheckpoint(this RollingInterval interval, DateTime instant)
         {
             var current = GetCurrentCheckpoint(interval, instant);
