@@ -23,129 +23,93 @@ namespace Serilog.Sinks.AmazonS3
     using Serilog.Events;
     using Serilog.Formatting;
 
-    /// <inheritdoc cref="ILogEventSink" />
-    /// <inheritdoc cref="IFlushableFileSink" />
-    /// <inheritdoc cref="IDisposable" />
-    /// <summary>
-    ///     A class to write rolling files.
-    /// </summary>
-    /// <seealso cref="ILogEventSink" />
-    /// <seealso cref="IFlushableFileSink" />
-    /// <seealso cref="IDisposable" />
+    /// <summary>   A class to write rolling files. </summary>
+    ///
+    /// <seealso cref="ILogEventSink"/>
+    /// <seealso cref="IFlushableFileSink"/>
+    /// <seealso cref="IDisposable"/>
+    ///
+    /// ### <inheritdoc cref="IFlushableFileSink"/>
+    /// <inheritdoc cref="IDisposable"/>
+
     public class RollingFileSink : ILogEventSink, IFlushableFileSink, IDisposable
     {
-        /// <summary>
-        ///     The aws access key identifier.
-        /// </summary>
+        /// <summary>   The aws access key identifier. </summary>
         private readonly string awsAccessKeyId;
 
-        /// <summary>
-        ///     The aws secret access key.
-        /// </summary>
+        /// <summary>   The aws secret access key. </summary>
         private readonly string awsSecretAccessKey;
 
-        /// <summary>
-        ///     The Amazon S3 bucket name.
-        /// </summary>
+        /// <summary>   The Amazon S3 bucket name. </summary>
         private readonly string bucketName;
 
-        /// <summary>
-        ///     The buffered bool value.
-        /// </summary>
+        /// <summary>   The buffered bool value. </summary>
         private readonly bool buffered;
 
-        /// <summary>
-        ///     The encoding.
-        /// </summary>
+        /// <summary>   The encoding. </summary>
         private readonly Encoding encoding;
 
-        /// <summary>
-        ///     The Amazon S3 key endpoint.
-        /// </summary>
+        /// <summary>   The Amazon S3 key endpoint. </summary>
         private readonly RegionEndpoint endpoint;
 
-        /// <summary>
-        ///     The file lifecycle hooks.
-        /// </summary>
+        /// <summary>   The file lifecycle hooks. </summary>
         private readonly FileLifecycleHooks fileLifecycleHooks;
 
-        /// <summary>
-        ///     The file size limit bytes.
-        /// </summary>
+        /// <summary>   The file size limit bytes. </summary>
         private readonly long? fileSizeLimitBytes;
 
-        /// <summary>
-        ///     The path roller.
-        /// </summary>
+        /// <summary>   The path roller. </summary>
         private readonly PathRoller pathRoller;
 
-        /// <summary>
-        ///     The retained file count limit.
-        /// </summary>
+        /// <summary>   The retained file count limit. </summary>
         private readonly int? retainedFileCountLimit;
 
-        /// <summary>
-        ///     The roll on file size limit bool value.
-        /// </summary>
+        /// <summary>   The roll on file size limit bool value. </summary>
         private readonly bool rollOnFileSizeLimit;
 
-        /// <summary>
-        ///     The synchronize root.
-        /// </summary>
+        /// <summary>   The synchronize root. </summary>
         private readonly object syncRoot = new object();
 
-        /// <summary>
-        ///     The text formatter.
-        /// </summary>
+        /// <summary>   The text formatter. </summary>
         private readonly ITextFormatter textFormatter;
 
-        /// <summary>
-        ///     The current file.
-        /// </summary>
+        /// <summary>   The current file. </summary>
         private IFileSink currentFile;
 
-        /// <summary>
-        /// The current file name.
-        /// </summary>
+        /// <summary>   The current file name. </summary>
         private string currentFileName;
 
-        /// <summary>
-        ///     The current file sequence.
-        /// </summary>
+        /// <summary>   The current file sequence. </summary>
         private int? currentFileSequence;
 
-        /// <summary>
-        ///     The is disposed bool value.
-        /// </summary>
+        /// <summary>   The is disposed bool value. </summary>
         private bool isDisposed;
 
-        /// <summary>
-        ///     The next checkpoint.
-        /// </summary>
+        /// <summary>   The next checkpoint. </summary>
         private DateTime? nextCheckpoint;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RollingFileSink" /> class.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="textFormatter">The text formatter.</param>
-        /// <param name="fileSizeLimitBytes">The file size limit bytes.</param>
-        /// <param name="retainedFileCountLimit">The retained file count limit.</param>
-        /// <param name="encoding">The encoding.</param>
-        /// <param name="buffered">if set to <c>true</c> [buffered].</param>
-        /// <param name="rollingInterval">The rolling interval.</param>
-        /// <param name="rollOnFileSizeLimit">if set to <c>true</c> [roll on file size limit].</param>
-        /// <param name="fileLifecycleHooks">The file lifecycle hooks.</param>
-        /// <param name="bucketName">The Amazon S3 bucket name.</param>
-        /// <param name="endpoint">The Amazon S3 endpoint.</param>
-        /// <param name="awsAccessKeyId">The Amazon S3 access key id.</param>
-        /// <param name="awsSecretAccessKey">The Amazon S3 access key.</param>
-        /// <exception cref="ArgumentNullException">An <see cref="ArgumentNullException" /> thrown when the path is null.</exception>
-        /// <exception cref="ArgumentException">
-        ///     Negative value provided; file size limit must be non-negative.
-        ///     or
-        ///     Zero or negative value provided; retained file count limit must be at least 1.
-        /// </exception>
+        /// <summary>   Initializes a new instance of the <see cref="RollingFileSink" /> class. </summary>
+        ///
+        /// <exception cref="ArgumentNullException">    An <see cref="ArgumentNullException" /> thrown
+        ///                                             when the path is null. </exception>
+        /// <exception cref="ArgumentException">        Negative value provided; file size limit must be
+        ///                                             non-negative. or Zero or negative value provided;
+        ///                                             retained file count limit must be at least 1. </exception>
+        ///
+        /// <param name="path">                     The path. </param>
+        /// <param name="textFormatter">            The text formatter. </param>
+        /// <param name="fileSizeLimitBytes">       The file size limit bytes. </param>
+        /// <param name="retainedFileCountLimit">   The retained file count limit. </param>
+        /// <param name="encoding">                 The encoding. </param>
+        /// <param name="buffered">                 if set to <c>true</c> [buffered]. </param>
+        /// <param name="rollingInterval">          The rolling interval. </param>
+        /// <param name="rollOnFileSizeLimit">      if set to <c>true</c> [roll on file size limit]. </param>
+        /// <param name="fileLifecycleHooks">       The file lifecycle hooks. </param>
+        /// <param name="bucketName">               The Amazon S3 bucket name. </param>
+        /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
+        /// <param name="awsAccessKeyId">           The Amazon S3 access key id. </param>
+        /// <param name="awsSecretAccessKey">       The Amazon S3 access key. </param>
+
         public RollingFileSink(
             string path,
             ITextFormatter textFormatter,
@@ -206,26 +170,26 @@ namespace Serilog.Sinks.AmazonS3
             this.fileLifecycleHooks = fileLifecycleHooks;
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="RollingFileSink" /> class.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="textFormatter">The text formatter.</param>
-        /// <param name="fileSizeLimitBytes">The file size limit bytes.</param>
-        /// <param name="retainedFileCountLimit">The retained file count limit.</param>
-        /// <param name="encoding">The encoding.</param>
-        /// <param name="buffered">if set to <c>true</c> [buffered].</param>
-        /// <param name="rollingInterval">The rolling interval.</param>
-        /// <param name="rollOnFileSizeLimit">if set to <c>true</c> [roll on file size limit].</param>
-        /// <param name="fileLifecycleHooks">The file lifecycle hooks.</param>
-        /// <param name="bucketName">The Amazon S3 bucket name.</param>
-        /// <param name="endpoint">The Amazon S3 endpoint.</param>
-        /// <exception cref="ArgumentNullException">An <see cref="ArgumentNullException" /> thrown when the path is null.</exception>
-        /// <exception cref="ArgumentException">
-        ///     Negative value provided; file size limit must be non-negative.
-        ///     or
-        ///     Zero or negative value provided; retained file count limit must be at least 1.
-        /// </exception>
+        /// <summary>   Initializes a new instance of the <see cref="RollingFileSink" /> class. </summary>
+        ///
+        /// <exception cref="ArgumentNullException">    An <see cref="ArgumentNullException" /> thrown
+        ///                                             when the path is null. </exception>
+        /// <exception cref="ArgumentException">        Negative value provided; file size limit must be
+        ///                                             non-negative. or Zero or negative value provided;
+        ///                                             retained file count limit must be at least 1. </exception>
+        ///
+        /// <param name="path">                     The path. </param>
+        /// <param name="textFormatter">            The text formatter. </param>
+        /// <param name="fileSizeLimitBytes">       The file size limit bytes. </param>
+        /// <param name="retainedFileCountLimit">   The retained file count limit. </param>
+        /// <param name="encoding">                 The encoding. </param>
+        /// <param name="buffered">                 if set to <c>true</c> [buffered]. </param>
+        /// <param name="rollingInterval">          The rolling interval. </param>
+        /// <param name="rollOnFileSizeLimit">      if set to <c>true</c> [roll on file size limit]. </param>
+        /// <param name="fileLifecycleHooks">       The file lifecycle hooks. </param>
+        /// <param name="bucketName">               The Amazon S3 bucket name. </param>
+        /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
+
         public RollingFileSink(
             string path,
             ITextFormatter textFormatter,
@@ -272,31 +236,72 @@ namespace Serilog.Sinks.AmazonS3
             this.fileLifecycleHooks = fileLifecycleHooks;
         }
 
-        /// <inheritdoc cref="IDisposable" />
         /// <summary>
-        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting
+        ///     unmanaged resources.
         /// </summary>
+        ///
+        /// <inheritdoc cref="IDisposable"/>
+
         public void Dispose()
         {
-            lock (this.syncRoot)
-            {
-                if (this.currentFile == null)
-                {
-                    return;
-                }
-
-                this.CloseFile();
-                this.isDisposed = true;
-            }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        /// <inheritdoc cref="ILogEventSink" />
         /// <summary>
-        ///     Emit the provided log event to the sink.
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting
+        ///     unmanaged resources.
         /// </summary>
-        /// <param name="logEvent">The log event to write.</param>
-        /// <exception cref="ArgumentNullException">logEvent</exception>
-        /// <exception cref="ObjectDisposedException">The log file has been disposed.</exception>
+        ///
+        /// <param name="disposing">    True to release both managed and unmanaged resources; false to
+        ///                             release only unmanaged resources. </param>
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.isDisposed)
+                return;
+
+            if (disposing)
+            {
+                lock (this.syncRoot)
+                {
+                    if (this.currentFile == null)
+                    {
+                        return;
+                    }
+
+                    this.CloseFile();
+                    this.isDisposed = true;
+                }
+            }
+
+            this.isDisposed = true;
+        }
+
+        /// <summary>
+        ///     Use C# destructor syntax for finalization code. This destructor will run only if the
+        ///     Dispose method does not get called. It gives your base class the opportunity to finalize.
+        ///     Do not provide destructors in types derived from this class.
+        /// </summary>
+
+        ~RollingFileSink()
+        {
+            // Do not re-create Dispose clean-up code here.
+            // Calling Dispose(false) is optimal in terms of
+            // readability and maintainability.
+            Dispose(false);
+        }
+
+        /// <summary>   Emit the provided log event to the sink. </summary>
+        ///
+        /// <exception cref="ArgumentNullException">    logEvent. </exception>
+        /// <exception cref="ObjectDisposedException">  The log file has been disposed. </exception>
+        ///
+        /// <param name="logEvent"> The log event to write. </param>
+        ///
+        /// <inheritdoc cref="ILogEventSink"/>
+
         public void Emit(LogEvent logEvent)
         {
             if (logEvent == null)
@@ -321,10 +326,10 @@ namespace Serilog.Sinks.AmazonS3
             }
         }
 
-        /// <inheritdoc cref="IFlushableFileSink" />
-        /// <summary>
-        ///     Flush buffered contents to the disk.
-        /// </summary>
+        /// <summary>   Flush buffered contents to the disk. </summary>
+        ///
+        /// <inheritdoc cref="IFlushableFileSink"/>
+
         public void FlushToDisk()
         {
             lock (this.syncRoot)
@@ -333,11 +338,11 @@ namespace Serilog.Sinks.AmazonS3
             }
         }
 
-        /// <summary>
-        ///     Aligns the current file to the current <see cref="DateTime" />.
-        /// </summary>
-        /// <param name="now">The current <see cref="DateTime" />.</param>
-        /// <param name="nextSequence">Uses the next sequence if set to <c>true</c>.</param>
+        /// <summary>   Aligns the current file to the current <see cref="DateTime" />. </summary>
+        ///
+        /// <param name="now">          The current <see cref="DateTime" />. </param>
+        /// <param name="nextSequence"> (Optional) Uses the next sequence if set to <c>true</c>. </param>
+
         private void AlignCurrentFileTo(DateTime now, bool nextSequence = false)
         {
             if (!this.nextCheckpoint.HasValue)
@@ -367,14 +372,11 @@ namespace Serilog.Sinks.AmazonS3
             }
         }
 
-        /// <summary>
-        ///     Uploads the file to a specified Amazon S3 bucket.
-        /// </summary>
-        /// <exception cref="Exception">
-        ///     Check the provided AWS Credentials.
-        ///     or
-        ///     Error occurred: " + amazonS3Exception.Message
-        /// </exception>
+        /// <summary>   Uploads the file to a specified Amazon S3 bucket. </summary>
+        ///
+        /// <exception cref="Exception">    Check the provided AWS Credentials. or Error occurred: " +
+        ///                                 amazonS3Exception.Message. </exception>
+
         private async void UploadFileToS3()
         {
             AmazonS3Client client = new AmazonS3Client(this.endpoint);
@@ -410,10 +412,10 @@ namespace Serilog.Sinks.AmazonS3
             }
         }
 
-        /// <summary>
-        ///     Applies the retention policy.
-        /// </summary>
-        /// <param name="currentFilePath">The current file path.</param>
+        /// <summary>   Applies the retention policy. </summary>
+        ///
+        /// <param name="currentFilePath">  The current file path. </param>
+
         private void ApplyRetentionPolicy(string currentFilePath)
         {
             if (this.retainedFileCountLimit == null)
@@ -450,9 +452,7 @@ namespace Serilog.Sinks.AmazonS3
             }
         }
 
-        /// <summary>
-        ///     Closes the file.
-        /// </summary>
+        /// <summary>   Closes the file. </summary>
         private void CloseFile()
         {
             if (this.currentFile != null)
@@ -464,11 +464,15 @@ namespace Serilog.Sinks.AmazonS3
             this.nextCheckpoint = null;
         }
 
-        /// <summary>
-        ///     Opens the file.
-        /// </summary>
-        /// <param name="now">The now.</param>
-        /// <param name="minSequence">The minimum sequence.</param>
+        /// <summary>   Opens the file. </summary>
+        ///
+        /// <exception cref="DirectoryNotFoundException">   Thrown when the requested directory is not
+        ///                                                 present. </exception>
+        /// <exception cref="IOException">                  Thrown when an IO failure occurred. </exception>
+        ///
+        /// <param name="now">          The now. </param>
+        /// <param name="minSequence">  (Optional) The minimum sequence. </param>
+
         private void OpenFile(DateTime now, int? minSequence = null)
         {
             var currentCheckpoint = this.pathRoller.GetCurrentCheckpoint(now);
