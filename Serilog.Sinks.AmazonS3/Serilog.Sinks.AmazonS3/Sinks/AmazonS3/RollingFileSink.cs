@@ -13,7 +13,7 @@ namespace Serilog.Sinks.AmazonS3
     using System.IO;
     using System.Linq;
     using System.Text;
-
+    using System.Threading.Tasks;
     using Amazon;
     using Amazon.S3;
     using Amazon.S3.Model;
@@ -366,7 +366,7 @@ namespace Serilog.Sinks.AmazonS3
 
                 this.CloseFile();
 
-                this.UploadFileToS3();
+                this.UploadFileToS3().Wait();
 
                 this.OpenFile(now, minSequence);
             }
@@ -377,7 +377,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <exception cref="Exception">    Check the provided AWS Credentials. or Error occurred: " +
         ///                                 amazonS3Exception.Message. </exception>
 
-        private async void UploadFileToS3()
+        private async Task<PutObjectResponse> UploadFileToS3()
         {
             AmazonS3Client client = new AmazonS3Client(this.endpoint);
 
@@ -397,7 +397,7 @@ namespace Serilog.Sinks.AmazonS3
                     ContentType = "text/plain"
                 };
 
-                await client.PutObjectAsync(putRequest);
+                return await client.PutObjectAsync(putRequest);
             }
             catch (AmazonS3Exception amazonS3Exception)
             {
@@ -405,10 +405,10 @@ namespace Serilog.Sinks.AmazonS3
                     && (amazonS3Exception.ErrorCode.Equals("InvalidAccessKeyId")
                         || amazonS3Exception.ErrorCode.Equals("InvalidSecurity")))
                 {
-                    throw new Exception("Check the provided AWS Credentials.");
+                    throw new UnauthorizedAccessException("Check the provided AWS Credentials.");
                 }
 
-                throw new Exception("Error occurred: " + amazonS3Exception.Message);
+                throw;
             }
         }
 
