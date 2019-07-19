@@ -220,8 +220,6 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="fileLifecycleHooks">The file lifecycle hooks.</param>
         /// <param name="bucketName">The Amazon S3 bucket name.</param>
         /// <param name="endpoint">The Amazon S3 endpoint.</param>
-        /// <param name="awsAccessKeyId">The Amazon S3 access key id.</param>
-        /// <param name="awsSecretAccessKey">The Amazon S3 access key.</param>
         /// <exception cref="ArgumentNullException">An <see cref="ArgumentNullException" /> thrown when the path is null.</exception>
         /// <exception cref="ArgumentException">
         ///     Negative value provided; file size limit must be non-negative.
@@ -447,6 +445,7 @@ namespace Serilog.Sinks.AmazonS3
                 catch (Exception ex)
                 {
                     SelfLog.WriteLine("Error {0} while removing obsolete log file {1}", ex, fullPath);
+                    throw;
                 }
             }
         }
@@ -490,18 +489,17 @@ namespace Serilog.Sinks.AmazonS3
             }
             catch (DirectoryNotFoundException)
             {
+                SelfLog.WriteLine("Temporary log directory is not found");
+                throw;
             }
 
             var latestForThisCheckpoint = this.pathRoller.SelectMatches(existingFiles)
                 .Where(m => m.DateTime == currentCheckpoint).OrderByDescending(m => m.SequenceNumber).FirstOrDefault();
 
             var sequence = latestForThisCheckpoint?.SequenceNumber;
-            if (minSequence != null)
+            if (minSequence != null && (sequence == null || sequence.Value < minSequence.Value))
             {
-                if (sequence == null || sequence.Value < minSequence.Value)
-                {
-                    sequence = minSequence;
-                }
+                sequence = minSequence;
             }
 
             const int MaxAttempts = 3;

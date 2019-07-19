@@ -204,12 +204,6 @@ namespace Serilog
         /// <param name="endpoint">
         /// The Amazon S3 endpoint.
         /// </param>
-        /// <param name="awsAccessKeyId">
-        /// The Amazon S3 access key id.
-        /// </param>
-        /// <param name="awsSecretAccessKey">
-        /// The Amazon S3 access key.
-        /// </param>
         /// <param name="restrictedToMinimumLevel">
         /// The minimum level for
         ///     events passed through the sink. Ignored when <paramref name="levelSwitch"/> is specified.
