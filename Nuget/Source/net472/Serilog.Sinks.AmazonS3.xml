@@ -16,7 +16,7 @@
         <member name="F:Serilog.LoggerConfigurationAmazonS3Extensions.DefaultRetainedFileCountLimit">
             <summary>   The default retained file count limit. </summary>
         </member>
-        <member name="M:Serilog.LoggerConfigurationAmazonS3Extensions.AmazonS3(Serilog.Configuration.LoggerSinkConfiguration,System.String,System.String,Amazon.RegionEndpoint,System.String,System.String,Serilog.Events.LogEventLevel,System.String,System.IFormatProvider,System.Nullable{System.Int64},Serilog.Core.LoggingLevelSwitch,System.Boolean,Serilog.Sinks.AmazonS3.RollingInterval,System.Nullable{System.Int32},System.Text.Encoding,Serilog.Sinks.AmazonS3.FileLifecycleHooks)">
+        <member name="M:Serilog.LoggerConfigurationAmazonS3Extensions.AmazonS3(Serilog.Configuration.LoggerSinkConfiguration,System.String,System.String,Amazon.RegionEndpoint,System.String,System.String,Serilog.Events.LogEventLevel,System.String,System.IFormatProvider,System.Nullable{System.Int64},Serilog.Core.LoggingLevelSwitch,System.Boolean,Serilog.Sinks.AmazonS3.RollingInterval,System.Nullable{System.Int32},System.Text.Encoding,Serilog.Sinks.AmazonS3.FileLifecycleHooks,System.Action{System.Exception})">
              <summary>   Write log events to the specified file. </summary>
             
              <exception cref="T:System.ArgumentNullException">    Thrown when one or more required arguments are
@@ -70,10 +70,11 @@
              <param name="hooks">                    (Optional)
                                                      Optionally enables hooking into log file lifecycle
                                                      events. </param>
+             <param name="failureCallback">          (Optional) The failure callback. </param>
             
              <returns>   Configuration object allowing method chaining. </returns>
         </member>
-        <member name="M:Serilog.LoggerConfigurationAmazonS3Extensions.AmazonS3(Serilog.Configuration.LoggerSinkConfiguration,System.String,System.String,Amazon.RegionEndpoint,Serilog.Events.LogEventLevel,System.String,System.IFormatProvider,System.Nullable{System.Int64},Serilog.Core.LoggingLevelSwitch,System.Boolean,Serilog.Sinks.AmazonS3.RollingInterval,System.Nullable{System.Int32},System.Text.Encoding,Serilog.Sinks.AmazonS3.FileLifecycleHooks)">
+        <member name="M:Serilog.LoggerConfigurationAmazonS3Extensions.AmazonS3(Serilog.Configuration.LoggerSinkConfiguration,System.String,System.String,Amazon.RegionEndpoint,Serilog.Events.LogEventLevel,System.String,System.IFormatProvider,System.Nullable{System.Int64},Serilog.Core.LoggingLevelSwitch,System.Boolean,Serilog.Sinks.AmazonS3.RollingInterval,System.Nullable{System.Int32},System.Text.Encoding,Serilog.Sinks.AmazonS3.FileLifecycleHooks,System.Action{System.Exception})">
              <summary>   Write log events to the specified file. </summary>
             
              <exception cref="T:System.ArgumentNullException">    Thrown when one or more required arguments are
@@ -125,20 +126,19 @@
              <param name="hooks">                    (Optional)
                                                      Optionally enables hooking into log file lifecycle
                                                      events. </param>
+             <param name="failureCallback">          (Optional) The failure callback. </param>
             
              <returns>   Configuration object allowing method chaining. </returns>
         </member>
         <member name="T:Serilog.Sinks.AmazonS3.AmazonS3Sink">
-             <summary>
-                 This class is the main class and contains all options for the AmazonS3 sink.
-             </summary>
-            
-             ### <inheritdoc cref="T:Serilog.Core.ILogEventSink"/>
+            <summary>
+                This class is the main class and contains all options for the AmazonS3 sink.
+            </summary>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.AmazonS3Sink.sink">
             <summary>   The sink. </summary>
         </member>
-        <member name="M:Serilog.Sinks.AmazonS3.AmazonS3Sink.#ctor(Serilog.Formatting.ITextFormatter,System.String,System.Nullable{System.Int64},System.Boolean,System.Text.Encoding,Serilog.Sinks.AmazonS3.RollingInterval,System.Nullable{System.Int32},Serilog.Sinks.AmazonS3.FileLifecycleHooks,System.String,Amazon.RegionEndpoint,System.String,System.String)">
+        <member name="M:Serilog.Sinks.AmazonS3.AmazonS3Sink.#ctor(Serilog.Formatting.ITextFormatter,System.String,System.Nullable{System.Int64},System.Boolean,System.Text.Encoding,Serilog.Sinks.AmazonS3.RollingInterval,System.Nullable{System.Int32},Serilog.Sinks.AmazonS3.FileLifecycleHooks,System.String,Amazon.RegionEndpoint,System.String,System.String,System.Action{System.Exception})">
              <summary>   Initializes a new instance of the <see cref="T:Serilog.Sinks.AmazonS3.AmazonS3Sink" /> class. </summary>
             
              <exception cref="T:System.ArgumentNullException">    addSink or formatter or path. </exception>
@@ -162,10 +162,9 @@
              <param name="endpoint">                 The Amazon S3 endpoint. </param>
              <param name="awsAccessKeyId">           The Amazon S3 access key id. </param>
              <param name="awsSecretAccessKey">       The Amazon S3 secret access key. </param>
-            
-             ### <returns>   A <see cref="T:Serilog.LoggerConfiguration" /> to use with Serilog. </returns>
+             <param name="failureCallback">          (Optional) The failure callback. </param>
         </member>
-        <member name="M:Serilog.Sinks.AmazonS3.AmazonS3Sink.#ctor(Serilog.Formatting.ITextFormatter,System.String,System.Nullable{System.Int64},System.Boolean,System.Text.Encoding,Serilog.Sinks.AmazonS3.RollingInterval,System.Nullable{System.Int32},Serilog.Sinks.AmazonS3.FileLifecycleHooks,System.String,Amazon.RegionEndpoint)">
+        <member name="M:Serilog.Sinks.AmazonS3.AmazonS3Sink.#ctor(Serilog.Formatting.ITextFormatter,System.String,System.Nullable{System.Int64},System.Boolean,System.Text.Encoding,Serilog.Sinks.AmazonS3.RollingInterval,System.Nullable{System.Int32},Serilog.Sinks.AmazonS3.FileLifecycleHooks,System.String,Amazon.RegionEndpoint,System.Action{System.Exception})">
              <summary>   Initializes a new instance of the <see cref="T:Serilog.Sinks.AmazonS3.AmazonS3Sink" /> class. </summary>
             
              <exception cref="T:System.ArgumentNullException">    addSink or formatter or path. </exception>
@@ -187,8 +186,7 @@
              <param name="hooks">                    The hooks. </param>
              <param name="bucketName">               The Amazon S3 bucket name. </param>
              <param name="endpoint">                 The Amazon S3 endpoint. </param>
-            
-             ### <returns>   A <see cref="T:Serilog.LoggerConfiguration" /> to use with Serilog. </returns>
+             <param name="failureCallback">          (Optional) The failure callback. </param>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.AmazonS3Sink.Emit(Serilog.Events.LogEvent)">
              <summary>   Emit the provided log event to the sink. </summary>
@@ -224,8 +222,7 @@
         <member name="T:Serilog.Sinks.AmazonS3.FileSink">
              <summary>   This class enables writing log events to a disk file. </summary>
             
-             ### <inheritdoc cref="T:Serilog.Sinks.AmazonS3.IFileSink"/>
-             <inheritdoc cref="T:System.IDisposable"/>
+             ### <inheritdoc cref="T:System.IDisposable"/>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.FileSink.buffered">
             <summary>   The buffered content. </summary>
@@ -303,8 +300,7 @@
                  implementations based on sharing. Would refactor, but preserving backwards compatibility.
              </summary>
             
-             ### <inheritdoc cref="T:Serilog.Core.ILogEventSink"/>
-             <inheritdoc cref="T:Serilog.Sinks.AmazonS3.IFlushableFileSink"/>
+             ### <inheritdoc cref="T:Serilog.Sinks.AmazonS3.IFlushableFileSink"/>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.IFileSink.EmitOrOverflow(Serilog.Events.LogEvent)">
              <summary>   Emits the <see cref="T:Serilog.Events.LogEvent"/> or overflows. </summary>
@@ -408,8 +404,6 @@
              <seealso cref="T:Serilog.Core.ILogEventSink"/>
              <seealso cref="T:Serilog.Sinks.AmazonS3.IFlushableFileSink"/>
              <seealso cref="T:System.IDisposable"/>
-            
-             ### <inheritdoc cref="T:System.IDisposable"/>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.awsAccessKeyId">
             <summary>   The aws access key identifier. </summary>
@@ -465,7 +459,12 @@
         <member name="F:Serilog.Sinks.AmazonS3.RollingFileSink.nextCheckpoint">
             <summary>   The next checkpoint. </summary>
         </member>
-        <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.#ctor(System.String,Serilog.Formatting.ITextFormatter,System.Nullable{System.Int64},System.Nullable{System.Int32},System.Text.Encoding,System.Boolean,Serilog.Sinks.AmazonS3.RollingInterval,System.Boolean,Serilog.Sinks.AmazonS3.FileLifecycleHooks,System.String,Amazon.RegionEndpoint,System.String,System.String)">
+        <member name="P:Serilog.Sinks.AmazonS3.RollingFileSink.FailureCallback">
+             <summary>   Gets or sets the failure callback. </summary>
+            
+             <value> The failure callback. </value>
+        </member>
+        <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.#ctor(System.String,Serilog.Formatting.ITextFormatter,System.Nullable{System.Int64},System.Nullable{System.Int32},System.Text.Encoding,System.Boolean,Serilog.Sinks.AmazonS3.RollingInterval,System.Boolean,Serilog.Sinks.AmazonS3.FileLifecycleHooks,System.String,Amazon.RegionEndpoint,System.String,System.String,System.Action{System.Exception})">
              <summary>   Initializes a new instance of the <see cref="T:Serilog.Sinks.AmazonS3.RollingFileSink" /> class. </summary>
             
              <exception cref="T:System.ArgumentNullException">    An <see cref="T:System.ArgumentNullException" /> thrown
@@ -487,8 +486,9 @@
              <param name="endpoint">                 The Amazon S3 endpoint. </param>
              <param name="awsAccessKeyId">           The Amazon S3 access key id. </param>
              <param name="awsSecretAccessKey">       The Amazon S3 access key. </param>
+             <param name="failureCallback">          (Optional) The failure callback. </param>
         </member>
-        <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.#ctor(System.String,Serilog.Formatting.ITextFormatter,System.Nullable{System.Int64},System.Nullable{System.Int32},System.Text.Encoding,System.Boolean,Serilog.Sinks.AmazonS3.RollingInterval,System.Boolean,Serilog.Sinks.AmazonS3.FileLifecycleHooks,System.String,Amazon.RegionEndpoint)">
+        <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.#ctor(System.String,Serilog.Formatting.ITextFormatter,System.Nullable{System.Int64},System.Nullable{System.Int32},System.Text.Encoding,System.Boolean,Serilog.Sinks.AmazonS3.RollingInterval,System.Boolean,Serilog.Sinks.AmazonS3.FileLifecycleHooks,System.String,Amazon.RegionEndpoint,System.Action{System.Exception})">
              <summary>   Initializes a new instance of the <see cref="T:Serilog.Sinks.AmazonS3.RollingFileSink" /> class. </summary>
             
              <exception cref="T:System.ArgumentNullException">    An <see cref="T:System.ArgumentNullException" /> thrown
@@ -508,6 +508,7 @@
              <param name="fileLifecycleHooks">       The file lifecycle hooks. </param>
              <param name="bucketName">               The Amazon S3 bucket name. </param>
              <param name="endpoint">                 The Amazon S3 endpoint. </param>
+             <param name="failureCallback">          (Optional) The failure callback. </param>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.Dispose">
              <summary>
@@ -516,6 +517,22 @@
              </summary>
             
              <inheritdoc cref="T:System.IDisposable"/>
+        </member>
+        <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.Dispose(System.Boolean)">
+             <summary>
+                 Performs application-defined tasks associated with freeing, releasing, or resetting
+                 unmanaged resources.
+             </summary>
+            
+             <param name="disposing">    True to release both managed and unmanaged resources; false to
+                                         release only unmanaged resources. </param>
+        </member>
+        <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.Finalize">
+            <summary>
+                Use C# destructor syntax for finalization code. This destructor will run only if the
+                Dispose method does not get called. It gives your base class the opportunity to finalize.
+                Do not provide destructors in types derived from this class.
+            </summary>
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.Emit(Serilog.Events.LogEvent)">
              <summary>   Emit the provided log event to the sink. </summary>
@@ -567,6 +584,29 @@
             
              <param name="now">          The now. </param>
              <param name="minSequence">  (Optional) The minimum sequence. </param>
+        </member>
+        <member name="T:Serilog.Sinks.AmazonS3.EmitEventFailureHandling">
+            <summary>   A bit-field of flags for specifying emit event failure handlings. </summary>
+        </member>
+        <member name="F:Serilog.Sinks.AmazonS3.EmitEventFailureHandling.WriteToSelfLog">
+            <summary>
+            Send the error to the SelfLog
+            </summary>
+        </member>
+        <member name="F:Serilog.Sinks.AmazonS3.EmitEventFailureHandling.WriteToFailureSink">
+            <summary>
+            Write the events to another sink. Make sure to configure this one.
+            </summary>
+        </member>
+        <member name="F:Serilog.Sinks.AmazonS3.EmitEventFailureHandling.ThrowException">
+            <summary>
+            Throw the exception to the caller.
+            </summary>
+        </member>
+        <member name="F:Serilog.Sinks.AmazonS3.EmitEventFailureHandling.RaiseCallback">
+            <summary>
+            The failure callback function will be called when the event cannot be submitted to Elasticsearch.
+            </summary>
         </member>
         <member name="T:Serilog.Sinks.AmazonS3.RollingInterval">
             <summary>   Specifies the frequency at which the log file should roll. </summary>
@@ -659,8 +699,6 @@
              <summary>   This class is used to provide a write counting stream. </summary>
             
              <seealso cref="T:System.IO.Stream"/>
-            
-             ### <inheritdoc cref="T:System.IO.Stream"/>
         </member>
         <member name="F:Serilog.Sinks.AmazonS3.WriteCountingStream.stream">
             <summary>   The stream. </summary>

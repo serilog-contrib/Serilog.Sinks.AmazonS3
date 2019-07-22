@@ -110,6 +110,7 @@ The project can be found on [nuget](https://www.nuget.org/packages/HaemmerElectr
 |retainedFileCountLimit|The maximum number of log files that will be retained, including the current log file. For unlimited retention, pass `null`.|`10`|`31`|
 |encoding|Character encoding used to write the text file. Check: https://docs.microsoft.com/de-de/dotnet/api/system.text.encoding?view=netframework-4.8.|`encoding: Encoding.Unicode`|`null` meaning `Encoding.UTF8`|
 |hooks|Optionally enables hooking into log file lifecycle events. Check: https://github.com/serilog/serilog-sinks-file/blob/dev/src/Serilog.Sinks.File/Sinks/File/FileLifecycleHooks.cs and https://github.com/cocowalla/serilog-sinks-file-header/blob/master/src/Serilog.Sinks.File.Header/HeaderWriter.cs.|`hooks: new HeaderWriter("Timestamp,Level,Message")`|`null`|
+|failureCallback| Optionally execute callback if exception has been throwed by sink
 
 ## Full example
 
