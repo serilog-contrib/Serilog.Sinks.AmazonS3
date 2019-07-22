@@ -28,8 +28,6 @@ namespace Serilog.Sinks.AmazonS3
     /// <seealso cref="ILogEventSink"/>
     /// <seealso cref="IFlushableFileSink"/>
     /// <seealso cref="IDisposable"/>
-    ///
-    /// ### <inheritdoc cref="IDisposable"/>
 
     public class RollingFileSink : ILogEventSink, IFlushableFileSink, IDisposable
     {
@@ -90,6 +88,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <summary>   Gets or sets the failure callback. </summary>
         ///
         /// <value> The failure callback. </value>
+
         public Action<Exception> FailureCallback { get; set; }
 
         /// <summary>   Initializes a new instance of the <see cref="RollingFileSink" /> class. </summary>
@@ -113,6 +112,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
         /// <param name="awsAccessKeyId">           The Amazon S3 access key id. </param>
         /// <param name="awsSecretAccessKey">       The Amazon S3 access key. </param>
+        /// <param name="failureCallback">          (Optional) The failure callback. </param>
 
         public RollingFileSink(
             string path,
@@ -199,6 +199,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="fileLifecycleHooks">       The file lifecycle hooks. </param>
         /// <param name="bucketName">               The Amazon S3 bucket name. </param>
         /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
+        /// <param name="failureCallback">          (Optional) The failure callback. </param>
 
         public RollingFileSink(
             string path,
@@ -575,6 +576,7 @@ namespace Serilog.Sinks.AmazonS3
     }
 
 
+    /// <summary>   A bit-field of flags for specifying emit event failure handlings. </summary>
     [Flags]
     public enum EmitEventFailureHandling
     {

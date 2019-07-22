@@ -93,6 +93,7 @@ namespace Serilog
         /// <param name="hooks">                    (Optional)
         ///                                         Optionally enables hooking into log file lifecycle
         ///                                         events. </param>
+        /// <param name="failureCallback">          (Optional) The failure callback. </param>
         ///
         /// <returns>   Configuration object allowing method chaining. </returns>
 
@@ -227,6 +228,7 @@ namespace Serilog
         /// <param name="hooks">                    (Optional)
         ///                                         Optionally enables hooking into log file lifecycle
         ///                                         events. </param>
+        /// <param name="failureCallback">          (Optional) The failure callback. </param>
         ///
         /// <returns>   Configuration object allowing method chaining. </returns>
 

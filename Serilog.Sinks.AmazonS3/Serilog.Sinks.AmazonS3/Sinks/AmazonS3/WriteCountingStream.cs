@@ -15,8 +15,6 @@ namespace Serilog.Sinks.AmazonS3
     /// <summary>   This class is used to provide a write counting stream. </summary>
     ///
     /// <seealso cref="T:System.IO.Stream"/>
-    ///
-    /// ### <inheritdoc cref="Stream"/>
 
     public class WriteCountingStream : Stream
     {

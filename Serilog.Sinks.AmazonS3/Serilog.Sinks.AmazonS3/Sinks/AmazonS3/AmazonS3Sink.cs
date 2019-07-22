@@ -21,8 +21,6 @@ namespace Serilog.Sinks.AmazonS3
     /// <summary>
     ///     This class is the main class and contains all options for the AmazonS3 sink.
     /// </summary>
-    ///
-    /// ### <inheritdoc cref="ILogEventSink"/>
 
     public class AmazonS3Sink : ILogEventSink
     {
@@ -52,8 +50,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
         /// <param name="awsAccessKeyId">           The Amazon S3 access key id. </param>
         /// <param name="awsSecretAccessKey">       The Amazon S3 secret access key. </param>
-        ///
-        /// ### <returns>   A <see cref="LoggerConfiguration" /> to use with Serilog. </returns>
+        /// <param name="failureCallback">          (Optional) The failure callback. </param>
 
         public AmazonS3Sink(
             ITextFormatter formatter,
@@ -139,8 +136,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="hooks">                    The hooks. </param>
         /// <param name="bucketName">               The Amazon S3 bucket name. </param>
         /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
-        ///
-        /// ### <returns>   A <see cref="LoggerConfiguration" /> to use with Serilog. </returns>
+        /// <param name="failureCallback">          (Optional) The failure callback. </param>
 
         public AmazonS3Sink(
             ITextFormatter formatter,

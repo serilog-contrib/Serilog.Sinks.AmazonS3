@@ -17,8 +17,7 @@ namespace Serilog.Sinks.AmazonS3
     ///     implementations based on sharing. Would refactor, but preserving backwards compatibility.
     /// </summary>
     ///
-    /// ### <inheritdoc cref="ILogEventSink"/>
-    /// <inheritdoc cref="IFlushableFileSink"/>
+    /// ### <inheritdoc cref="IFlushableFileSink"/>
 
     public interface IFileSink : ILogEventSink, IFlushableFileSink
     {

@@ -18,8 +18,7 @@ namespace Serilog.Sinks.AmazonS3
 
     /// <summary>   This class enables writing log events to a disk file. </summary>
     ///
-    /// ### <inheritdoc cref="IFileSink"/>
-    /// <inheritdoc cref="IDisposable"/>
+    /// ### <inheritdoc cref="IDisposable"/>
 
     public class FileSink : IFileSink, IDisposable
     {
