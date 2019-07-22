@@ -517,22 +517,6 @@
             
              <inheritdoc cref="T:System.IDisposable"/>
         </member>
-        <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.Dispose(System.Boolean)">
-             <summary>
-                 Performs application-defined tasks associated with freeing, releasing, or resetting
-                 unmanaged resources.
-             </summary>
-            
-             <param name="disposing">    True to release both managed and unmanaged resources; false to
-                                         release only unmanaged resources. </param>
-        </member>
-        <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.Finalize">
-            <summary>
-                Use C# destructor syntax for finalization code. This destructor will run only if the
-                Dispose method does not get called. It gives your base class the opportunity to finalize.
-                Do not provide destructors in types derived from this class.
-            </summary>
-        </member>
         <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.Emit(Serilog.Events.LogEvent)">
              <summary>   Emit the provided log event to the sink. </summary>
             

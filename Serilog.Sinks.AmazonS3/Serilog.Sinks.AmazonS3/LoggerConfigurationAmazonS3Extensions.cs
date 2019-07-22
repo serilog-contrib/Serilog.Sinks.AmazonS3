@@ -112,7 +112,8 @@ namespace Serilog
             RollingInterval rollingInterval = RollingInterval.Day,
             int? retainedFileCountLimit = DefaultRetainedFileCountLimit,
             Encoding encoding = null,
-            FileLifecycleHooks hooks = null)
+            FileLifecycleHooks hooks = null,
+            Action<Exception> failureCallback = null)
         {
             if (sinkConfiguration == null)
             {
@@ -169,7 +170,8 @@ namespace Serilog
                     bucketName,
                     endpoint,
                     awsAccessKeyId,
-                    awsSecretAccessKey),
+                    awsSecretAccessKey,
+                    failureCallback),
                 restrictedToMinimumLevel,
                 levelSwitch);
         }
@@ -242,7 +244,8 @@ namespace Serilog
             RollingInterval rollingInterval = RollingInterval.Day,
             int? retainedFileCountLimit = DefaultRetainedFileCountLimit,
             Encoding encoding = null,
-            FileLifecycleHooks hooks = null)
+            FileLifecycleHooks hooks = null,
+            Action<Exception> failureCallback = null)
         {
             if (sinkConfiguration == null)
             {
@@ -287,7 +290,8 @@ namespace Serilog
                     retainedFileCountLimit,
                     hooks,
                     bucketName,
-                    endpoint),
+                    endpoint,
+                    failureCallback),
                 restrictedToMinimumLevel,
                 levelSwitch);
         }

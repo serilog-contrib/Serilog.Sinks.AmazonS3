@@ -67,7 +67,8 @@ namespace Serilog.Sinks.AmazonS3
             string bucketName,
             RegionEndpoint endpoint,
             string awsAccessKeyId,
-            string awsSecretAccessKey)
+            string awsSecretAccessKey,
+            Action<Exception> failureCallback = null)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -113,7 +114,8 @@ namespace Serilog.Sinks.AmazonS3
                     bucketName,
                     endpoint,
                     awsAccessKeyId,
-                    awsSecretAccessKey);
+                    awsSecretAccessKey,
+                    failureCallback);
         }
 
         /// <summary>   Initializes a new instance of the <see cref="AmazonS3Sink" /> class. </summary>
@@ -150,7 +152,8 @@ namespace Serilog.Sinks.AmazonS3
             int? retainedFileCountLimit,
             FileLifecycleHooks hooks,
             string bucketName,
-            RegionEndpoint endpoint)
+            RegionEndpoint endpoint,
+            Action<Exception> failureCallback = null)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -184,7 +187,8 @@ namespace Serilog.Sinks.AmazonS3
                     true,
                     hooks,
                     bucketName,
-                    endpoint);
+                    endpoint,
+                    failureCallback);
         }
 
         /// <summary>   Emit the provided log event to the sink. </summary>

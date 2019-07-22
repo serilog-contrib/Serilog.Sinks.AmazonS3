@@ -87,6 +87,11 @@ namespace Serilog.Sinks.AmazonS3
         /// <summary>   The next checkpoint. </summary>
         private DateTime? nextCheckpoint;
 
+        /// <summary>   Gets or sets the failure callback. </summary>
+        ///
+        /// <value> The failure callback. </value>
+        public Action<Exception> FailureCallback { get; set; }
+
         /// <summary>   Initializes a new instance of the <see cref="RollingFileSink" /> class. </summary>
         ///
         /// <exception cref="ArgumentNullException">    An <see cref="ArgumentNullException" /> thrown
@@ -122,7 +127,8 @@ namespace Serilog.Sinks.AmazonS3
             string bucketName,
             RegionEndpoint endpoint,
             string awsAccessKeyId,
-            string awsSecretAccessKey)
+            string awsSecretAccessKey,
+            Action<Exception> failureCallback = null)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -153,6 +159,11 @@ namespace Serilog.Sinks.AmazonS3
             {
                 throw new ArgumentException(
                     "Zero or negative value provided; retained file count limit must be at least 1.");
+            }
+
+            if (FailureCallback != null)
+            {
+                this.FailureCallback = failureCallback;
             }
 
             this.bucketName = bucketName;
@@ -200,7 +211,8 @@ namespace Serilog.Sinks.AmazonS3
             bool rollOnFileSizeLimit,
             FileLifecycleHooks fileLifecycleHooks,
             string bucketName,
-            RegionEndpoint endpoint)
+            RegionEndpoint endpoint,
+            Action<Exception> failureCallback = null)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -221,6 +233,11 @@ namespace Serilog.Sinks.AmazonS3
             {
                 throw new ArgumentException(
                     "Zero or negative value provided; retained file count limit must be at least 1.");
+            }
+
+            if (failureCallback != null)
+            {
+                this.FailureCallback = failureCallback;
             }
 
             this.bucketName = bucketName;
@@ -303,6 +320,7 @@ namespace Serilog.Sinks.AmazonS3
 
         public void Emit(LogEvent logEvent)
         {
+            try{
             if (logEvent == null)
             {
                 throw new ArgumentNullException(nameof(logEvent));
@@ -322,6 +340,11 @@ namespace Serilog.Sinks.AmazonS3
                 {
                     this.AlignCurrentFileTo(now, true);
                 }
+            }
+            }catch(Exception ex)
+            {
+                this.FailureCallback(ex);
+                throw;
             }
         }
 
@@ -549,5 +572,30 @@ namespace Serilog.Sinks.AmazonS3
                 return;
             }
         }
+    }
+
+
+    [Flags]
+    public enum EmitEventFailureHandling
+    {
+        /// <summary>
+        /// Send the error to the SelfLog
+        /// </summary>
+        WriteToSelfLog = 1,
+
+        /// <summary>
+        /// Write the events to another sink. Make sure to configure this one.
+        /// </summary>
+        WriteToFailureSink = 2,
+
+        /// <summary>
+        /// Throw the exception to the caller.
+        /// </summary>
+        ThrowException = 4,
+
+        /// <summary>
+        /// The failure callback function will be called when the event cannot be submitted to Elasticsearch.
+        /// </summary>
+        RaiseCallback = 8
     }
 }
