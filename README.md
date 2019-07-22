@@ -65,6 +65,30 @@ var logger = new LoggerConfiguration().WriteTo
     }
 ```
 
+## Exception handling
+You can pass to the sink parameters a callback on failure to defined ourself which action need to be done if an exception occured on the sink side.
+If something is going wrong in the sink code like access denied on a S3, failureCallback will be executed.
+
+```csharp
+var logger = new LoggerConfiguration().WriteTo
+    .AmazonS3(
+        "log.txt",
+        "mytestbucket-aws",
+        Amazon.RegionEndpoint.EUWest2,
+        fileSizeLimitBytes: 200,
+        rollingInterval: RollingInterval.Minute,
+		failureCallback: e => Console.WriteLine($"An error occured in my sink: {e.Message}")
+		)
+    .CreateLogger();
+
+    for (var x = 0; x < 200; x++)
+    {
+        var ex = new Exception("Test");
+        logger.Error(ex.ToString());
+    }
+```
+
+
 The project can be found on [nuget](https://www.nuget.org/packages/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3/).
 
 ## Configuration options:
@@ -109,7 +133,9 @@ var logger = new LoggerConfiguration().WriteTo
         rollingInterval: RollingInterval.Minute,
         retainedFileCountLimit: 10,
         encoding: Encoding.Unicode,
-        hooks: new HeaderWriter("Timestamp,Level,Message"))
+        hooks: new HeaderWriter("Timestamp,Level,Message"),
+		failureCallback: e => Console.WriteLine($"An error occured in my sink: {e.Message}")
+		)
     .CreateLogger();
 
     for (var x = 0; x < 200; x++)
@@ -129,6 +155,6 @@ var logger = new LoggerConfiguration().WriteTo
 Change history
 --------------
 
-* **Version 1.0.2.0 (2019-07-19)** : Support of role based authorization to S3 added.
+* **Version 1.0.2.0 (2019-07-19)** : Support of role based authorization to S3 added, failureCallback parameter added.
 * **Version 1.0.1.0 (2019-06-23)** : Added icon to the nuget package.
 * **Version 1.0.0.0 (2019-05-31)** : 1.0 release.

@@ -56,7 +56,7 @@ namespace Serilog.Sinks.AmazonS3.Tests
                     Amazon.RegionEndpoint.EUWest2,
                     fileSizeLimitBytes: 200,
                     rollingInterval: RollingInterval.Minute,
-                    failureCallback: e => Console.WriteLine("Sink error: "+ e.Message)
+                    failureCallback: e => Console.WriteLine($"Sink error: {e.Message}")
                     )
                 .CreateLogger();
 
