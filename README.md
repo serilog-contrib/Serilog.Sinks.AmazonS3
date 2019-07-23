@@ -46,7 +46,7 @@ for (var x = 0; x < 200; x++)
 ```
 
 ## Usage with role based authentication in AWS
-Use this method if you gave access to S3 from your AWS program execution machine using roles. In this case, authorization is managed by AWS and the values `accessKey` and `accessSecret` are not required.
+Use this method if you gave access to Amazon S3 from your AWS program execution machine using roles. In this case, authorization is managed by AWS and `awsAccessKeyId` and `awsSecretAccessKey` are not required.
 
 ```csharp
 var logger = new LoggerConfiguration().WriteTo
@@ -66,7 +66,7 @@ for (var x = 0; x < 200; x++)
 ```
 
 ## Exception handling
-You can pass a callback to the sink parameters on failure to define which action needs to be done if an exception occured on the sink side. If something is going wrong in the sink code like `access denied on a S3 bucket`, `failureCallback` will be executed.
+You can pass a callback to the sink parameters on failure to define which action needs to be done if an exception occured on the sink side. If something is going wrong in the sink code, `failureCallback` will be executed.
 
 ```csharp
 var logger = new LoggerConfiguration().WriteTo
@@ -108,7 +108,7 @@ The project can be found on [nuget](https://www.nuget.org/packages/HaemmerElectr
 |retainedFileCountLimit|The maximum number of log files that will be retained, including the current log file. For unlimited retention, pass `null`.|`10`|`31`|
 |encoding|Character encoding used to write the text file. Check: https://docs.microsoft.com/de-de/dotnet/api/system.text.encoding?view=netframework-4.8.|`encoding: Encoding.Unicode`|`null` meaning `Encoding.UTF8`|
 |hooks|Optionally enables hooking into log file lifecycle events. Check: https://github.com/serilog/serilog-sinks-file/blob/dev/src/Serilog.Sinks.File/Sinks/File/FileLifecycleHooks.cs and https://github.com/cocowalla/serilog-sinks-file-header/blob/master/src/Serilog.Sinks.File.Header/HeaderWriter.cs.|`hooks: new HeaderWriter("Timestamp,Level,Message")`|`null`|
-|failureCallback| Optionally execute a callback if an exception has been throwed by the sink.|None.|
+|failureCallback| Optionally execute a callback if an exception has been throwed by the sink.|`failureCallback: e => Console.WriteLine($"An error occured in my sink: {e.Message}"))`|None.|
 
 ## Full example
 
