@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3</id>
-    <version>1.0.1.0</version>
+    <version>1.0.2.0</version>
     <authors>SeppPenner</authors>
     <owners>SeppPenner</owners>
     <projectUrl>https://github.com/SeppPenner/Serilog.Sinks.AmazonS3/</projectUrl>
@@ -17,6 +17,7 @@
 		so thanks to all the https://github.com/serilog/serilog-sinks-file/graphs/contributors of this project :thumbsup:.
 	</description>
     <releaseNotes>
+		  Version 1.0.2.0 (2019-07-19): Support of role based authorization to S3 added, failureCallback parameter added.
 	    Version 1.0.1.0 (2019-06-23): Added icon to the nuget package.
 	    Version 1.0.0.0 (2019-05-31): 1.0 release.
 	</releaseNotes>

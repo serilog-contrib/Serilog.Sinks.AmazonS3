@@ -45,6 +45,50 @@ var logger = new LoggerConfiguration().WriteTo
     }
 ```
 
+## Usage with AWS authentication based role
+Use this method if you gave access to S3 from your AWS program execution machine using roles. In this case, authorization is managed by AWS and accesskey, accesssecret are not required.
+
+```csharp
+var logger = new LoggerConfiguration().WriteTo
+    .AmazonS3(
+        "log.txt",
+        "mytestbucket-aws",
+        Amazon.RegionEndpoint.EUWest2,
+        fileSizeLimitBytes: 200,
+        rollingInterval: RollingInterval.Minute)
+    .CreateLogger();
+
+    for (var x = 0; x < 200; x++)
+    {
+        var ex = new Exception("Test");
+        logger.Error(ex.ToString());
+    }
+```
+
+## Exception handling
+You can pass to the sink parameters a callback on failure to defined ourself which action need to be done if an exception occured on the sink side.
+If something is going wrong in the sink code like access denied on a S3, failureCallback will be executed.
+
+```csharp
+var logger = new LoggerConfiguration().WriteTo
+    .AmazonS3(
+        "log.txt",
+        "mytestbucket-aws",
+        Amazon.RegionEndpoint.EUWest2,
+        fileSizeLimitBytes: 200,
+        rollingInterval: RollingInterval.Minute,
+		failureCallback: e => Console.WriteLine($"An error occured in my sink: {e.Message}")
+		)
+    .CreateLogger();
+
+    for (var x = 0; x < 200; x++)
+    {
+        var ex = new Exception("Test");
+        logger.Error(ex.ToString());
+    }
+```
+
+
 The project can be found on [nuget](https://www.nuget.org/packages/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3/).
 
 ## Configuration options:
@@ -54,8 +98,8 @@ The project can be found on [nuget](https://www.nuget.org/packages/HaemmerElectr
 |path|The main log file name used.|`"log.txt"`|None, is mandatory.|
 |bucketName|The name of the Amazon S3 bucket to use. Check: https://docs.aws.amazon.com/general/latest/gr/rande.html.|`"mytestbucket-aws"`|None, is mandatory.|
 |endpoint|The Amazon S3 endpoint location.|`RegionEndpoint.EUWest2`|None, is mandatory.|
-|awsAccessKeyId|The Amazon S3 access key id.|`ABCDEFGHIJKLMNOP`|None, is mandatory.|
-|awsSecretAccessKey|The Amazon S3 secret access key.|`c3fghsrgwegfn://asdfsdfsdgfsdg`|None, is mandatory.|
+|awsAccessKeyId|The Amazon S3 access key id.|`ABCDEFGHIJKLMNOP`|None.|
+|awsSecretAccessKey|The Amazon S3 secret access key.|`c3fghsrgwegfn://asdfsdfsdgfsdg`|None.|
 |restrictedToMinimumLevel|The minimum level for events passed through the sink. Ignored when `levelSwitch` is specified. Check: https://github.com/serilog/serilog/blob/dev/src/Serilog/Events/LogEventLevel.cs.|`LogEventLevel.Information`|`LogEventLevel.Verbose`|
 |outputTemplate|A message template describing the format used to write to the sink.|`"{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"`|`"{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"`|
 |formatProvider|The `IFormatProvider` to use. Supplies culture-specific formatting information. Check: https://docs.microsoft.com/en-us/dotnet/api/system.iformatprovider?view=netframework-4.8.|`new CultureInfo("de-DE")`|`null`|
@@ -66,6 +110,7 @@ The project can be found on [nuget](https://www.nuget.org/packages/HaemmerElectr
 |retainedFileCountLimit|The maximum number of log files that will be retained, including the current log file. For unlimited retention, pass `null`.|`10`|`31`|
 |encoding|Character encoding used to write the text file. Check: https://docs.microsoft.com/de-de/dotnet/api/system.text.encoding?view=netframework-4.8.|`encoding: Encoding.Unicode`|`null` meaning `Encoding.UTF8`|
 |hooks|Optionally enables hooking into log file lifecycle events. Check: https://github.com/serilog/serilog-sinks-file/blob/dev/src/Serilog.Sinks.File/Sinks/File/FileLifecycleHooks.cs and https://github.com/cocowalla/serilog-sinks-file-header/blob/master/src/Serilog.Sinks.File.Header/HeaderWriter.cs.|`hooks: new HeaderWriter("Timestamp,Level,Message")`|`null`|
+|failureCallback| Optionally execute callback if exception has been throwed by sink
 
 ## Full example
 
@@ -89,7 +134,9 @@ var logger = new LoggerConfiguration().WriteTo
         rollingInterval: RollingInterval.Minute,
         retainedFileCountLimit: 10,
         encoding: Encoding.Unicode,
-        hooks: new HeaderWriter("Timestamp,Level,Message"))
+        hooks: new HeaderWriter("Timestamp,Level,Message"),
+		failureCallback: e => Console.WriteLine($"An error occured in my sink: {e.Message}")
+		)
     .CreateLogger();
 
     for (var x = 0; x < 200; x++)
@@ -104,9 +151,11 @@ var logger = new LoggerConfiguration().WriteTo
 * Overview over the Amazon endpoints and locations: https://docs.aws.amazon.com/general/latest/gr/rande.html
 * How to prepare your S3 bucket to access it with a software: https://www.c-sharpcorner.com/article/fileupload-to-aws-s3-using-asp-net/
 * Example on how to use the Amazon S3 API for .Net: https://stackoverflow.com/questions/25814972/how-to-upload-a-file-to-amazon-s3-super-easy-using-c-sharp
+* AWS authorizations for requests: https://docs.aws.amazon.com/AmazonS3/latest/dev/access-control-auth-workflow-object-operation.html
 
 Change history
 --------------
 
+* **Version 1.0.2.0 (2019-07-19)** : Support of role based authorization to S3 added, failureCallback parameter added.
 * **Version 1.0.1.0 (2019-06-23)** : Added icon to the nuget package.
 * **Version 1.0.0.0 (2019-05-31)** : 1.0 release.

@@ -9,9 +9,7 @@
 
 namespace Serilog.Sinks.AmazonS3
 {
-    /// <summary>
-    /// Specifies the frequency at which the log file should roll.
-    /// </summary>
+    /// <summary>   Specifies the frequency at which the log file should roll. </summary>
     public enum RollingInterval
     {
         /// <summary>

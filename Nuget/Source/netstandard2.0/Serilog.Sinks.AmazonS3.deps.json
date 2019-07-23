@@ -1,13 +1,13 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "35352c5278d16d1720b4d7b9fd0ff03d3472dcae"
+    "signature": ""
   },
   "compilationOptions": {},
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "Serilog.Sinks.AmazonS3/1.0.1": {
+      "Serilog.Sinks.AmazonS3/1.0.2": {
         "dependencies": {
           "AWSSDK.S3": "3.3.102.7",
           "NETStandard.Library": "2.0.3",
@@ -160,7 +160,7 @@
     }
   },
   "libraries": {
-    "Serilog.Sinks.AmazonS3/1.0.1": {
+    "Serilog.Sinks.AmazonS3/1.0.2": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
