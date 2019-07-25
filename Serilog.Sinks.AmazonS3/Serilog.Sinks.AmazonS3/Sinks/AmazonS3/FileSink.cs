@@ -7,19 +7,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Text;
+using Serilog.Events;
+using Serilog.Formatting;
+
 namespace Serilog.Sinks.AmazonS3
 {
-    using System;
-    using System.IO;
-    using System.Text;
-
-    using Serilog.Events;
-    using Serilog.Formatting;
-
     /// <summary>   This class enables writing log events to a disk file. </summary>
-    ///
-    /// ### <inheritdoc cref="IDisposable"/>
-
+    /// ###
+    /// <inheritdoc cref="IDisposable" />
     public class FileSink : IFileSink, IDisposable
     {
         /// <summary>   The buffered content. </summary>
@@ -44,20 +42,21 @@ namespace Serilog.Sinks.AmazonS3
         private readonly FileStream underlyingStream;
 
         /// <summary>   Initializes a new instance of the <see cref="FileSink" /> class. </summary>
-        ///
         /// <exception cref="ArgumentNullException">        path or textFormatter. </exception>
-        /// <exception cref="ArgumentException">            Negative value provided; file size limit must
-        ///                                                 be non-negative. </exception>
-        /// <exception cref="InvalidOperationException">    The file lifecycle hook
-        ///                                                 FileLifecycleHooks.OnFileOpened. </exception>
-        ///
+        /// <exception cref="ArgumentException">
+        ///     Negative value provided; file size limit must
+        ///     be non-negative.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        ///     The file lifecycle hook
+        ///     FileLifecycleHooks.OnFileOpened.
+        /// </exception>
         /// <param name="path">                 The path. </param>
         /// <param name="textFormatter">        The text formatter. </param>
         /// <param name="fileSizeLimitBytes">   The file size limit bytes. </param>
         /// <param name="encoding">             The encoding. </param>
         /// <param name="buffered">             if set to <c>true</c> [buffered]. </param>
         /// <param name="hooks">                The hooks. </param>
-
         public FileSink(
             string path,
             ITextFormatter textFormatter,
@@ -86,14 +85,14 @@ namespace Serilog.Sinks.AmazonS3
                 Directory.CreateDirectory(directory);
             }
 
-            Stream outputStream = this.underlyingStream = File.Open(
-                                      path,
-                                      FileMode.Append,
-                                      FileAccess.Write,
-                                      FileShare.Read);
+            Stream outputStream = underlyingStream = File.Open(
+                path,
+                FileMode.Append,
+                FileAccess.Write,
+                FileShare.Read);
             if (this.fileSizeLimitBytes != null)
             {
-                outputStream = this.countingStreamWrapper = new WriteCountingStream(this.underlyingStream);
+                outputStream = countingStreamWrapper = new WriteCountingStream(underlyingStream);
             }
 
             // Parameter reassignment.
@@ -105,60 +104,48 @@ namespace Serilog.Sinks.AmazonS3
                                    $"The file lifecycle hook `{nameof(FileLifecycleHooks.OnFileOpened)}(...)` returned `null`.");
             }
 
-            this.output = new StreamWriter(outputStream, encoding);
+            output = new StreamWriter(outputStream, encoding);
         }
 
         /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting
         ///     unmanaged resources.
         /// </summary>
-        ///
-        /// <inheritdoc cref="IFileSink"/>
-
+        /// <inheritdoc cref="IFileSink" />
         public void Dispose()
         {
-            lock (this.syncRoot)
+            lock (syncRoot)
             {
-                this.output.Dispose();
+                output.Dispose();
             }
         }
 
         /// <summary>   Emit the provided log event to the sink. </summary>
-        ///
         /// <param name="logEvent"> The log event to write. </param>
-        ///
-        /// <inheritdoc cref="IFileSink"/>
-
+        /// <inheritdoc cref="IFileSink" />
         public void Emit(LogEvent logEvent)
         {
-            ((IFileSink)this).EmitOrOverflow(logEvent);
+            ((IFileSink) this).EmitOrOverflow(logEvent);
         }
 
         /// <summary>   Flush buffered contents to the disk. </summary>
-        ///
-        /// <inheritdoc cref="IFileSink"/>
-
+        /// <inheritdoc cref="IFileSink" />
         public void FlushToDisk()
         {
-            lock (this.syncRoot)
+            lock (syncRoot)
             {
-                this.output.Flush();
-                this.underlyingStream.Flush(true);
+                output.Flush();
+                underlyingStream.Flush(true);
             }
         }
 
         /// <summary>   Emits the <see cref="LogEvent" /> or overflows. </summary>
-        ///
         /// <exception cref="ArgumentNullException">    logEvent. </exception>
-        ///
         /// <param name="logEvent"> The log event. </param>
-        ///
         /// <returns>
         ///     A <see cref="bool" /> indicating whether the emitting was a success or not.
         /// </returns>
-        ///
-        /// <inheritdoc cref="IFileSink"/>
-
+        /// <inheritdoc cref="IFileSink" />
         public bool EmitOrOverflow(LogEvent logEvent)
         {
             if (logEvent == null)
@@ -166,20 +153,20 @@ namespace Serilog.Sinks.AmazonS3
                 throw new ArgumentNullException(nameof(logEvent));
             }
 
-            lock (this.syncRoot)
+            lock (syncRoot)
             {
-                if (this.fileSizeLimitBytes != null)
+                if (fileSizeLimitBytes != null)
                 {
-                    if (this.countingStreamWrapper.CountedLength >= this.fileSizeLimitBytes.Value)
+                    if (countingStreamWrapper.CountedLength >= fileSizeLimitBytes.Value)
                     {
                         return false;
                     }
                 }
 
-                this.textFormatter.Format(logEvent, this.output);
-                if (!this.buffered)
+                textFormatter.Format(logEvent, output);
+                if (!buffered)
                 {
-                    this.output.Flush();
+                    output.Flush();
                 }
 
                 return true;

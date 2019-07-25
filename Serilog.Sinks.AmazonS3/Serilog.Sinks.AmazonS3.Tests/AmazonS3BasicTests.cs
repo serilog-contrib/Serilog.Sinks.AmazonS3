@@ -2,14 +2,12 @@
 //
 // summary:	Implements the amazon s 3 basic tests class
 
+using System;
+using Amazon;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace Serilog.Sinks.AmazonS3.Tests
 {
-    using System;
-
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using Serilog;
-
     /// <summary>   This class is used for some basic test regarding the Amazon S3 sink. </summary>
     [TestClass]
     public class AmazonS3BasicTests
@@ -31,7 +29,7 @@ namespace Serilog.Sinks.AmazonS3.Tests
                 .AmazonS3(
                     "log.txt",
                     BucketName,
-                    Amazon.RegionEndpoint.EUWest2,
+                    RegionEndpoint.EUWest2,
                     AwsAccessKeyId,
                     AwsSecretAccessKey,
                     fileSizeLimitBytes: 200,
@@ -53,11 +51,11 @@ namespace Serilog.Sinks.AmazonS3.Tests
                 .AmazonS3(
                     "log.txt",
                     BucketName,
-                    Amazon.RegionEndpoint.EUWest2,
+                    RegionEndpoint.EUWest2,
                     fileSizeLimitBytes: 200,
                     rollingInterval: RollingInterval.Minute,
                     failureCallback: e => Console.WriteLine($"Sink error: {e.Message}")
-                    )
+                )
                 .CreateLogger();
 
             for (var x = 0; x < 200; x++)

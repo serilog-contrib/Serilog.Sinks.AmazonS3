@@ -7,12 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Text;
+
 namespace Serilog.Sinks.AmazonS3
 {
-    using System.Diagnostics.CodeAnalysis;
-    using System.IO;
-    using System.Text;
-
     /// <summary>   This class enables hooking into log file lifecycle events. </summary>
     public abstract class FileLifecycleHooks
     {
@@ -22,20 +22,16 @@ namespace Serilog.Sinks.AmazonS3
         ///     compression, encryption, etc. The underlying file may or may not be empty when this
         ///     method is called.
         /// </summary>
-        ///
         /// <remarks>
         ///     A value must be returned from overrides of this method. Serilog will flush and/or dispose
         ///     the returned value, but will not dispose the stream initially passed in unless it is
         ///     itself returned.
         /// </remarks>
-        ///
         /// <param name="underlyingStream"> The underlying <see cref="Stream" /> opened on the log file. </param>
         /// <param name="encoding">         The encoding to use when reading/writing to the stream. </param>
-        ///
         /// <returns>
         ///     The <see cref="Stream" /> Serilog should use when writing events to the log file.
         /// </returns>
-
         [SuppressMessage(
             "StyleCop.CSharp.DocumentationRules",
             "SA1650:ElementDocumentationMustBeSpelledCorrectly",

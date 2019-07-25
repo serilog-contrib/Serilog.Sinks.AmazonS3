@@ -7,28 +7,25 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Amazon;
+using Amazon.S3;
+using Amazon.S3.Model;
+using Serilog.Core;
+using Serilog.Debugging;
+using Serilog.Events;
+using Serilog.Formatting;
+
 namespace Serilog.Sinks.AmazonS3
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Amazon;
-    using Amazon.S3;
-    using Amazon.S3.Model;
-
-    using Serilog.Core;
-    using Serilog.Debugging;
-    using Serilog.Events;
-    using Serilog.Formatting;
-
     /// <summary>   A class to write rolling files. </summary>
-    ///
-    /// <seealso cref="ILogEventSink"/>
-    /// <seealso cref="IFlushableFileSink"/>
-    /// <seealso cref="IDisposable"/>
-
+    /// <seealso cref="ILogEventSink" />
+    /// <seealso cref="IFlushableFileSink" />
+    /// <seealso cref="IDisposable" />
     public class RollingFileSink : ILogEventSink, IFlushableFileSink, IDisposable
     {
         /// <summary>   The aws access key identifier. </summary>
@@ -85,20 +82,16 @@ namespace Serilog.Sinks.AmazonS3
         /// <summary>   The next checkpoint. </summary>
         private DateTime? nextCheckpoint;
 
-        /// <summary>   Gets or sets the failure callback. </summary>
-        ///
-        /// <value> The failure callback. </value>
-
-        public Action<Exception> FailureCallback { get; set; }
-
         /// <summary>   Initializes a new instance of the <see cref="RollingFileSink" /> class. </summary>
-        ///
-        /// <exception cref="ArgumentNullException">    An <see cref="ArgumentNullException" /> thrown
-        ///                                             when the path is null. </exception>
-        /// <exception cref="ArgumentException">        Negative value provided; file size limit must be
-        ///                                             non-negative. or Zero or negative value provided;
-        ///                                             retained file count limit must be at least 1. </exception>
-        ///
+        /// <exception cref="ArgumentNullException">
+        ///     An <see cref="ArgumentNullException" /> thrown
+        ///     when the path is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     Negative value provided; file size limit must be
+        ///     non-negative. or Zero or negative value provided;
+        ///     retained file count limit must be at least 1.
+        /// </exception>
         /// <param name="path">                     The path. </param>
         /// <param name="textFormatter">            The text formatter. </param>
         /// <param name="fileSizeLimitBytes">       The file size limit bytes. </param>
@@ -113,7 +106,6 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="awsAccessKeyId">           The Amazon S3 access key id. </param>
         /// <param name="awsSecretAccessKey">       The Amazon S3 access key. </param>
         /// <param name="failureCallback">          (Optional) The failure callback. </param>
-
         public RollingFileSink(
             string path,
             ITextFormatter textFormatter,
@@ -163,14 +155,14 @@ namespace Serilog.Sinks.AmazonS3
 
             if (FailureCallback != null)
             {
-                this.FailureCallback = failureCallback;
+                FailureCallback = failureCallback;
             }
 
             this.bucketName = bucketName;
             this.awsAccessKeyId = awsAccessKeyId;
             this.awsSecretAccessKey = awsSecretAccessKey;
             this.endpoint = endpoint;
-            this.pathRoller = new PathRoller(path, rollingInterval);
+            pathRoller = new PathRoller(path, rollingInterval);
             this.textFormatter = textFormatter;
             this.fileSizeLimitBytes = fileSizeLimitBytes;
             this.retainedFileCountLimit = retainedFileCountLimit;
@@ -181,13 +173,15 @@ namespace Serilog.Sinks.AmazonS3
         }
 
         /// <summary>   Initializes a new instance of the <see cref="RollingFileSink" /> class. </summary>
-        ///
-        /// <exception cref="ArgumentNullException">    An <see cref="ArgumentNullException" /> thrown
-        ///                                             when the path is null. </exception>
-        /// <exception cref="ArgumentException">        Negative value provided; file size limit must be
-        ///                                             non-negative. or Zero or negative value provided;
-        ///                                             retained file count limit must be at least 1. </exception>
-        ///
+        /// <exception cref="ArgumentNullException">
+        ///     An <see cref="ArgumentNullException" /> thrown
+        ///     when the path is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     Negative value provided; file size limit must be
+        ///     non-negative. or Zero or negative value provided;
+        ///     retained file count limit must be at least 1.
+        /// </exception>
         /// <param name="path">                     The path. </param>
         /// <param name="textFormatter">            The text formatter. </param>
         /// <param name="fileSizeLimitBytes">       The file size limit bytes. </param>
@@ -200,7 +194,6 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="bucketName">               The Amazon S3 bucket name. </param>
         /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
         /// <param name="failureCallback">          (Optional) The failure callback. </param>
-
         public RollingFileSink(
             string path,
             ITextFormatter textFormatter,
@@ -238,12 +231,12 @@ namespace Serilog.Sinks.AmazonS3
 
             if (failureCallback != null)
             {
-                this.FailureCallback = failureCallback;
+                FailureCallback = failureCallback;
             }
 
             this.bucketName = bucketName;
             this.endpoint = endpoint;
-            this.pathRoller = new PathRoller(path, rollingInterval);
+            pathRoller = new PathRoller(path, rollingInterval);
             this.textFormatter = textFormatter;
             this.fileSizeLimitBytes = fileSizeLimitBytes;
             this.retainedFileCountLimit = retainedFileCountLimit;
@@ -253,47 +246,99 @@ namespace Serilog.Sinks.AmazonS3
             this.fileLifecycleHooks = fileLifecycleHooks;
         }
 
+        /// <summary>   Gets or sets the failure callback. </summary>
+        /// <value> The failure callback. </value>
+
+        public Action<Exception> FailureCallback { get; set; }
+
         /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting
         ///     unmanaged resources.
         /// </summary>
-        ///
-        /// <inheritdoc cref="IDisposable"/>
-
+        /// <inheritdoc cref="IDisposable" />
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>   Flush buffered contents to the disk. </summary>
+        /// <inheritdoc cref="IFlushableFileSink" />
+        public void FlushToDisk()
+        {
+            lock (syncRoot)
+            {
+                currentFile?.FlushToDisk();
+            }
+        }
+
+        /// <summary>   Emit the provided log event to the sink. </summary>
+        /// <exception cref="ArgumentNullException">    logEvent. </exception>
+        /// <exception cref="ObjectDisposedException">  The log file has been disposed. </exception>
+        /// <param name="logEvent"> The log event to write. </param>
+        /// <inheritdoc cref="ILogEventSink" />
+        public void Emit(LogEvent logEvent)
+        {
+            try
+            {
+                if (logEvent == null)
+                {
+                    throw new ArgumentNullException(nameof(logEvent));
+                }
+
+                lock (syncRoot)
+                {
+                    if (isDisposed)
+                    {
+                        throw new ObjectDisposedException("The log file has been disposed.");
+                    }
+
+                    var now = DateTime.Now;
+                    AlignCurrentFileTo(now);
+
+                    while (currentFile?.EmitOrOverflow(logEvent) == false && rollOnFileSizeLimit)
+                    {
+                        AlignCurrentFileTo(now, true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                FailureCallback(ex);
+                throw;
+            }
+        }
+
         /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting
         ///     unmanaged resources.
         /// </summary>
-        ///
-        /// <param name="disposing">    True to release both managed and unmanaged resources; false to
-        ///                             release only unmanaged resources. </param>
-
+        /// <param name="disposing">
+        ///     True to release both managed and unmanaged resources; false to
+        ///     release only unmanaged resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
-            if (this.isDisposed)
+            if (isDisposed)
+            {
                 return;
+            }
 
             if (disposing)
             {
-                lock (this.syncRoot)
+                lock (syncRoot)
                 {
-                    if (this.currentFile == null)
+                    if (currentFile == null)
                     {
                         return;
                     }
 
-                    this.CloseFile();
-                    this.isDisposed = true;
+                    CloseFile();
+                    isDisposed = true;
                 }
             }
 
-            this.isDisposed = true;
+            isDisposed = true;
         }
 
         /// <summary>
@@ -301,7 +346,6 @@ namespace Serilog.Sinks.AmazonS3
         ///     Dispose method does not get called. It gives your base class the opportunity to finalize.
         ///     Do not provide destructors in types derived from this class.
         /// </summary>
-
         ~RollingFileSink()
         {
             // Do not re-create Dispose clean-up code here.
@@ -310,119 +354,69 @@ namespace Serilog.Sinks.AmazonS3
             Dispose(false);
         }
 
-        /// <summary>   Emit the provided log event to the sink. </summary>
-        ///
-        /// <exception cref="ArgumentNullException">    logEvent. </exception>
-        /// <exception cref="ObjectDisposedException">  The log file has been disposed. </exception>
-        ///
-        /// <param name="logEvent"> The log event to write. </param>
-        ///
-        /// <inheritdoc cref="ILogEventSink"/>
-
-        public void Emit(LogEvent logEvent)
-        {
-            try{
-            if (logEvent == null)
-            {
-                throw new ArgumentNullException(nameof(logEvent));
-            }
-
-            lock (this.syncRoot)
-            {
-                if (this.isDisposed)
-                {
-                    throw new ObjectDisposedException("The log file has been disposed.");
-                }
-
-                var now = DateTime.Now;
-                this.AlignCurrentFileTo(now);
-
-                while (this.currentFile?.EmitOrOverflow(logEvent) == false && this.rollOnFileSizeLimit)
-                {
-                    this.AlignCurrentFileTo(now, true);
-                }
-            }
-            }catch(Exception ex)
-            {
-                this.FailureCallback(ex);
-                throw;
-            }
-        }
-
-        /// <summary>   Flush buffered contents to the disk. </summary>
-        ///
-        /// <inheritdoc cref="IFlushableFileSink"/>
-
-        public void FlushToDisk()
-        {
-            lock (this.syncRoot)
-            {
-                this.currentFile?.FlushToDisk();
-            }
-        }
-
         /// <summary>   Aligns the current file to the current <see cref="DateTime" />. </summary>
-        ///
         /// <param name="now">          The current <see cref="DateTime" />. </param>
         /// <param name="nextSequence"> (Optional) Uses the next sequence if set to <c>true</c>. </param>
-
         private void AlignCurrentFileTo(DateTime now, bool nextSequence = false)
         {
-            if (!this.nextCheckpoint.HasValue)
+            if (!nextCheckpoint.HasValue)
             {
-                this.OpenFile(now);
+                OpenFile(now);
             }
-            else if (nextSequence || now >= this.nextCheckpoint.Value)
+            else if (nextSequence || now >= nextCheckpoint.Value)
             {
                 int? minSequence = null;
                 if (nextSequence)
                 {
-                    if (this.currentFileSequence == null)
+                    if (currentFileSequence == null)
                     {
                         minSequence = 1;
                     }
                     else
                     {
-                        minSequence = this.currentFileSequence.Value + 1;
+                        minSequence = currentFileSequence.Value + 1;
                     }
                 }
 
-                this.CloseFile();
+                CloseFile();
 
-                this.UploadFileToS3().Wait();
+                UploadFileToS3().Wait();
 
-                this.OpenFile(now, minSequence);
+                OpenFile(now, minSequence);
             }
         }
 
         /// <summary>   Uploads the file to a specified Amazon S3 bucket. </summary>
-        ///
-        /// <exception cref="UnauthorizedAccessException">  Thrown when an Unauthorized Access error
-        ///                                                 condition occurs. </exception>
-        /// <exception cref="AmazonS3Exception">            Thrown when an Amazon S 3 error condition
-        ///                                                 occurs. </exception>
-        /// <exception cref="Exception">                    Check the provided AWS Credentials. or Error
-        ///                                                 occurred: " + amazonS3Exception.Message. </exception>
-        ///
+        /// <exception cref="UnauthorizedAccessException">
+        ///     Thrown when an Unauthorized Access error
+        ///     condition occurs.
+        /// </exception>
+        /// <exception cref="AmazonS3Exception">
+        ///     Thrown when an Amazon S 3 error condition
+        ///     occurs.
+        /// </exception>
+        /// <exception cref="Exception">
+        ///     Check the provided AWS Credentials. or Error
+        ///     occurred: " + amazonS3Exception.Message.
+        /// </exception>
         /// <returns>   An asynchronous result that yields a PutObjectResponse. </returns>
-
         private async Task<PutObjectResponse> UploadFileToS3()
         {
-            AmazonS3Client client = new AmazonS3Client(this.endpoint);
+            var client = new AmazonS3Client(endpoint);
 
             // In the case of AWSAccess is passed we use it, otherwize autorisation is given by roles in AWS directly
-            if (!string.IsNullOrEmpty(this.awsAccessKeyId) && !string.IsNullOrEmpty(this.awsSecretAccessKey))
+            if (!string.IsNullOrEmpty(awsAccessKeyId) && !string.IsNullOrEmpty(awsSecretAccessKey))
             {
-                client = new AmazonS3Client(this.awsAccessKeyId, this.awsSecretAccessKey, this.endpoint);
+                client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, endpoint);
             }
 
             try
             {
                 var putRequest = new PutObjectRequest
                 {
-                    BucketName = this.bucketName,
-                    Key = Path.GetFileName(this.currentFileName),
-                    FilePath = this.currentFileName,
+                    BucketName = bucketName,
+                    Key = Path.GetFileName(currentFileName),
+                    FilePath = currentFileName,
                     ContentType = "text/plain"
                 };
 
@@ -442,12 +436,10 @@ namespace Serilog.Sinks.AmazonS3
         }
 
         /// <summary>   Applies the retention policy. </summary>
-        ///
         /// <param name="currentFilePath">  The current file path. </param>
-
         private void ApplyRetentionPolicy(string currentFilePath)
         {
-            if (this.retainedFileCountLimit == null)
+            if (retainedFileCountLimit == null)
             {
                 return;
             }
@@ -457,18 +449,19 @@ namespace Serilog.Sinks.AmazonS3
             // We consider the current file to exist, even if nothing's been written yet,
             // because files are only opened on response to an event being processed.
             var potentialMatches = Directory
-                .GetFiles(this.pathRoller.LogFileDirectory, this.pathRoller.DirectorySearchPattern)
-                .Select(Path.GetFileName).Union(new[] { currentFileNameLocal });
+                .GetFiles(pathRoller.LogFileDirectory, pathRoller.DirectorySearchPattern)
+                .Select(Path.GetFileName).Union(new[] {currentFileNameLocal});
 
-            var newestFirst = this.pathRoller.SelectMatches(potentialMatches).OrderByDescending(m => m.DateTime)
+            var newestFirst = pathRoller.SelectMatches(potentialMatches).OrderByDescending(m => m.DateTime)
                 .ThenByDescending(m => m.SequenceNumber).Select(m => m.Filename);
 
-            var toRemove = newestFirst.Where(n => StringComparer.OrdinalIgnoreCase.Compare(currentFileNameLocal, n) != 0)
-                .Skip(this.retainedFileCountLimit.Value - 1).ToList();
+            var toRemove = newestFirst
+                .Where(n => StringComparer.OrdinalIgnoreCase.Compare(currentFileNameLocal, n) != 0)
+                .Skip(retainedFileCountLimit.Value - 1).ToList();
 
             foreach (var obsolete in toRemove)
             {
-                var fullPath = Path.Combine(this.pathRoller.LogFileDirectory, obsolete);
+                var fullPath = Path.Combine(pathRoller.LogFileDirectory, obsolete);
                 try
                 {
                     File.Delete(fullPath);
@@ -484,40 +477,39 @@ namespace Serilog.Sinks.AmazonS3
         /// <summary>   Closes the file. </summary>
         private void CloseFile()
         {
-            if (this.currentFile != null)
+            if (currentFile != null)
             {
-                (this.currentFile as IDisposable)?.Dispose();
-                this.currentFile = null;
+                (currentFile as IDisposable)?.Dispose();
+                currentFile = null;
             }
 
-            this.nextCheckpoint = null;
+            nextCheckpoint = null;
         }
 
         /// <summary>   Opens the file. </summary>
-        ///
-        /// <exception cref="DirectoryNotFoundException">   Thrown when the requested directory is not
-        ///                                                 present. </exception>
+        /// <exception cref="DirectoryNotFoundException">
+        ///     Thrown when the requested directory is not
+        ///     present.
+        /// </exception>
         /// <exception cref="IOException">                  Thrown when an IO failure occurred. </exception>
-        ///
         /// <param name="now">          The now. </param>
         /// <param name="minSequence">  (Optional) The minimum sequence. </param>
-
         private void OpenFile(DateTime now, int? minSequence = null)
         {
-            var currentCheckpoint = this.pathRoller.GetCurrentCheckpoint(now);
+            var currentCheckpoint = pathRoller.GetCurrentCheckpoint(now);
 
             // We only try periodically because repeated failures
             // to open log files REALLY slow an app down.
-            this.nextCheckpoint = this.pathRoller.GetNextCheckpoint(now) ?? now.AddMinutes(30);
+            nextCheckpoint = pathRoller.GetNextCheckpoint(now) ?? now.AddMinutes(30);
 
             var existingFiles = Enumerable.Empty<string>();
             try
             {
-                if (Directory.Exists(this.pathRoller.LogFileDirectory))
+                if (Directory.Exists(pathRoller.LogFileDirectory))
                 {
                     existingFiles = Directory.GetFiles(
-                        this.pathRoller.LogFileDirectory,
-                        this.pathRoller.DirectorySearchPattern).Select(Path.GetFileName);
+                        pathRoller.LogFileDirectory,
+                        pathRoller.DirectorySearchPattern).Select(Path.GetFileName);
                 }
             }
             catch (DirectoryNotFoundException)
@@ -526,7 +518,7 @@ namespace Serilog.Sinks.AmazonS3
                 throw;
             }
 
-            var latestForThisCheckpoint = this.pathRoller.SelectMatches(existingFiles)
+            var latestForThisCheckpoint = pathRoller.SelectMatches(existingFiles)
                 .Where(m => m.DateTime == currentCheckpoint).OrderByDescending(m => m.SequenceNumber).FirstOrDefault();
 
             var sequence = latestForThisCheckpoint?.SequenceNumber;
@@ -538,21 +530,21 @@ namespace Serilog.Sinks.AmazonS3
             const int MaxAttempts = 3;
             for (var attempt = 0; attempt < MaxAttempts; attempt++)
             {
-                this.pathRoller.GetLogFilePath(now, sequence, out var path);
+                pathRoller.GetLogFilePath(now, sequence, out var path);
 
                 try
                 {
-                    this.currentFile = new FileSink(
+                    currentFile = new FileSink(
                         path,
-                        this.textFormatter,
-                        this.fileSizeLimitBytes,
-                        this.encoding,
-                        this.buffered,
-                        this.fileLifecycleHooks);
+                        textFormatter,
+                        fileSizeLimitBytes,
+                        encoding,
+                        buffered,
+                        fileLifecycleHooks);
 
-                    this.currentFileName = path;
+                    currentFileName = path;
 
-                    this.currentFileSequence = sequence;
+                    currentFileSequence = sequence;
                 }
                 catch (IOException ex)
                 {
@@ -569,7 +561,7 @@ namespace Serilog.Sinks.AmazonS3
                     continue;
                 }
 
-                this.ApplyRetentionPolicy(path);
+                ApplyRetentionPolicy(path);
                 return;
             }
         }
@@ -581,22 +573,22 @@ namespace Serilog.Sinks.AmazonS3
     public enum EmitEventFailureHandling
     {
         /// <summary>
-        /// Send the error to the SelfLog
+        ///     Send the error to the SelfLog
         /// </summary>
         WriteToSelfLog = 1,
 
         /// <summary>
-        /// Write the events to another sink. Make sure to configure this one.
+        ///     Write the events to another sink. Make sure to configure this one.
         /// </summary>
         WriteToFailureSink = 2,
 
         /// <summary>
-        /// Throw the exception to the caller.
+        ///     Throw the exception to the caller.
         /// </summary>
         ThrowException = 4,
 
         /// <summary>
-        /// The failure callback function will be called when the event cannot be submitted to Elasticsearch.
+        ///     The failure callback function will be called when the event cannot be submitted to Elasticsearch.
         /// </summary>
         RaiseCallback = 8
     }

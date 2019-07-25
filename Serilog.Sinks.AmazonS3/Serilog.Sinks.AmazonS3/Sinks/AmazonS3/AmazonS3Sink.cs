@@ -7,37 +7,34 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Text;
+using Amazon;
+using Serilog.Core;
+using Serilog.Events;
+using Serilog.Formatting;
+
 namespace Serilog.Sinks.AmazonS3
 {
-    using System;
-    using System.Text;
-
-    using Amazon;
-
-    using Serilog.Core;
-    using Serilog.Events;
-    using Serilog.Formatting;
-
     /// <summary>
     ///     This class is the main class and contains all options for the AmazonS3 sink.
     /// </summary>
-
     public class AmazonS3Sink : ILogEventSink
     {
         /// <summary>   The sink. </summary>
         private readonly ILogEventSink sink;
 
         /// <summary>   Initializes a new instance of the <see cref="AmazonS3Sink" /> class. </summary>
-        ///
         /// <exception cref="ArgumentNullException">    addSink or formatter or path. </exception>
-        /// <exception cref="ArgumentException">        Negative value provided; file size limit must be
-        ///                                             non-negative. - fileSizeLimitBytes or At least one
-        ///                                             file must be retained. - retainedFileCountLimit or
-        ///                                             Buffered writes are not available when file sharing
-        ///                                             is enabled. - buffered or File lifecycle hooks are
-        ///                                             not currently supported for shared log files. -
-        ///                                             hooks. </exception>
-        ///
+        /// <exception cref="ArgumentException">
+        ///     Negative value provided; file size limit must be
+        ///     non-negative. - fileSizeLimitBytes or At least one
+        ///     file must be retained. - retainedFileCountLimit or
+        ///     Buffered writes are not available when file sharing
+        ///     is enabled. - buffered or File lifecycle hooks are
+        ///     not currently supported for shared log files. -
+        ///     hooks.
+        /// </exception>
         /// <param name="formatter">                The formatter. </param>
         /// <param name="path">                     The path. </param>
         /// <param name="fileSizeLimitBytes">       The file size limit bytes. </param>
@@ -51,7 +48,6 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="awsAccessKeyId">           The Amazon S3 access key id. </param>
         /// <param name="awsSecretAccessKey">       The Amazon S3 secret access key. </param>
         /// <param name="failureCallback">          (Optional) The failure callback. </param>
-
         public AmazonS3Sink(
             ITextFormatter formatter,
             string path,
@@ -98,34 +94,34 @@ namespace Serilog.Sinks.AmazonS3
                     "Zero or negative value provided; retained file count limit must be at least 1.");
             }
 
-            this.sink = new RollingFileSink(
-                    path,
-                    formatter,
-                    fileSizeLimitBytes,
-                    retainedFileCountLimit,
-                    encoding,
-                    buffered,
-                    rollingInterval,
-                    true,
-                    hooks,
-                    bucketName,
-                    endpoint,
-                    awsAccessKeyId,
-                    awsSecretAccessKey,
-                    failureCallback);
+            sink = new RollingFileSink(
+                path,
+                formatter,
+                fileSizeLimitBytes,
+                retainedFileCountLimit,
+                encoding,
+                buffered,
+                rollingInterval,
+                true,
+                hooks,
+                bucketName,
+                endpoint,
+                awsAccessKeyId,
+                awsSecretAccessKey,
+                failureCallback);
         }
 
         /// <summary>   Initializes a new instance of the <see cref="AmazonS3Sink" /> class. </summary>
-        ///
         /// <exception cref="ArgumentNullException">    addSink or formatter or path. </exception>
-        /// <exception cref="ArgumentException">        Negative value provided; file size limit must be
-        ///                                             non-negative. - fileSizeLimitBytes or At least one
-        ///                                             file must be retained. - retainedFileCountLimit or
-        ///                                             Buffered writes are not available when file sharing
-        ///                                             is enabled. - buffered or File lifecycle hooks are
-        ///                                             not currently supported for shared log files. -
-        ///                                             hooks. </exception>
-        ///
+        /// <exception cref="ArgumentException">
+        ///     Negative value provided; file size limit must be
+        ///     non-negative. - fileSizeLimitBytes or At least one
+        ///     file must be retained. - retainedFileCountLimit or
+        ///     Buffered writes are not available when file sharing
+        ///     is enabled. - buffered or File lifecycle hooks are
+        ///     not currently supported for shared log files. -
+        ///     hooks.
+        /// </exception>
         /// <param name="formatter">                The formatter. </param>
         /// <param name="path">                     The path. </param>
         /// <param name="fileSizeLimitBytes">       The file size limit bytes. </param>
@@ -137,7 +133,6 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="bucketName">               The Amazon S3 bucket name. </param>
         /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
         /// <param name="failureCallback">          (Optional) The failure callback. </param>
-
         public AmazonS3Sink(
             ITextFormatter formatter,
             string path,
@@ -172,30 +167,27 @@ namespace Serilog.Sinks.AmazonS3
                     "Zero or negative value provided; retained file count limit must be at least 1.");
             }
 
-            this.sink = new RollingFileSink(
-                    path,
-                    formatter,
-                    fileSizeLimitBytes,
-                    retainedFileCountLimit,
-                    encoding,
-                    buffered,
-                    rollingInterval,
-                    true,
-                    hooks,
-                    bucketName,
-                    endpoint,
-                    failureCallback);
+            sink = new RollingFileSink(
+                path,
+                formatter,
+                fileSizeLimitBytes,
+                retainedFileCountLimit,
+                encoding,
+                buffered,
+                rollingInterval,
+                true,
+                hooks,
+                bucketName,
+                endpoint,
+                failureCallback);
         }
 
         /// <summary>   Emit the provided log event to the sink. </summary>
-        ///
         /// <param name="logEvent"> The log event to write. </param>
-        ///
-        /// <inheritdoc cref="ILogEventSink"/>
-
+        /// <inheritdoc cref="ILogEventSink" />
         public void Emit(LogEvent logEvent)
         {
-            this.sink.Emit(logEvent);
+            sink.Emit(logEvent);
         }
     }
 }
