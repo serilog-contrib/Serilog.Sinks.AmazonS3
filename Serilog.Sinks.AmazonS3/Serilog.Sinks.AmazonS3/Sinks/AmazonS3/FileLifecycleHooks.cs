@@ -7,12 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Text;
-
 namespace Serilog.Sinks.AmazonS3
 {
+    using System.Diagnostics.CodeAnalysis;
+    using System.IO;
+    using System.Text;
+
     /// <summary>   This class enables hooking into log file lifecycle events. </summary>
     public abstract class FileLifecycleHooks
     {

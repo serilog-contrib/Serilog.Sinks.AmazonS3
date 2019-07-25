@@ -7,38 +7,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Serilog.Sinks.AmazonS3
 {
+    using System;
+
     /// <summary>
     ///     This class provides some extensions for the <see cref="RollingInterval" /> class.
     /// </summary>
     public static class RollingIntervalExtensions
     {
-        /// <summary>   Gets the format for the <see cref="RollingInterval" />. </summary>
-        /// <exception cref="ArgumentException">    Invalid rolling interval. </exception>
-        /// <param name="interval"> The interval. </param>
-        /// <returns>   The format for the <see cref="RollingInterval" />. </returns>
-        public static string GetFormat(this RollingInterval interval)
-        {
-            switch (interval)
-            {
-                case RollingInterval.Year:
-                    return "yyyy";
-                case RollingInterval.Month:
-                    return "yyyyMM";
-                case RollingInterval.Day:
-                    return "yyyyMMdd";
-                case RollingInterval.Hour:
-                    return "yyyyMMddHH";
-                case RollingInterval.Minute:
-                    return "yyyyMMddHHmm";
-                default:
-                    throw new ArgumentException("Invalid rolling interval");
-            }
-        }
-
         /// <summary>   Gets the current checkpoint. </summary>
         /// <exception cref="ArgumentException">    Invalid rolling interval. </exception>
         /// <param name="interval"> The interval. </param>
@@ -57,8 +34,37 @@ namespace Serilog.Sinks.AmazonS3
                 case RollingInterval.Hour:
                     return new DateTime(instant.Year, instant.Month, instant.Day, instant.Hour, 0, 0, instant.Kind);
                 case RollingInterval.Minute:
-                    return new DateTime(instant.Year, instant.Month, instant.Day, instant.Hour, instant.Minute, 0,
+                    return new DateTime(
+                        instant.Year,
+                        instant.Month,
+                        instant.Day,
+                        instant.Hour,
+                        instant.Minute,
+                        0,
                         instant.Kind);
+                default:
+                    throw new ArgumentException("Invalid rolling interval");
+            }
+        }
+
+        /// <summary>   Gets the format for the <see cref="RollingInterval" />. </summary>
+        /// <exception cref="ArgumentException">    Invalid rolling interval. </exception>
+        /// <param name="interval"> The interval. </param>
+        /// <returns>   The format for the <see cref="RollingInterval" />. </returns>
+        public static string GetFormat(this RollingInterval interval)
+        {
+            switch (interval)
+            {
+                case RollingInterval.Year:
+                    return "yyyy";
+                case RollingInterval.Month:
+                    return "yyyyMM";
+                case RollingInterval.Day:
+                    return "yyyyMMdd";
+                case RollingInterval.Hour:
+                    return "yyyyMMddHH";
+                case RollingInterval.Minute:
+                    return "yyyyMMddHHmm";
                 default:
                     throw new ArgumentException("Invalid rolling interval");
             }

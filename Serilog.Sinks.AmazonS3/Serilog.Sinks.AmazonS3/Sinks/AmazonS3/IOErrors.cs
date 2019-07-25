@@ -7,10 +7,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.IO;
-
 namespace Serilog.Sinks.AmazonS3
 {
+    using System.IO;
+
     /// <summary>   A class that simplifies the use of some I/O errors. </summary>
     public static class IoErrors
     {

@@ -7,15 +7,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Text;
-using Amazon;
-using Serilog.Core;
-using Serilog.Events;
-using Serilog.Formatting;
-
 namespace Serilog.Sinks.AmazonS3
 {
+    using System;
+    using System.Text;
+
+    using Amazon;
+
+    using Serilog.Core;
+    using Serilog.Events;
+    using Serilog.Formatting;
+
     /// <summary>
     ///     This class is the main class and contains all options for the AmazonS3 sink.
     /// </summary>
@@ -94,7 +96,7 @@ namespace Serilog.Sinks.AmazonS3
                     "Zero or negative value provided; retained file count limit must be at least 1.");
             }
 
-            sink = new RollingFileSink(
+            this.sink = new RollingFileSink(
                 path,
                 formatter,
                 fileSizeLimitBytes,
@@ -167,7 +169,7 @@ namespace Serilog.Sinks.AmazonS3
                     "Zero or negative value provided; retained file count limit must be at least 1.");
             }
 
-            sink = new RollingFileSink(
+            this.sink = new RollingFileSink(
                 path,
                 formatter,
                 fileSizeLimitBytes,
@@ -187,7 +189,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <inheritdoc cref="ILogEventSink" />
         public void Emit(LogEvent logEvent)
         {
-            sink.Emit(logEvent);
+            this.sink.Emit(logEvent);
         }
     }
 }

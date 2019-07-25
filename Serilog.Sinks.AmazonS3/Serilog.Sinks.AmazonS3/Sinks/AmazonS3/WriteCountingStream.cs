@@ -7,11 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.IO;
-
 namespace Serilog.Sinks.AmazonS3
 {
+    using System;
+    using System.IO;
+
     /// <summary>   This class is used to provide a write counting stream. </summary>
     /// <seealso cref="T:System.IO.Stream" />
     public class WriteCountingStream : Stream
@@ -29,7 +29,7 @@ namespace Serilog.Sinks.AmazonS3
         public WriteCountingStream(Stream stream)
         {
             this.stream = stream ?? throw new ArgumentNullException(nameof(stream));
-            CountedLength = stream.Length;
+            this.CountedLength = stream.Length;
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Serilog.Sinks.AmazonS3
         /// </summary>
         /// <inheritdoc cref="Stream" />
 
-        public override bool CanSeek => stream.CanSeek;
+        public override bool CanSeek => this.stream.CanSeek;
 
         /// <summary>
         ///     When overridden in a derived class, gets a value indicating whether the current stream
@@ -66,7 +66,7 @@ namespace Serilog.Sinks.AmazonS3
         /// </summary>
         /// <inheritdoc cref="Stream" />
 
-        public override long Length => stream.Length;
+        public override long Length => this.stream.Length;
 
         /// <summary>
         ///     When overridden in a derived class, gets or sets the position within the current stream.
@@ -76,7 +76,7 @@ namespace Serilog.Sinks.AmazonS3
 
         public override long Position
         {
-            get => stream.Position;
+            get => this.stream.Position;
             set => throw new NotSupportedException();
         }
 
@@ -87,7 +87,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <inheritdoc cref="Stream" />
         public override void Flush()
         {
-            stream.Flush();
+            this.stream.Flush();
         }
 
         /// <summary>
@@ -164,8 +164,8 @@ namespace Serilog.Sinks.AmazonS3
         /// <inheritdoc cref="Stream" />
         public override void Write(byte[] buffer, int offset, int count)
         {
-            stream.Write(buffer, offset, count);
-            CountedLength += count;
+            this.stream.Write(buffer, offset, count);
+            this.CountedLength += count;
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace Serilog.Sinks.AmazonS3
         {
             if (disposing)
             {
-                stream.Dispose();
+                this.stream.Dispose();
             }
 
             base.Dispose(disposing);

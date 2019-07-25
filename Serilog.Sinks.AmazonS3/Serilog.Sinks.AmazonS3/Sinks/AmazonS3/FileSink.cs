@@ -7,14 +7,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.IO;
-using System.Text;
-using Serilog.Events;
-using Serilog.Formatting;
-
 namespace Serilog.Sinks.AmazonS3
 {
+    using System;
+    using System.IO;
+    using System.Text;
+
+    using Serilog.Events;
+    using Serilog.Formatting;
+
     /// <summary>   This class enables writing log events to a disk file. </summary>
     /// ###
     /// <inheritdoc cref="IDisposable" />
@@ -85,14 +86,14 @@ namespace Serilog.Sinks.AmazonS3
                 Directory.CreateDirectory(directory);
             }
 
-            Stream outputStream = underlyingStream = File.Open(
-                path,
-                FileMode.Append,
-                FileAccess.Write,
-                FileShare.Read);
+            Stream outputStream = this.underlyingStream = File.Open(
+                                      path,
+                                      FileMode.Append,
+                                      FileAccess.Write,
+                                      FileShare.Read);
             if (this.fileSizeLimitBytes != null)
             {
-                outputStream = countingStreamWrapper = new WriteCountingStream(underlyingStream);
+                outputStream = this.countingStreamWrapper = new WriteCountingStream(this.underlyingStream);
             }
 
             // Parameter reassignment.
@@ -104,7 +105,7 @@ namespace Serilog.Sinks.AmazonS3
                                    $"The file lifecycle hook `{nameof(FileLifecycleHooks.OnFileOpened)}(...)` returned `null`.");
             }
 
-            output = new StreamWriter(outputStream, encoding);
+            this.output = new StreamWriter(outputStream, encoding);
         }
 
         /// <summary>
@@ -114,9 +115,9 @@ namespace Serilog.Sinks.AmazonS3
         /// <inheritdoc cref="IFileSink" />
         public void Dispose()
         {
-            lock (syncRoot)
+            lock (this.syncRoot)
             {
-                output.Dispose();
+                this.output.Dispose();
             }
         }
 
@@ -125,18 +126,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <inheritdoc cref="IFileSink" />
         public void Emit(LogEvent logEvent)
         {
-            ((IFileSink) this).EmitOrOverflow(logEvent);
-        }
-
-        /// <summary>   Flush buffered contents to the disk. </summary>
-        /// <inheritdoc cref="IFileSink" />
-        public void FlushToDisk()
-        {
-            lock (syncRoot)
-            {
-                output.Flush();
-                underlyingStream.Flush(true);
-            }
+            ((IFileSink)this).EmitOrOverflow(logEvent);
         }
 
         /// <summary>   Emits the <see cref="LogEvent" /> or overflows. </summary>
@@ -153,23 +143,34 @@ namespace Serilog.Sinks.AmazonS3
                 throw new ArgumentNullException(nameof(logEvent));
             }
 
-            lock (syncRoot)
+            lock (this.syncRoot)
             {
-                if (fileSizeLimitBytes != null)
+                if (this.fileSizeLimitBytes != null)
                 {
-                    if (countingStreamWrapper.CountedLength >= fileSizeLimitBytes.Value)
+                    if (this.countingStreamWrapper.CountedLength >= this.fileSizeLimitBytes.Value)
                     {
                         return false;
                     }
                 }
 
-                textFormatter.Format(logEvent, output);
-                if (!buffered)
+                this.textFormatter.Format(logEvent, this.output);
+                if (!this.buffered)
                 {
-                    output.Flush();
+                    this.output.Flush();
                 }
 
                 return true;
+            }
+        }
+
+        /// <summary>   Flush buffered contents to the disk. </summary>
+        /// <inheritdoc cref="IFileSink" />
+        public void FlushToDisk()
+        {
+            lock (this.syncRoot)
+            {
+                this.output.Flush();
+                this.underlyingStream.Flush(true);
             }
         }
     }

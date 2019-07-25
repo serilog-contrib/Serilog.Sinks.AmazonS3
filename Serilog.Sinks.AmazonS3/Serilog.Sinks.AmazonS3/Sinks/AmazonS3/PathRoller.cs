@@ -7,14 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Text.RegularExpressions;
-
 namespace Serilog.Sinks.AmazonS3
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Text.RegularExpressions;
+
     /// <summary>   The class to apply the rolling path scenarios. </summary>
     public class PathRoller
     {
@@ -54,7 +54,7 @@ namespace Serilog.Sinks.AmazonS3
             }
 
             this.interval = interval;
-            periodFormat = interval.GetFormat();
+            this.periodFormat = interval.GetFormat();
 
             var pathDirectory = Path.GetDirectoryName(path);
             if (string.IsNullOrEmpty(pathDirectory))
@@ -62,15 +62,15 @@ namespace Serilog.Sinks.AmazonS3
                 pathDirectory = Directory.GetCurrentDirectory();
             }
 
-            LogFileDirectory = Path.GetFullPath(pathDirectory);
-            filenamePrefix = Path.GetFileNameWithoutExtension(path);
-            filenameSuffix = Path.GetExtension(path);
-            filenameMatcher = new Regex(
-                "^" + Regex.Escape(filenamePrefix) + "(?<" + PeriodMatchGroup + ">\\d{" + periodFormat.Length
-                + "})" + "(?<" + SequenceNumberMatchGroup + ">_[0-9]{3,}){0,1}" + Regex.Escape(filenameSuffix)
+            this.LogFileDirectory = Path.GetFullPath(pathDirectory);
+            this.filenamePrefix = Path.GetFileNameWithoutExtension(path);
+            this.filenameSuffix = Path.GetExtension(path);
+            this.filenameMatcher = new Regex(
+                "^" + Regex.Escape(this.filenamePrefix) + "(?<" + PeriodMatchGroup + ">\\d{" + this.periodFormat.Length
+                + "})" + "(?<" + SequenceNumberMatchGroup + ">_[0-9]{3,}){0,1}" + Regex.Escape(this.filenameSuffix)
                 + "$");
 
-            DirectorySearchPattern = $"{filenamePrefix}*{filenameSuffix}";
+            this.DirectorySearchPattern = $"{this.filenamePrefix}*{this.filenameSuffix}";
         }
 
         /// <summary>   Gets the directory search pattern. </summary>
@@ -88,7 +88,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <returns>   A <see cref="DateTime" /> value that gives the current checkpoint. </returns>
         public DateTime? GetCurrentCheckpoint(DateTime instant)
         {
-            return interval.GetCurrentCheckpoint(instant);
+            return this.interval.GetCurrentCheckpoint(instant);
         }
 
         /// <summary>   Gets the log file path. </summary>
@@ -97,16 +97,16 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="path">             [out] The path. </param>
         public void GetLogFilePath(DateTime date, int? sequenceNumber, out string path)
         {
-            var currentCheckpoint = GetCurrentCheckpoint(date);
+            var currentCheckpoint = this.GetCurrentCheckpoint(date);
 
-            var tok = currentCheckpoint?.ToString(periodFormat, CultureInfo.InvariantCulture) ?? string.Empty;
+            var tok = currentCheckpoint?.ToString(this.periodFormat, CultureInfo.InvariantCulture) ?? string.Empty;
 
             if (sequenceNumber != null)
             {
                 tok += "_" + sequenceNumber.Value.ToString("000", CultureInfo.InvariantCulture);
             }
 
-            path = Path.Combine(LogFileDirectory, filenamePrefix + tok + filenameSuffix);
+            path = Path.Combine(this.LogFileDirectory, this.filenamePrefix + tok + this.filenameSuffix);
         }
 
         /// <summary>   Gets the next checkpoint. </summary>
@@ -114,7 +114,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <returns>   A <see cref="DateTime" /> value that gives the next checkpoint. </returns>
         public DateTime? GetNextCheckpoint(DateTime instant)
         {
-            return interval.GetNextCheckpoint(instant);
+            return this.interval.GetNextCheckpoint(instant);
         }
 
         /// <summary>   Selects the matches. </summary>
@@ -124,7 +124,7 @@ namespace Serilog.Sinks.AmazonS3
         {
             foreach (var filename in fileNames)
             {
-                var match = filenameMatcher.Match(filename);
+                var match = this.filenameMatcher.Match(filename);
                 if (!match.Success)
                 {
                     continue;
@@ -145,7 +145,7 @@ namespace Serilog.Sinks.AmazonS3
                     var dateTimePart = periodGroup.Captures[0].Value;
                     if (DateTime.TryParseExact(
                         dateTimePart,
-                        periodFormat,
+                        this.periodFormat,
                         CultureInfo.InvariantCulture,
                         DateTimeStyles.None,
                         out var dateTime))

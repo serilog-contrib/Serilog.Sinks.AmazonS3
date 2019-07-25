@@ -7,18 +7,20 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using Amazon;
-using Serilog.Configuration;
-using Serilog.Core;
-using Serilog.Events;
-using Serilog.Formatting.Display;
-using Serilog.Sinks.AmazonS3;
-
 namespace Serilog
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Text;
+
+    using Amazon;
+
+    using Serilog.Configuration;
+    using Serilog.Core;
+    using Serilog.Events;
+    using Serilog.Formatting.Display;
+    using Serilog.Sinks.AmazonS3;
+
     /// <summary>   This class contains the Amazon S3 logger configuration. </summary>
     [SuppressMessage(
         "StyleCop.CSharp.DocumentationRules",
