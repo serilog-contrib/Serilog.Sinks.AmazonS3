@@ -9,7 +9,7 @@
     ".NETStandard,Version=v2.0/": {
       "Serilog.Sinks.AmazonS3/1.0.2": {
         "dependencies": {
-          "AWSSDK.S3": "3.3.102.7",
+          "AWSSDK.S3": "3.3.104.3",
           "NETStandard.Library": "2.0.3",
           "Serilog": "2.8.0"
         },
@@ -17,22 +17,22 @@
           "Serilog.Sinks.AmazonS3.dll": {}
         }
       },
-      "AWSSDK.Core/3.3.101.17": {
+      "AWSSDK.Core/3.3.103.15": {
         "runtime": {
           "lib/netstandard2.0/AWSSDK.Core.dll": {
             "assemblyVersion": "3.3.0.0",
-            "fileVersion": "3.3.101.17"
+            "fileVersion": "3.3.103.15"
           }
         }
       },
-      "AWSSDK.S3/3.3.102.7": {
+      "AWSSDK.S3/3.3.104.3": {
         "dependencies": {
-          "AWSSDK.Core": "3.3.101.17"
+          "AWSSDK.Core": "3.3.103.15"
         },
         "runtime": {
           "lib/netstandard2.0/AWSSDK.S3.dll": {
             "assemblyVersion": "3.3.0.0",
-            "fileVersion": "3.3.102.7"
+            "fileVersion": "3.3.104.3"
           }
         }
       },
@@ -165,19 +165,19 @@
       "serviceable": false,
       "sha512": ""
     },
-    "AWSSDK.Core/3.3.101.17": {
+    "AWSSDK.Core/3.3.103.15": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-sKSEV2eGzd2zHUzb/G2Y7iVUPNCgaacvh+wpZ8QQDXTT3bylF8ySZpzvmfLr0z5OxC066xJ57w+JONN5fPNQrg==",
-      "path": "awssdk.core/3.3.101.17",
-      "hashPath": "awssdk.core.3.3.101.17.nupkg.sha512"
+      "sha512": "sha512-A642mTie85EY6U7FFnFt3ph++0ynuZLPJWb96U+4SP6SvFYuPs8Lv5z5un2RBfFwNZXoEl1QiZe5ygbjcmcFPA==",
+      "path": "awssdk.core/3.3.103.15",
+      "hashPath": "awssdk.core.3.3.103.15.nupkg.sha512"
     },
-    "AWSSDK.S3/3.3.102.7": {
+    "AWSSDK.S3/3.3.104.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-/1h1762cNBqTxNVvqooT47oReHRFF+BgLRTKlUB2XTREYlcm/iF5pvglo3flmYmnnNFAxfM8SrCvyubWQPoOyA==",
-      "path": "awssdk.s3/3.3.102.7",
-      "hashPath": "awssdk.s3.3.3.102.7.nupkg.sha512"
+      "sha512": "sha512-Qrx7wBEr0tj/CJTktlYzpMSBRqO7r4AtW8jdTppnjD+5LT1GV5S61S3U2IrUNFiuBf99apt/HCHgzRPCk/x8Lw==",
+      "path": "awssdk.s3/3.3.104.3",
+      "hashPath": "awssdk.s3.3.3.104.3.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/1.1.0": {
       "type": "package",
