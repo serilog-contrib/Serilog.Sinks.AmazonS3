@@ -249,6 +249,7 @@ namespace Serilog.Sinks.AmazonS3
         }
 
         /// <summary>
+        /// Finalizes an instance of the <see cref="RollingFileSink"/> class. 
         ///     Use C# destructor syntax for finalization code. This destructor will run only if the
         ///     Dispose method does not get called. It gives your base class the opportunity to finalize.
         ///     Do not provide destructors in types derived from this class.
@@ -263,7 +264,6 @@ namespace Serilog.Sinks.AmazonS3
 
         /// <summary>   Gets or sets the failure callback. </summary>
         /// <value> The failure callback. </value>
-
         public Action<Exception> FailureCallback { get; set; }
 
         /// <summary>
@@ -537,7 +537,7 @@ namespace Serilog.Sinks.AmazonS3
         {
             var client = new AmazonS3Client(this.endpoint);
 
-            // In the case of AWSAccess is passed we use it, otherwize autorisation is given by roles in AWS directly
+            // In the case that awsAccessKeyId and awsSecretAccessKey is passed, we use it. Otherwise authorization is given by roles in AWS directly.
             if (!string.IsNullOrEmpty(this.awsAccessKeyId) && !string.IsNullOrEmpty(this.awsSecretAccessKey))
             {
                 client = new AmazonS3Client(this.awsAccessKeyId, this.awsSecretAccessKey, this.endpoint);
@@ -567,30 +567,5 @@ namespace Serilog.Sinks.AmazonS3
                 throw;
             }
         }
-    }
-
-    /// <summary>   A bit-field of flags for specifying emit event failure handlings. </summary>
-    [Flags]
-    public enum EmitEventFailureHandling
-    {
-        /// <summary>
-        ///     Send the error to the SelfLog
-        /// </summary>
-        WriteToSelfLog = 1,
-
-        /// <summary>
-        ///     Write the events to another sink. Make sure to configure this one.
-        /// </summary>
-        WriteToFailureSink = 2,
-
-        /// <summary>
-        ///     Throw the exception to the caller.
-        /// </summary>
-        ThrowException = 4,
-
-        /// <summary>
-        ///     The failure callback function will be called when the event cannot be submitted to Elasticsearch.
-        /// </summary>
-        RaiseCallback = 8
     }
 }
