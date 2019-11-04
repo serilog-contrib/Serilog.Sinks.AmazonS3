@@ -11,7 +11,7 @@ so thanks to all the [contributors](https://github.com/serilog/serilog-sinks-fil
 [![GitHub issues](https://img.shields.io/github/issues/SeppPenner/Serilog.Sinks.AmazonS3.svg)](https://github.com/SeppPenner/Serilog.Sinks.AmazonS3/issues)
 [![GitHub forks](https://img.shields.io/github/forks/SeppPenner/Serilog.Sinks.AmazonS3.svg)](https://github.com/SeppPenner/Serilog.Sinks.AmazonS3/network)
 [![GitHub stars](https://img.shields.io/github/stars/SeppPenner/Serilog.Sinks.AmazonS3.svg)](https://github.com/SeppPenner/Serilog.Sinks.AmazonS3/stargazers)
-[![GitHub license](https://img.shields.io/badge/license-AGPL-blue.svg)](https://raw.githubusercontent.com/SeppPenner/Serilog.Sinks.AmazonS3/master/License.txt)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://raw.githubusercontent.com/SeppPenner/Serilog.Sinks.AmazonS3/master/License.txt)
 [![Nuget](https://img.shields.io/badge/Serilog.Sinks.AmazonS3-Nuget-brightgreen.svg)](https://www.nuget.org/packages/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3/)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3.svg)](https://www.nuget.org/packages/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3/)
 [![Known Vulnerabilities](https://snyk.io/test/github/SeppPenner/Serilog.Sinks.AmazonS3/badge.svg)](https://snyk.io/test/github/SeppPenner/Serilog.Sinks.AmazonS3)
