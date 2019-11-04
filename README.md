@@ -15,6 +15,7 @@ so thanks to all the [contributors](https://github.com/serilog/serilog-sinks-fil
 [![Nuget](https://img.shields.io/badge/Serilog.Sinks.AmazonS3-Nuget-brightgreen.svg)](https://www.nuget.org/packages/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3/)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3.svg)](https://www.nuget.org/packages/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3/)
 [![Known Vulnerabilities](https://snyk.io/test/github/SeppPenner/Serilog.Sinks.AmazonS3/badge.svg)](https://snyk.io/test/github/SeppPenner/Serilog.Sinks.AmazonS3)
+[![Gitter](https://badges.gitter.im/Serilog-Sinks-AmazonS3/community.svg)](https://gitter.im/Serilog-Sinks-AmazonS3/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## Available for
 * NetFramework 4.5
