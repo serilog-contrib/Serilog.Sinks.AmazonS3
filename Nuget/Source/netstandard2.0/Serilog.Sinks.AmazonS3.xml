@@ -528,6 +528,7 @@
         </member>
         <member name="M:Serilog.Sinks.AmazonS3.RollingFileSink.Finalize">
             <summary>
+            Finalizes an instance of the <see cref="T:Serilog.Sinks.AmazonS3.RollingFileSink"/> class. 
                 Use C# destructor syntax for finalization code. This destructor will run only if the
                 Dispose method does not get called. It gives your base class the opportunity to finalize.
                 Do not provide destructors in types derived from this class.
@@ -602,29 +603,6 @@
                 occurred: " + amazonS3Exception.Message.
             </exception>
             <returns>   An asynchronous result that yields a PutObjectResponse. </returns>
-        </member>
-        <member name="T:Serilog.Sinks.AmazonS3.EmitEventFailureHandling">
-            <summary>   A bit-field of flags for specifying emit event failure handlings. </summary>
-        </member>
-        <member name="F:Serilog.Sinks.AmazonS3.EmitEventFailureHandling.WriteToSelfLog">
-            <summary>
-                Send the error to the SelfLog
-            </summary>
-        </member>
-        <member name="F:Serilog.Sinks.AmazonS3.EmitEventFailureHandling.WriteToFailureSink">
-            <summary>
-                Write the events to another sink. Make sure to configure this one.
-            </summary>
-        </member>
-        <member name="F:Serilog.Sinks.AmazonS3.EmitEventFailureHandling.ThrowException">
-            <summary>
-                Throw the exception to the caller.
-            </summary>
-        </member>
-        <member name="F:Serilog.Sinks.AmazonS3.EmitEventFailureHandling.RaiseCallback">
-            <summary>
-                The failure callback function will be called when the event cannot be submitted to Elasticsearch.
-            </summary>
         </member>
         <member name="T:Serilog.Sinks.AmazonS3.RollingInterval">
             <summary>   Specifies the frequency at which the log file should roll. </summary>

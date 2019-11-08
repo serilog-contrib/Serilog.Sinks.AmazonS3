@@ -1,17 +1,16 @@
 {
   "runtimeTarget": {
-    "name": ".NETStandard,Version=v2.0/",
+    "name": ".NETStandard,Version=v2.1/",
     "signature": ""
   },
   "compilationOptions": {},
   "targets": {
-    ".NETStandard,Version=v2.0": {},
-    ".NETStandard,Version=v2.0/": {
+    ".NETStandard,Version=v2.1": {},
+    ".NETStandard,Version=v2.1/": {
       "Serilog.Sinks.AmazonS3/1.0.3": {
         "dependencies": {
           "AWSSDK.S3": "3.3.106.3",
           "GitVersionTask": "5.1.2",
-          "NETStandard.Library": "2.0.3",
           "Serilog": "2.9.0"
         },
         "runtime": {
@@ -38,12 +37,6 @@
         }
       },
       "GitVersionTask/5.1.2": {},
-      "Microsoft.NETCore.Platforms/1.1.0": {},
-      "NETStandard.Library/2.0.3": {
-        "dependencies": {
-          "Microsoft.NETCore.Platforms": "1.1.0"
-        }
-      },
       "Serilog/2.9.0": {
         "runtime": {
           "lib/netstandard2.0/Serilog.dll": {
@@ -80,20 +73,6 @@
       "sha512": "sha512-K5iXhB5N+b5DO+jcLgvo5CsQ2UcbAfpXP7Y6tUox0jw/RtgNEH2p5RvPlKS+OSsEVEAY0JV6BUXrtKmQKbp9rA==",
       "path": "gitversiontask/5.1.2",
       "hashPath": "gitversiontask.5.1.2.nupkg.sha512"
-    },
-    "Microsoft.NETCore.Platforms/1.1.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-kz0PEW2lhqygehI/d6XsPCQzD7ff7gUJaVGPVETX611eadGsA3A877GdSlU0LRVMCTH/+P3o2iDTak+S08V2+A==",
-      "path": "microsoft.netcore.platforms/1.1.0",
-      "hashPath": "microsoft.netcore.platforms.1.1.0.nupkg.sha512"
-    },
-    "NETStandard.Library/2.0.3": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
-      "path": "netstandard.library/2.0.3",
-      "hashPath": "netstandard.library.2.0.3.nupkg.sha512"
     },
     "Serilog/2.9.0": {
       "type": "package",
