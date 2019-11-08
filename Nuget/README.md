@@ -15,6 +15,7 @@ so thanks to all the [contributors](https://github.com/serilog/serilog-sinks-fil
 [![Nuget](https://img.shields.io/badge/Serilog.Sinks.AmazonS3-Nuget-brightgreen.svg)](https://www.nuget.org/packages/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3/)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3.svg)](https://www.nuget.org/packages/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3/)
 [![Known Vulnerabilities](https://snyk.io/test/github/SeppPenner/Serilog.Sinks.AmazonS3/badge.svg)](https://snyk.io/test/github/SeppPenner/Serilog.Sinks.AmazonS3)
+[![Gitter](https://badges.gitter.im/Serilog-Sinks-AmazonS3/community.svg)](https://gitter.im/Serilog-Sinks-AmazonS3/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## Available for
 * NetFramework 4.5
@@ -24,6 +25,9 @@ so thanks to all the [contributors](https://github.com/serilog/serilog-sinks-fil
 * NetFramework 4.7.2
 * NetFramework 4.8
 * NetStandard 2.0
+* NetStandard 2.1
+* NetCore 2.2
+* NetCore 3.0
 
 ## Basic usage:
 ```csharp
@@ -154,6 +158,7 @@ for (var x = 0; x < 200; x++)
 Change history
 --------------
 
+* **Version 1.0.3.0 (2019-11-08)** : Updated nuget packages, added GitVersionTask.
 * **Version 1.0.2.0 (2019-07-19)** : Support of role based authorization to S3 added, failureCallback parameter added.
 * **Version 1.0.1.0 (2019-06-23)** : Added icon to the nuget package.
 * **Version 1.0.0.0 (2019-05-31)** : 1.0 release.
