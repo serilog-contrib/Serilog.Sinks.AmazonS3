@@ -48,7 +48,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <summary>   The Amazon S3 key endpoint. </summary>
         private readonly RegionEndpoint endpoint;
 
-        /// <summary>   Should every event be Uploaded immediately. </summary>
+        /// <summary>   Automatically upload all events immediately. </summary>
         private readonly bool autoUploadEvents;
 
         /// <summary>   The file lifecycle hooks. </summary>
@@ -110,7 +110,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
         /// <param name="awsAccessKeyId">           The Amazon S3 access key id. </param>
         /// <param name="awsSecretAccessKey">       The Amazon S3 access key. </param>
-        /// <param name="autoUploadEvents">         Should the events be uploaded to S3 immediately. </param>
+        /// <param name="autoUploadEvents">         Automatically upload all events immediately. </param>
         /// <param name="failureCallback">          (Optional) The failure callback. </param>
         public RollingFileSink(
             string path,
@@ -201,7 +201,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="fileLifecycleHooks">       The file lifecycle hooks. </param>
         /// <param name="bucketName">               The Amazon S3 bucket name. </param>
         /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
-        /// <param name="autoUploadEvents">         Should the events be uploaded to S3 immediately. </param>
+        /// <param name="autoUploadEvents">         Automatically upload all events immediately. </param>
         /// <param name="failureCallback">          (Optional) The failure callback. </param>
         public RollingFileSink(
             string path,

@@ -7,7 +7,7 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "Serilog.Sinks.AmazonS3/1.0.3": {
+      "Serilog.Sinks.AmazonS3/1.0.4": {
         "dependencies": {
           "AWSSDK.S3": "3.3.106.3",
           "GitVersionTask": "5.1.2",
@@ -55,7 +55,7 @@
     }
   },
   "libraries": {
-    "Serilog.Sinks.AmazonS3/1.0.3": {
+    "Serilog.Sinks.AmazonS3/1.0.4": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

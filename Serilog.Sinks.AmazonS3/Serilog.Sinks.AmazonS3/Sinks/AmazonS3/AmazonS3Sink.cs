@@ -14,9 +14,9 @@ namespace Serilog.Sinks.AmazonS3
 
     using Amazon;
 
-    using Serilog.Core;
-    using Serilog.Events;
-    using Serilog.Formatting;
+    using Core;
+    using Events;
+    using Formatting;
 
     /// <summary>
     ///     This class is the main class and contains all options for the AmazonS3 sink.

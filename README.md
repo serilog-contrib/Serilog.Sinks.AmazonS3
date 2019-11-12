@@ -35,6 +35,7 @@ Check out the how to use file [here](https://github.com/SeppPenner/Serilog.Sinks
 Change history
 --------------
 
+* **Version 1.0.4.0 (2019-11-12)** : Small updates, added new option "autoUploadEvents" to the sink.
 * **Version 1.0.3.0 (2019-11-08)** : Updated nuget packages, added GitVersionTask.
 * **Version 1.0.2.0 (2019-07-19)** : Support of role based authorization to S3 added, failureCallback parameter added.
 * **Version 1.0.1.0 (2019-06-23)** : Added icon to the nuget package.
