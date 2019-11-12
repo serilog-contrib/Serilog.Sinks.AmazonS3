@@ -49,6 +49,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
         /// <param name="awsAccessKeyId">           The Amazon S3 access key id. </param>
         /// <param name="awsSecretAccessKey">       The Amazon S3 secret access key. </param>
+        /// <param name="autoUploadEvents">         Automatically upload all events immediately. </param>
         /// <param name="failureCallback">          (Optional) The failure callback. </param>
         public AmazonS3Sink(
             ITextFormatter formatter,
@@ -63,6 +64,7 @@ namespace Serilog.Sinks.AmazonS3
             RegionEndpoint endpoint,
             string awsAccessKeyId,
             string awsSecretAccessKey,
+            bool autoUploadEvents,
             Action<Exception> failureCallback = null)
         {
             if (string.IsNullOrWhiteSpace(path))
@@ -110,6 +112,7 @@ namespace Serilog.Sinks.AmazonS3
                 endpoint,
                 awsAccessKeyId,
                 awsSecretAccessKey,
+                autoUploadEvents,
                 failureCallback);
         }
 
@@ -134,6 +137,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="hooks">                    The hooks. </param>
         /// <param name="bucketName">               The Amazon S3 bucket name. </param>
         /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
+        /// <param name="autoUploadEvents">         Automatically upload all events immediately. </param>
         /// <param name="failureCallback">          (Optional) The failure callback. </param>
         public AmazonS3Sink(
             ITextFormatter formatter,
@@ -146,6 +150,7 @@ namespace Serilog.Sinks.AmazonS3
             FileLifecycleHooks hooks,
             string bucketName,
             RegionEndpoint endpoint,
+            bool autoUploadEvents,
             Action<Exception> failureCallback = null)
         {
             if (string.IsNullOrWhiteSpace(path))
@@ -181,6 +186,7 @@ namespace Serilog.Sinks.AmazonS3
                 hooks,
                 bucketName,
                 endpoint,
+                autoUploadEvents,
                 failureCallback);
         }
 
