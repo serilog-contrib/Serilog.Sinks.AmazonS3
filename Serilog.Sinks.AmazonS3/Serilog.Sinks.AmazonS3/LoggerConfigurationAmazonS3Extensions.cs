@@ -55,6 +55,7 @@ namespace Serilog
         /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
         /// <param name="awsAccessKeyId">           The Amazon S3 access key id. </param>
         /// <param name="awsSecretAccessKey">       The Amazon S3 access key. </param>
+        /// <param name="autoUploadEvents">         Automatically upload all events immediately. </param>
         /// <param name="restrictedToMinimumLevel">
         ///     (Optional)
         ///     The minimum level for
@@ -124,6 +125,7 @@ namespace Serilog
             RegionEndpoint endpoint,
             string awsAccessKeyId,
             string awsSecretAccessKey,
+            bool autoUploadEvents = false,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
             string outputTemplate = DefaultOutputTemplate,
             IFormatProvider formatProvider = null,
@@ -192,6 +194,7 @@ namespace Serilog
                     endpoint,
                     awsAccessKeyId,
                     awsSecretAccessKey,
+                    autoUploadEvents,
                     failureCallback),
                 restrictedToMinimumLevel,
                 levelSwitch);
@@ -210,6 +213,7 @@ namespace Serilog
         /// <param name="path">                     Path to the file. </param>
         /// <param name="bucketName">               The Amazon S3 bucket name. </param>
         /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
+        /// <param name="autoUploadEvents">         Automatically upload all events immediately. </param>
         /// <param name="restrictedToMinimumLevel">
         ///     (Optional)
         ///     The minimum level for
@@ -277,6 +281,7 @@ namespace Serilog
             string path,
             string bucketName,
             RegionEndpoint endpoint,
+            bool autoUploadEvents = false,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
             string outputTemplate = DefaultOutputTemplate,
             IFormatProvider formatProvider = null,
@@ -333,6 +338,7 @@ namespace Serilog
                     hooks,
                     bucketName,
                     endpoint,
+                    autoUploadEvents,
                     failureCallback),
                 restrictedToMinimumLevel,
                 levelSwitch);

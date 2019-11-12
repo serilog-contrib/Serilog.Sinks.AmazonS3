@@ -48,6 +48,9 @@ namespace Serilog.Sinks.AmazonS3
         /// <summary>   The Amazon S3 key endpoint. </summary>
         private readonly RegionEndpoint endpoint;
 
+        /// <summary>   Should every event be Uploaded immediately. </summary>
+        private readonly bool autoUploadEvents;
+
         /// <summary>   The file lifecycle hooks. </summary>
         private readonly FileLifecycleHooks fileLifecycleHooks;
 
@@ -107,6 +110,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
         /// <param name="awsAccessKeyId">           The Amazon S3 access key id. </param>
         /// <param name="awsSecretAccessKey">       The Amazon S3 access key. </param>
+        /// <param name="autoUploadEvents">         Should the events be uploaded to S3 immediately. </param>
         /// <param name="failureCallback">          (Optional) The failure callback. </param>
         public RollingFileSink(
             string path,
@@ -122,6 +126,7 @@ namespace Serilog.Sinks.AmazonS3
             RegionEndpoint endpoint,
             string awsAccessKeyId,
             string awsSecretAccessKey,
+            bool autoUploadEvents,
             Action<Exception> failureCallback = null)
         {
             if (string.IsNullOrWhiteSpace(path))
@@ -172,6 +177,7 @@ namespace Serilog.Sinks.AmazonS3
             this.buffered = buffered;
             this.rollOnFileSizeLimit = rollOnFileSizeLimit;
             this.fileLifecycleHooks = fileLifecycleHooks;
+            this.autoUploadEvents = autoUploadEvents;
         }
 
         /// <summary>   Initializes a new instance of the <see cref="RollingFileSink" /> class. </summary>
@@ -195,6 +201,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="fileLifecycleHooks">       The file lifecycle hooks. </param>
         /// <param name="bucketName">               The Amazon S3 bucket name. </param>
         /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
+        /// <param name="autoUploadEvents">         Should the events be uploaded to S3 immediately. </param>
         /// <param name="failureCallback">          (Optional) The failure callback. </param>
         public RollingFileSink(
             string path,
@@ -208,6 +215,7 @@ namespace Serilog.Sinks.AmazonS3
             FileLifecycleHooks fileLifecycleHooks,
             string bucketName,
             RegionEndpoint endpoint,
+            bool autoUploadEvents,
             Action<Exception> failureCallback = null)
         {
             if (string.IsNullOrWhiteSpace(path))
@@ -246,6 +254,7 @@ namespace Serilog.Sinks.AmazonS3
             this.buffered = buffered;
             this.rollOnFileSizeLimit = rollOnFileSizeLimit;
             this.fileLifecycleHooks = fileLifecycleHooks;
+            this.autoUploadEvents = autoUploadEvents;
         }
 
         /// <summary>
@@ -304,6 +313,11 @@ namespace Serilog.Sinks.AmazonS3
                     while (this.currentFile?.EmitOrOverflow(logEvent) == false && this.rollOnFileSizeLimit)
                     {
                         this.AlignCurrentFileTo(now, true);
+                    }
+
+                    if (this.autoUploadEvents)
+                    {
+                        this.UploadFileToS3().Wait();
                     }
                 }
             }
@@ -545,15 +559,19 @@ namespace Serilog.Sinks.AmazonS3
 
             try
             {
-                var putRequest = new PutObjectRequest
-                                 {
-                                     BucketName = this.bucketName,
-                                     Key = Path.GetFileName(this.currentFileName),
-                                     FilePath = this.currentFileName,
-                                     ContentType = "text/plain"
-                                 };
+                // S3 does not support updates, files are automatically rewritten so we will have to upload the entire file
+                // Open the file for shared reading and writing
+                using (var fs = new FileStream(this.currentFileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    var putRequest = new PutObjectRequest()
+                    {
+                        BucketName = this.bucketName,
+                        Key = Path.GetFileName(this.currentFileName),
+                        InputStream = fs
+                    };
+                    return await client.PutObjectAsync(putRequest);
 
-                return await client.PutObjectAsync(putRequest);
+                }
             }
             catch (AmazonS3Exception amazonS3Exception)
             {
