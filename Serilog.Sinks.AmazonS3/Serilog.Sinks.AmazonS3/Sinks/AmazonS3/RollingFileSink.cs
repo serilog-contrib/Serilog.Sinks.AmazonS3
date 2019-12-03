@@ -160,7 +160,7 @@ namespace Serilog.Sinks.AmazonS3
                     "Zero or negative value provided; retained file count limit must be at least 1.");
             }
 
-            if (this.FailureCallback != null)
+            if (failureCallback != null)
             {
                 this.FailureCallback = failureCallback;
             }
