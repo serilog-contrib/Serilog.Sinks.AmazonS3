@@ -566,7 +566,8 @@ namespace Serilog.Sinks.AmazonS3
                     var putRequest = new PutObjectRequest()
                     {
                         BucketName = this.bucketName,
-                        Key = Path.GetFileName(this.currentFileName),
+                        Key = Path.Combine(this.pathRoller.LogFileBucketPath, Path.GetFileName(this.currentFileName))
+                            .Replace("\\", "/"),
                         InputStream = fs
                     };
                     return await client.PutObjectAsync(putRequest);

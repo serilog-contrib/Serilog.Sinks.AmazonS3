@@ -57,6 +57,7 @@ namespace Serilog.Sinks.AmazonS3
             this.periodFormat = interval.GetFormat();
 
             var pathDirectory = Path.GetDirectoryName(path);
+            this.LogFileBucketPath = pathDirectory;
             if (string.IsNullOrEmpty(pathDirectory))
             {
                 pathDirectory = Directory.GetCurrentDirectory();
@@ -82,6 +83,10 @@ namespace Serilog.Sinks.AmazonS3
         /// <value> The log file directory. </value>
 
         public string LogFileDirectory { get; }
+
+        /// <summary>   Gets the bucket log file path. </summary>
+        /// <value> The log file bucket path. </value>
+        public string LogFileBucketPath { get; }
 
         /// <summary>   Gets the current checkpoint. </summary>
         /// <param name="instant">  The instant. </param>
