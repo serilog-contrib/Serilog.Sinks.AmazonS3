@@ -10,9 +10,9 @@
     <PackageProjectUrl>https://www.nuget.org/packages/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/SeppPenner/Serilog.Sinks.AmazonS3</RepositoryUrl>
     <PackageLicenseUrl>https://github.com/SeppPenner/https://github.com/SeppPenner/Serilog.Sinks.AmazonS3/blob/master/License.txt</PackageLicenseUrl>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
-    <Version>1.0.2</Version>
+    <AssemblyVersion>1.0.5.0</AssemblyVersion>
+    <FileVersion>1.0.5.0</FileVersion>
+    <Version>1.0.5</Version>
     <PackageTags>c# csharp serilog amazon s3 amazons3 sink logging log</PackageTags>
     <PackageReleaseNotes>Added icon to the nuget package.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>

@@ -51,6 +51,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="awsSecretAccessKey">       The Amazon S3 secret access key. </param>
         /// <param name="autoUploadEvents">         Automatically upload all events immediately. </param>
         /// <param name="failureCallback">          (Optional) The failure callback. </param>
+        /// <param name="bucketPath">               (Optional) The Amazon S3 bucket path. </param>
         public AmazonS3Sink(
             ITextFormatter formatter,
             string path,
@@ -65,7 +66,8 @@ namespace Serilog.Sinks.AmazonS3
             string awsAccessKeyId,
             string awsSecretAccessKey,
             bool autoUploadEvents,
-            Action<Exception> failureCallback = null)
+            Action<Exception> failureCallback = null,
+            string bucketPath = null)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -113,7 +115,8 @@ namespace Serilog.Sinks.AmazonS3
                 awsAccessKeyId,
                 awsSecretAccessKey,
                 autoUploadEvents,
-                failureCallback);
+                failureCallback,
+                bucketPath);
         }
 
         /// <summary>   Initializes a new instance of the <see cref="AmazonS3Sink" /> class. </summary>
@@ -139,6 +142,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
         /// <param name="autoUploadEvents">         Automatically upload all events immediately. </param>
         /// <param name="failureCallback">          (Optional) The failure callback. </param>
+        /// <param name="bucketPath">               (Optional) The Amazon S3 bucket path. </param>
         public AmazonS3Sink(
             ITextFormatter formatter,
             string path,
@@ -151,7 +155,8 @@ namespace Serilog.Sinks.AmazonS3
             string bucketName,
             RegionEndpoint endpoint,
             bool autoUploadEvents,
-            Action<Exception> failureCallback = null)
+            Action<Exception> failureCallback = null,
+            string bucketPath = null)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -187,7 +192,8 @@ namespace Serilog.Sinks.AmazonS3
                 bucketName,
                 endpoint,
                 autoUploadEvents,
-                failureCallback);
+                failureCallback,
+                bucketPath);
         }
 
         /// <summary>   Emit the provided log event to the sink. </summary>
