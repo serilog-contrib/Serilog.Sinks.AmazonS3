@@ -6,9 +6,9 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.2": {
-      "Serilog.Sinks.AmazonS3/1.0.4": {
+      "Serilog.Sinks.AmazonS3/1.0.5": {
         "dependencies": {
-          "AWSSDK.S3": "3.3.106.3",
+          "AWSSDK.S3": "3.3.109",
           "GitVersionTask": "5.1.2",
           "Serilog": "2.9.0"
         },
@@ -16,22 +16,22 @@
           "Serilog.Sinks.AmazonS3.dll": {}
         }
       },
-      "AWSSDK.Core/3.3.103.61": {
+      "AWSSDK.Core/3.3.104": {
         "runtime": {
           "lib/netstandard2.0/AWSSDK.Core.dll": {
             "assemblyVersion": "3.3.0.0",
-            "fileVersion": "3.3.103.61"
+            "fileVersion": "3.3.104.0"
           }
         }
       },
-      "AWSSDK.S3/3.3.106.3": {
+      "AWSSDK.S3/3.3.109": {
         "dependencies": {
-          "AWSSDK.Core": "3.3.103.61"
+          "AWSSDK.Core": "3.3.104"
         },
         "runtime": {
           "lib/netstandard2.0/AWSSDK.S3.dll": {
             "assemblyVersion": "3.3.0.0",
-            "fileVersion": "3.3.106.3"
+            "fileVersion": "3.3.109.0"
           }
         }
       },
@@ -47,24 +47,24 @@
     }
   },
   "libraries": {
-    "Serilog.Sinks.AmazonS3/1.0.4": {
+    "Serilog.Sinks.AmazonS3/1.0.5": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "AWSSDK.Core/3.3.103.61": {
+    "AWSSDK.Core/3.3.104": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-P44Ua5oNX733IJ8b1n0zOdaa8+K1e1VJUnIyaQT4slU4GU0CmoVAO2fTGR1+hIQ6DqPGRG6HOXqH3L+1QxyzaQ==",
-      "path": "awssdk.core/3.3.103.61",
-      "hashPath": "awssdk.core.3.3.103.61.nupkg.sha512"
+      "sha512": "sha512-1ldqyzqh18tKTFuseBX3YetZk/flCE3fRVOBAUFpJJrt0xqHjMBxMwpMLrnrYaDubHj7f9EPU0TlGgMef1YUSA==",
+      "path": "awssdk.core/3.3.104",
+      "hashPath": "awssdk.core.3.3.104.nupkg.sha512"
     },
-    "AWSSDK.S3/3.3.106.3": {
+    "AWSSDK.S3/3.3.109": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-H+mEDASO31FTB+4TL9PzTzwpfv74Kq2F99WQ9UxCk8Sm4LK25TnfnKVwLuE3C4tfh55JAhQlBSJt0rbIZqWVBw==",
-      "path": "awssdk.s3/3.3.106.3",
-      "hashPath": "awssdk.s3.3.3.106.3.nupkg.sha512"
+      "sha512": "sha512-fQ57eas2Z/mtOMKKJWn05KZeitGcFN5Lay81xGIH4OXzIoeqq/tqrN6Zp0wUi0BXppVG+0eCf665xuYtho0HRA==",
+      "path": "awssdk.s3/3.3.109",
+      "hashPath": "awssdk.s3.3.3.109.nupkg.sha512"
     },
     "GitVersionTask/5.1.2": {
       "type": "package",
