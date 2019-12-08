@@ -19,10 +19,10 @@ namespace Serilog.Sinks.AmazonS3
     using Amazon.S3;
     using Amazon.S3.Model;
 
-    using Serilog.Core;
-    using Serilog.Debugging;
-    using Serilog.Events;
-    using Serilog.Formatting;
+    using Core;
+    using Debugging;
+    using Events;
+    using Formatting;
 
     /// <summary>   A class to write rolling files. </summary>
     /// <seealso cref="ILogEventSink" />
@@ -132,7 +132,7 @@ namespace Serilog.Sinks.AmazonS3
             string awsSecretAccessKey,
             bool autoUploadEvents,
             Action<Exception> failureCallback = null,
-            string bucketPath = null)
+            string bucketPath = "")
         {
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -174,7 +174,7 @@ namespace Serilog.Sinks.AmazonS3
             this.awsAccessKeyId = awsAccessKeyId;
             this.awsSecretAccessKey = awsSecretAccessKey;
             this.endpoint = endpoint;
-            this.pathRoller = new PathRoller(path, rollingInterval, bucketPath);
+            this.pathRoller = new PathRoller(path, rollingInterval);
             this.textFormatter = textFormatter;
             this.fileSizeLimitBytes = fileSizeLimitBytes;
             this.retainedFileCountLimit = retainedFileCountLimit;
@@ -224,7 +224,7 @@ namespace Serilog.Sinks.AmazonS3
             RegionEndpoint endpoint,
             bool autoUploadEvents,
             Action<Exception> failureCallback = null,
-            string bucketPath = null)
+            string bucketPath = "")
         {
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -254,7 +254,7 @@ namespace Serilog.Sinks.AmazonS3
 
             this.bucketName = bucketName;
             this.endpoint = endpoint;
-            this.pathRoller = new PathRoller(path, rollingInterval, bucketPath);
+            this.pathRoller = new PathRoller(path, rollingInterval);
             this.textFormatter = textFormatter;
             this.fileSizeLimitBytes = fileSizeLimitBytes;
             this.retainedFileCountLimit = retainedFileCountLimit;
@@ -332,7 +332,7 @@ namespace Serilog.Sinks.AmazonS3
             }
             catch (Exception ex)
             {
-                this.FailureCallback(ex);
+                FailureCallback?.Invoke(ex);
                 throw;
             }
         }
@@ -503,8 +503,8 @@ namespace Serilog.Sinks.AmazonS3
                 sequence = minSequence;
             }
 
-            const int MaxAttempts = 3;
-            for (var attempt = 0; attempt < MaxAttempts; attempt++)
+            const int maxAttempts = 3;
+            for (var attempt = 0; attempt < maxAttempts; attempt++)
             {
                 this.pathRoller.GetLogFilePath(now, sequence, out var path);
 
@@ -572,11 +572,14 @@ namespace Serilog.Sinks.AmazonS3
                 // Open the file for shared reading and writing
                 using (var fs = new FileStream(this.currentFileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
-                    var putRequest = new PutObjectRequest()
+                    var key = string.IsNullOrWhiteSpace(this.bucketPath) ?
+                        Path.GetFileName(this.currentFileName).Replace("\\", "/") :
+                        Path.Combine(this.bucketPath, Path.GetFileName(this.currentFileName)).Replace("\\", "/");
+
+                    var putRequest = new PutObjectRequest
                     {
                         BucketName = this.bucketName,
-                        Key = Path.Combine(this.pathRoller.LogFileBucketPath, Path.GetFileName(this.currentFileName))
-                            .Replace("\\", "/"),
+                        Key = key,
                         InputStream = fs
                     };
                     return await client.PutObjectAsync(putRequest);
