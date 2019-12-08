@@ -1,0 +1,16 @@
+{
+    "Id": "Policy1575837688950",
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Stmt1575837684072",
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:s3:::test-bucket-aws-s3-serilog/*",
+            "Principal": "*"
+        }
+    ]
+}
