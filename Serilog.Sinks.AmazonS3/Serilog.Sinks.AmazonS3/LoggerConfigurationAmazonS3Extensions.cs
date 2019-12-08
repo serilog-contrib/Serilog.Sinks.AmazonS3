@@ -117,6 +117,7 @@ namespace Serilog
         ///     events.
         /// </param>
         /// <param name="failureCallback">          (Optional) The failure callback. </param>
+        /// <param name="bucketPath">               (Optional) The Amazon S3 bucket path. </param>
         /// <returns>   Configuration object allowing method chaining. </returns>
         public static LoggerConfiguration AmazonS3(
             this LoggerSinkConfiguration sinkConfiguration,
@@ -136,7 +137,8 @@ namespace Serilog
             int? retainedFileCountLimit = DefaultRetainedFileCountLimit,
             Encoding encoding = null,
             FileLifecycleHooks hooks = null,
-            Action<Exception> failureCallback = null)
+            Action<Exception> failureCallback = null,
+            string bucketPath = null)
         {
             if (sinkConfiguration == null)
             {
@@ -195,7 +197,8 @@ namespace Serilog
                     awsAccessKeyId,
                     awsSecretAccessKey,
                     autoUploadEvents,
-                    failureCallback),
+                    failureCallback,
+                    bucketPath),
                 restrictedToMinimumLevel,
                 levelSwitch);
         }
@@ -275,6 +278,7 @@ namespace Serilog
         ///     events.
         /// </param>
         /// <param name="failureCallback">          (Optional) The failure callback. </param>
+        /// <param name="bucketPath">               (Optional) The Amazon S3 bucket path. </param>
         /// <returns>   Configuration object allowing method chaining. </returns>
         public static LoggerConfiguration AmazonS3(
             this LoggerSinkConfiguration sinkConfiguration,
@@ -292,7 +296,8 @@ namespace Serilog
             int? retainedFileCountLimit = DefaultRetainedFileCountLimit,
             Encoding encoding = null,
             FileLifecycleHooks hooks = null,
-            Action<Exception> failureCallback = null)
+            Action<Exception> failureCallback = null,
+            string bucketPath = null)
         {
             if (sinkConfiguration == null)
             {
@@ -339,7 +344,8 @@ namespace Serilog
                     bucketName,
                     endpoint,
                     autoUploadEvents,
-                    failureCallback),
+                    failureCallback,
+                    bucketPath),
                 restrictedToMinimumLevel,
                 levelSwitch);
         }

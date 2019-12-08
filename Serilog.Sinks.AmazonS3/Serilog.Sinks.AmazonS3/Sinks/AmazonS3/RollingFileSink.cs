@@ -87,6 +87,9 @@ namespace Serilog.Sinks.AmazonS3
         /// <summary>   The next checkpoint. </summary>
         private DateTime? nextCheckpoint;
 
+        /// <summary>   The path where local files are stored. </summary>
+        private readonly string bucketPath;
+
         /// <summary>   Initializes a new instance of the <see cref="RollingFileSink" /> class. </summary>
         /// <exception cref="ArgumentNullException">
         ///     An <see cref="ArgumentNullException" /> thrown
@@ -112,6 +115,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="awsSecretAccessKey">       The Amazon S3 access key. </param>
         /// <param name="autoUploadEvents">         Automatically upload all events immediately. </param>
         /// <param name="failureCallback">          (Optional) The failure callback. </param>
+        /// <param name="bucketPath">               (Optional) The Amazon S3 bucket path. </param>
         public RollingFileSink(
             string path,
             ITextFormatter textFormatter,
@@ -127,7 +131,8 @@ namespace Serilog.Sinks.AmazonS3
             string awsAccessKeyId,
             string awsSecretAccessKey,
             bool autoUploadEvents,
-            Action<Exception> failureCallback = null)
+            Action<Exception> failureCallback = null,
+            string bucketPath = null)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -169,7 +174,7 @@ namespace Serilog.Sinks.AmazonS3
             this.awsAccessKeyId = awsAccessKeyId;
             this.awsSecretAccessKey = awsSecretAccessKey;
             this.endpoint = endpoint;
-            this.pathRoller = new PathRoller(path, rollingInterval);
+            this.pathRoller = new PathRoller(path, rollingInterval, bucketPath);
             this.textFormatter = textFormatter;
             this.fileSizeLimitBytes = fileSizeLimitBytes;
             this.retainedFileCountLimit = retainedFileCountLimit;
@@ -178,6 +183,7 @@ namespace Serilog.Sinks.AmazonS3
             this.rollOnFileSizeLimit = rollOnFileSizeLimit;
             this.fileLifecycleHooks = fileLifecycleHooks;
             this.autoUploadEvents = autoUploadEvents;
+            this.bucketPath = bucketPath;
         }
 
         /// <summary>   Initializes a new instance of the <see cref="RollingFileSink" /> class. </summary>
@@ -203,6 +209,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
         /// <param name="autoUploadEvents">         Automatically upload all events immediately. </param>
         /// <param name="failureCallback">          (Optional) The failure callback. </param>
+        /// <param name="bucketPath">               (Optional) The Amazon S3 bucket path. </param>
         public RollingFileSink(
             string path,
             ITextFormatter textFormatter,
@@ -216,7 +223,8 @@ namespace Serilog.Sinks.AmazonS3
             string bucketName,
             RegionEndpoint endpoint,
             bool autoUploadEvents,
-            Action<Exception> failureCallback = null)
+            Action<Exception> failureCallback = null,
+            string bucketPath = null)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -246,7 +254,7 @@ namespace Serilog.Sinks.AmazonS3
 
             this.bucketName = bucketName;
             this.endpoint = endpoint;
-            this.pathRoller = new PathRoller(path, rollingInterval);
+            this.pathRoller = new PathRoller(path, rollingInterval, bucketPath);
             this.textFormatter = textFormatter;
             this.fileSizeLimitBytes = fileSizeLimitBytes;
             this.retainedFileCountLimit = retainedFileCountLimit;
@@ -255,6 +263,7 @@ namespace Serilog.Sinks.AmazonS3
             this.rollOnFileSizeLimit = rollOnFileSizeLimit;
             this.fileLifecycleHooks = fileLifecycleHooks;
             this.autoUploadEvents = autoUploadEvents;
+            this.bucketPath = bucketPath;
         }
 
         /// <summary>
@@ -566,7 +575,8 @@ namespace Serilog.Sinks.AmazonS3
                     var putRequest = new PutObjectRequest()
                     {
                         BucketName = this.bucketName,
-                        Key = Path.GetFileName(this.currentFileName),
+                        Key = Path.Combine(this.pathRoller.LogFileBucketPath, Path.GetFileName(this.currentFileName))
+                            .Replace("\\", "/"),
                         InputStream = fs
                     };
                     return await client.PutObjectAsync(putRequest);

@@ -44,9 +44,10 @@ namespace Serilog.Sinks.AmazonS3
         ///     An <see cref="ArgumentNullException" /> thrown
         ///     when the path is null.
         /// </exception>
-        /// <param name="path">     The path. </param>
-        /// <param name="interval"> The interval. </param>
-        public PathRoller(string path, RollingInterval interval)
+        /// <param name="path">         The path. </param>
+        /// <param name="interval">     The interval. </param>
+        /// <param name="bucketPath">   The Amazon S3 bucket path. </param>
+        public PathRoller(string path, RollingInterval interval, string bucketPath = null)
         {
             if (path == null)
             {
@@ -63,6 +64,7 @@ namespace Serilog.Sinks.AmazonS3
             }
 
             this.LogFileDirectory = Path.GetFullPath(pathDirectory);
+            this.LogFileBucketPath = bucketPath;
             this.filenamePrefix = Path.GetFileNameWithoutExtension(path);
             this.filenameSuffix = Path.GetExtension(path);
             this.filenameMatcher = new Regex(
@@ -82,6 +84,10 @@ namespace Serilog.Sinks.AmazonS3
         /// <value> The log file directory. </value>
 
         public string LogFileDirectory { get; }
+
+        /// <summary>   Gets the bucket log file path. </summary>
+        /// <value> The log file bucket path. </value>
+        public string LogFileBucketPath { get; }
 
         /// <summary>   Gets the current checkpoint. </summary>
         /// <param name="instant">  The instant. </param>
