@@ -132,7 +132,7 @@ namespace Serilog.Sinks.AmazonS3
             string awsSecretAccessKey,
             bool autoUploadEvents,
             Action<Exception> failureCallback = null,
-            string bucketPath = "")
+            string bucketPath = null)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -224,7 +224,7 @@ namespace Serilog.Sinks.AmazonS3
             RegionEndpoint endpoint,
             bool autoUploadEvents,
             Action<Exception> failureCallback = null,
-            string bucketPath = "")
+            string bucketPath = null)
         {
             if (string.IsNullOrWhiteSpace(path))
             {

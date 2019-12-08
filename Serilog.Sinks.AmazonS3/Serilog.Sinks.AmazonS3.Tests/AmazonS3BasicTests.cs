@@ -2,6 +2,9 @@
 //
 // summary:	Implements the amazon s 3 basic tests class
 
+using Serilog.Core;
+using Serilog.Events;
+
 namespace Serilog.Sinks.AmazonS3.Tests
 {
     using System;
@@ -54,6 +57,39 @@ namespace Serilog.Sinks.AmazonS3.Tests
                 AwsSecretAccessKey,
                 fileSizeLimitBytes: 200,
                 rollingInterval: RollingInterval.Minute).CreateLogger();
+
+            for (var x = 0; x < 200; x++)
+            {
+                var ex = new Exception("Test");
+                logger.Error(ex.ToString());
+            }
+        }
+
+        /// <summary>
+        ///     This method is used to test find the null reference exception of issue 8.
+        /// </summary>
+        [TestMethod]
+        public void ExtendedFileUploadTest()
+        {
+            var levelSwitch = new LoggingLevelSwitch { MinimumLevel = LogEventLevel.Information };
+
+            var logger = new LoggerConfiguration()
+                .WriteTo.AmazonS3(
+                    "log.txt",
+                    BucketName,
+                    RegionEndpoint.EUWest2,
+                    AwsAccessKeyId,
+                    AwsSecretAccessKey,
+                    restrictedToMinimumLevel: LogEventLevel.Verbose,
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                    fileSizeLimitBytes: 200,
+                    levelSwitch: levelSwitch,
+                    buffered: true,
+                    rollingInterval: RollingInterval.Minute,
+                    retainedFileCountLimit: 10,
+                    autoUploadEvents: true
+                )
+                .CreateLogger();
 
             for (var x = 0; x < 200; x++)
             {
