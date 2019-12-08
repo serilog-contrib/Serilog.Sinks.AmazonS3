@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.3.106.3" />
+    <PackageReference Include="AWSSDK.S3" Version="3.3.109" />
     <PackageReference Include="GitVersionTask" Version="5.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
