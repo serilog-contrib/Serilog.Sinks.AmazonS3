@@ -69,8 +69,8 @@ The project can be found on [nuget](https://www.nuget.org/packages/HaemmerElectr
 |path|The main log file name used.|`"log.txt"`|None, is mandatory.|
 |bucketName|The name of the Amazon S3 bucket to use. Check: https://docs.aws.amazon.com/general/latest/gr/rande.html.|`"mytestbucket-aws"`|None, is mandatory.|
 |endpoint|The Amazon S3 endpoint location.|`RegionEndpoint.EUWest2`|None, is mandatory.|
-|awsAccessKeyId|The Amazon S3 access key id.|`ABCDEFGHIJKLMNOP`|None.|
-|awsSecretAccessKey|The Amazon S3 secret access key.|`c3fghsrgwegfn://asdfsdfsdgfsdg`|None.|
+|awsAccessKeyId|The Amazon S3 access key id.|`ABCDEFGHIJKLMNOP`|None, is mandatory.|
+|awsSecretAccessKey|The Amazon S3 secret access key.|`c3fghsrgwegfn://asdfsdfsdgfsdg`|None, is mandatory.|
 |restrictedToMinimumLevel|The minimum level for events passed through the sink. Ignored when `levelSwitch` is specified. Check: https://github.com/serilog/serilog/blob/dev/src/Serilog/Events/LogEventLevel.cs.|`LogEventLevel.Information`|`LogEventLevel.Verbose`|
 |outputTemplate|A message template describing the format used to write to the sink.|`"{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"`|`"{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"`|
 |formatProvider|The `IFormatProvider` to use. Supplies culture-specific formatting information. Check: https://docs.microsoft.com/en-us/dotnet/api/system.iformatprovider?view=netframework-4.8.|`new CultureInfo("de-DE")`|`null`|
@@ -82,7 +82,8 @@ The project can be found on [nuget](https://www.nuget.org/packages/HaemmerElectr
 |encoding|Character encoding used to write the text file. Check: https://docs.microsoft.com/de-de/dotnet/api/system.text.encoding?view=netframework-4.8.|`encoding: Encoding.Unicode`|`null` meaning `Encoding.UTF8`|
 |hooks|Optionally enables hooking into log file lifecycle events. Check: https://github.com/serilog/serilog-sinks-file/blob/dev/src/Serilog.Sinks.File/Sinks/File/FileLifecycleHooks.cs and https://github.com/cocowalla/serilog-sinks-file-header/blob/master/src/Serilog.Sinks.File.Header/HeaderWriter.cs.|`hooks: new HeaderWriter("Timestamp,Level,Message")`|`null`|
 |autoUploadEvents|A flag indicating whether the log events file is updated immediately to Amazon S3 after a new log event is created.|`true`|`false`|
-|failureCallback| Optionally execute a callback if an exception has been throwed by the sink.|`failureCallback: e => Console.WriteLine($"An error occured in my sink: {e.Message}"))`|None.|
+|failureCallback|Optionally execute a callback if an exception has been throwed by the sink.|`failureCallback: e => Console.WriteLine($"An error occured in my sink: {e.Message}"))`|None.|
+|bucketPath|Optionally add a sub-path for the bucket. Files are stored on S3 `mytestbucket-aws/awsSubPath/log.txt` in the example below.|`bucketPath = "awsSubPath"`|`null`|
 
 ## Full example
 
@@ -107,7 +108,8 @@ var logger = new LoggerConfiguration().WriteTo
         retainedFileCountLimit: 10,
         encoding: Encoding.Unicode,
         hooks: new HeaderWriter("Timestamp,Level,Message"),
-		failureCallback: e => Console.WriteLine($"An error occured in my sink: {e.Message}")
+		failureCallback: e => Console.WriteLine($"An error occured in my sink: {e.Message}"),
+		bucketPath = "awsSubPath"
 		)
     .CreateLogger();
 
