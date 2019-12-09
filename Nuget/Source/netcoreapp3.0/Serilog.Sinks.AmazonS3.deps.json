@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v3.0": {
-      "Serilog.Sinks.AmazonS3/1.0.5": {
+      "Serilog.Sinks.AmazonS3/1.0.6": {
         "dependencies": {
           "AWSSDK.S3": "3.3.109",
           "GitVersionTask": "5.1.2",
@@ -47,7 +47,7 @@
     }
   },
   "libraries": {
-    "Serilog.Sinks.AmazonS3/1.0.5": {
+    "Serilog.Sinks.AmazonS3/1.0.6": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

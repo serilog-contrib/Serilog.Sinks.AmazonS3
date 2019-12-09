@@ -35,6 +35,7 @@ Check out the how to use file [here](https://github.com/SeppPenner/Serilog.Sinks
 Change history
 --------------
 
+* **Version 1.0.6.0 (2019-12-09)** : Fixed nuget package dependency bug.
 * **Version 1.0.5.0 (2019-12-08)** : Updated nuget packages, added new option "bucketPath" to the sink.
 * **Version 1.0.4.0 (2019-11-12)** : Small updates, added new option "autoUploadEvents" to the sink.
 * **Version 1.0.3.0 (2019-11-08)** : Updated nuget packages, added GitVersionTask.
