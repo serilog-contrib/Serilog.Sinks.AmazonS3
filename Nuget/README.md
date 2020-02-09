@@ -18,7 +18,6 @@ so thanks to all the [contributors](https://github.com/serilog/serilog-sinks-fil
 [![Gitter](https://badges.gitter.im/Serilog-Sinks-AmazonS3/community.svg)](https://gitter.im/Serilog-Sinks-AmazonS3/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## Available for
-* NetFramework 4.5
 * NetFramework 4.6
 * NetFramework 4.6.2
 * NetFramework 4.7
@@ -26,8 +25,13 @@ so thanks to all the [contributors](https://github.com/serilog/serilog-sinks-fil
 * NetFramework 4.8
 * NetStandard 2.0
 * NetStandard 2.1
-* NetCore 2.2
+* NetCore 2.1
 * NetCore 3.0
+* NetCore 3.1
+
+## Net Core and Net Framework latest and LTS versions
+* https://dotnet.microsoft.com/download/dotnet-framework
+* https://dotnet.microsoft.com/download/dotnet-core
 
 ## Basic usage:
 Check out the how to use file [here](https://github.com/SeppPenner/Serilog.Sinks.AmazonS3/blob/master/HowToUse.md).
@@ -35,6 +39,7 @@ Check out the how to use file [here](https://github.com/SeppPenner/Serilog.Sinks
 Change history
 --------------
 
+* **Version 1.0.7.0 (2020-02-09)** : Updated nuget packages, updated available versions.
 * **Version 1.0.6.0 (2019-12-09)** : Fixed nuget package dependency bug.
 * **Version 1.0.5.0 (2019-12-08)** : Updated nuget packages, added new option "bucketPath" to the sink.
 * **Version 1.0.4.0 (2019-11-12)** : Small updates, added new option "autoUploadEvents" to the sink.

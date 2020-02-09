@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3</id>
-    <version>1.0.6.0</version>
+    <version>1.0.7.0</version>
     <authors>SeppPenner</authors>
     <owners>SeppPenner</owners>
     <projectUrl>https://github.com/SeppPenner/Serilog.Sinks.AmazonS3/</projectUrl>
@@ -21,27 +21,12 @@
 	  so thanks to all the https://github.com/serilog/serilog-sinks-file/graphs/contributors of this project :thumbsup:.
 	</description>
     <releaseNotes>
-	  Version 1.0.6.0 (2019-12-09): Fixed nuget package dependency bug.
+	  Version 1.0.7.0 (2020-02-09): Updated nuget packages, updated available versions.
 	</releaseNotes>
     <copyright>Copyright © Hämmer Electronics</copyright>
     <tags>c# csharp serilog amazon s3 amazons3 sink logging log</tags>
 	<dependencies>
-      <group targetFramework="net45">
-        <dependency id="AWSSDK.Core" version="3.3.104" />
-        <dependency id="AWSSDK.S3" version="3.3.109" />
-		<dependency id="Serilog" version="2.9.0.0" />
-      </group>
 	  <group targetFramework="net46">
-        <dependency id="AWSSDK.Core" version="3.3.104" />
-        <dependency id="AWSSDK.S3" version="3.3.109" />
-		<dependency id="Serilog" version="2.9.0.0" />
-      </group>
-	  <group targetFramework="net47">
-        <dependency id="AWSSDK.Core" version="3.3.104" />
-        <dependency id="AWSSDK.S3" version="3.3.109" />
-		<dependency id="Serilog" version="2.9.0.0" />
-      </group>
-	  <group targetFramework="net48">
         <dependency id="AWSSDK.Core" version="3.3.104" />
         <dependency id="AWSSDK.S3" version="3.3.109" />
 		<dependency id="Serilog" version="2.9.0.0" />
@@ -51,7 +36,17 @@
         <dependency id="AWSSDK.S3" version="3.3.109" />
 		<dependency id="Serilog" version="2.9.0.0" />
       </group>
+	  <group targetFramework="net47">
+        <dependency id="AWSSDK.Core" version="3.3.104" />
+        <dependency id="AWSSDK.S3" version="3.3.109" />
+		<dependency id="Serilog" version="2.9.0.0" />
+      </group>
 	  <group targetFramework="net472">
+        <dependency id="AWSSDK.Core" version="3.3.104" />
+        <dependency id="AWSSDK.S3" version="3.3.109" />
+		<dependency id="Serilog" version="2.9.0.0" />
+      </group>
+	  <group targetFramework="net48">
         <dependency id="AWSSDK.Core" version="3.3.104" />
         <dependency id="AWSSDK.S3" version="3.3.109" />
 		<dependency id="Serilog" version="2.9.0.0" />
@@ -68,12 +63,17 @@
         <dependency id="AWSSDK.S3" version="3.3.109" />
 		<dependency id="Serilog" version="2.9.0.0" />
       </group>
-      <group targetFramework="netcoreapp2.2">
+      <group targetFramework="netcoreapp2.1">
 	    <dependency id="AWSSDK.Core" version="3.3.104" />
         <dependency id="AWSSDK.S3" version="3.3.109" />
 		<dependency id="Serilog" version="2.9.0.0" />
       </group>
 	  <group targetFramework="netcoreapp3.0">
+        <dependency id="AWSSDK.Core" version="3.3.104" />
+        <dependency id="AWSSDK.S3" version="3.3.109" />
+		<dependency id="Serilog" version="2.9.0.0" />
+      </group>
+	  <group targetFramework="netcoreapp3.1">
         <dependency id="AWSSDK.Core" version="3.3.104" />
         <dependency id="AWSSDK.S3" version="3.3.109" />
 		<dependency id="Serilog" version="2.9.0.0" />
@@ -84,7 +84,6 @@
 	  <file src="README.md" target="" />
 	  <file src="HowToUse.md" target="" />
 	  <file src="License.txt" target="" />
-	  <file src="Source\net45\**" target="lib\net45" />
 	  <file src="Source\net46\**" target="lib\net46" />
 	  <file src="Source\net462\**" target="lib\net462" />
 	  <file src="Source\net47\**" target="lib\net47" />
@@ -92,8 +91,9 @@
 	  <file src="Source\net48\**" target="lib\net48" />
 	  <file src="Source\netstandard2.0\**" target="lib\netstandard2.0" />
 	  <file src="Source\netstandard2.1\**" target="lib\netstandard2.1" />
-	  <file src="Source\netcoreapp2.2\**" target="lib\netcoreapp2.2" />
+	  <file src="Source\netcoreapp2.1\**" target="lib\netcoreapp2.1" />
 	  <file src="Source\netcoreapp3.0\**" target="lib\netcoreapp3.0" />
+	  <file src="Source\netcoreapp3.1\**" target="lib\netcoreapp3.1" />
 	  <file src="..\Icon.png" target="images\" />
    </files>
 </package>

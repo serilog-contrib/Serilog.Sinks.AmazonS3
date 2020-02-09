@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;net46;net462;net47;net472;net48;netstandard2.0;netstandard2.1;netcoreapp2.2;netcoreapp3.0;</TargetFrameworks>
+    <TargetFrameworks>net46;net462;net47;net472;net48;netstandard2.0;netstandard2.1;netcoreapp2.1;netcoreapp3.0;netcoreapp3.1;</TargetFrameworks>
     <AssemblyName>Serilog.Sinks.AmazonS3</AssemblyName>
     <RootNamespace>Serilog</RootNamespace>
     <Authors>SeppPenner</Authors>
@@ -10,17 +10,17 @@
     <PackageProjectUrl>https://www.nuget.org/packages/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/SeppPenner/Serilog.Sinks.AmazonS3</RepositoryUrl>
     <PackageLicenseUrl>https://github.com/SeppPenner/https://github.com/SeppPenner/Serilog.Sinks.AmazonS3/blob/master/License.txt</PackageLicenseUrl>
-    <AssemblyVersion>1.0.6.0</AssemblyVersion>
-    <FileVersion>1.0.6.0</FileVersion>
-    <Version>1.0.6</Version>
+    <AssemblyVersion>1.0.7.0</AssemblyVersion>
+    <FileVersion>1.0.7.0</FileVersion>
+    <Version>1.0.7</Version>
     <PackageTags>c# csharp serilog amazon s3 amazons3 sink logging log</PackageTags>
-    <PackageReleaseNotes>Version 1.0.6.0 (2019-12-09): Fixed nuget package dependency bug.</PackageReleaseNotes>
+    <PackageReleaseNotes>Version 1.0.7.0 (2020-02-09): Updated nuget packages, updated available versions.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.3.109" />
-    <PackageReference Include="GitVersionTask" Version="5.1.2">
+    <PackageReference Include="AWSSDK.S3" Version="3.3.110.21" />
+    <PackageReference Include="GitVersionTask" Version="5.1.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
