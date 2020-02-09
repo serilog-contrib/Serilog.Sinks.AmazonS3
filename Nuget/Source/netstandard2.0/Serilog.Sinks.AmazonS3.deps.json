@@ -7,10 +7,10 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "Serilog.Sinks.AmazonS3/1.0.6": {
+      "Serilog.Sinks.AmazonS3/1.0.7": {
         "dependencies": {
-          "AWSSDK.S3": "3.3.109",
-          "GitVersionTask": "5.1.2",
+          "AWSSDK.S3": "3.3.110.21",
+          "GitVersionTask": "5.1.3",
           "NETStandard.Library": "2.0.3",
           "Serilog": "2.9.0"
         },
@@ -18,26 +18,26 @@
           "Serilog.Sinks.AmazonS3.dll": {}
         }
       },
-      "AWSSDK.Core/3.3.104": {
+      "AWSSDK.Core/3.3.104.23": {
         "runtime": {
           "lib/netstandard2.0/AWSSDK.Core.dll": {
             "assemblyVersion": "3.3.0.0",
-            "fileVersion": "3.3.104.0"
+            "fileVersion": "3.3.104.23"
           }
         }
       },
-      "AWSSDK.S3/3.3.109": {
+      "AWSSDK.S3/3.3.110.21": {
         "dependencies": {
-          "AWSSDK.Core": "3.3.104"
+          "AWSSDK.Core": "3.3.104.23"
         },
         "runtime": {
           "lib/netstandard2.0/AWSSDK.S3.dll": {
             "assemblyVersion": "3.3.0.0",
-            "fileVersion": "3.3.109.0"
+            "fileVersion": "3.3.110.21"
           }
         }
       },
-      "GitVersionTask/5.1.2": {},
+      "GitVersionTask/5.1.3": {},
       "Microsoft.NETCore.Platforms/1.1.0": {},
       "NETStandard.Library/2.0.3": {
         "dependencies": {
@@ -55,31 +55,31 @@
     }
   },
   "libraries": {
-    "Serilog.Sinks.AmazonS3/1.0.6": {
+    "Serilog.Sinks.AmazonS3/1.0.7": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "AWSSDK.Core/3.3.104": {
+    "AWSSDK.Core/3.3.104.23": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-1ldqyzqh18tKTFuseBX3YetZk/flCE3fRVOBAUFpJJrt0xqHjMBxMwpMLrnrYaDubHj7f9EPU0TlGgMef1YUSA==",
-      "path": "awssdk.core/3.3.104",
-      "hashPath": "awssdk.core.3.3.104.nupkg.sha512"
+      "sha512": "sha512-mW1g7PaeLfNTAOATZeEUMtw1HITympWBB8jeiKN1nlXHll+riEELhqbICGccMBTHIdov+qF5iI2l6ojg4+47gA==",
+      "path": "awssdk.core/3.3.104.23",
+      "hashPath": "awssdk.core.3.3.104.23.nupkg.sha512"
     },
-    "AWSSDK.S3/3.3.109": {
+    "AWSSDK.S3/3.3.110.21": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-fQ57eas2Z/mtOMKKJWn05KZeitGcFN5Lay81xGIH4OXzIoeqq/tqrN6Zp0wUi0BXppVG+0eCf665xuYtho0HRA==",
-      "path": "awssdk.s3/3.3.109",
-      "hashPath": "awssdk.s3.3.3.109.nupkg.sha512"
+      "sha512": "sha512-9D0omm3mXQXBXPBFeWmx+5tqhblggkC50gpTLxa3O46egakeUqHE84dEDmy+UI4g7jFJfWCbQrGUIEZOJFRY2Q==",
+      "path": "awssdk.s3/3.3.110.21",
+      "hashPath": "awssdk.s3.3.3.110.21.nupkg.sha512"
     },
-    "GitVersionTask/5.1.2": {
+    "GitVersionTask/5.1.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-K5iXhB5N+b5DO+jcLgvo5CsQ2UcbAfpXP7Y6tUox0jw/RtgNEH2p5RvPlKS+OSsEVEAY0JV6BUXrtKmQKbp9rA==",
-      "path": "gitversiontask/5.1.2",
-      "hashPath": "gitversiontask.5.1.2.nupkg.sha512"
+      "sha512": "sha512-w44yiLaCiFBg0LRccgl+g9MCwVvkrmRKYdK3oTq20YJRBploUoHgk2it1Rf5anko15jFgx5UJ3wjmlrVcJ+ljg==",
+      "path": "gitversiontask/5.1.3",
+      "hashPath": "gitversiontask.5.1.3.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/1.1.0": {
       "type": "package",
