@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LoggerConfigurationAmazonS3Extensions.cs" company="Hämmer Electronics">
-// The project is licensed under the GNU GENERAL PUBLIC LICENSE, Version 3, 29 June 2007
+// The project is licensed under the MIT license
 // </copyright>
 // <summary>
 //   This class contains the Amazon S3 logger configuration.
