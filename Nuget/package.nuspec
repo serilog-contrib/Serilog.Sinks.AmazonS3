@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3</id>
-    <version>1.0.7.0</version>
+    <version>1.0.8.0</version>
     <authors>SeppPenner</authors>
     <owners>SeppPenner</owners>
     <projectUrl>https://github.com/SeppPenner/Serilog.Sinks.AmazonS3/</projectUrl>
@@ -21,7 +21,7 @@
 	  so thanks to all the https://github.com/serilog/serilog-sinks-file/graphs/contributors of this project :thumbsup:.
 	</description>
     <releaseNotes>
-	  Version 1.0.7.0 (2020-02-09): Updated nuget packages, updated available versions.
+	  Version 1.0.8.0 (2020-03-26): Updated nuget packages.
 	</releaseNotes>
     <copyright>Copyright © Hämmer Electronics</copyright>
     <tags>c# csharp serilog amazon s3 amazons3 sink logging log</tags>
