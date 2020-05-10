@@ -27,54 +27,54 @@
     <tags>c# csharp serilog amazon s3 amazons3 sink logging log</tags>
 	<dependencies>
 	  <group targetFramework="net46">
-        <dependency id="AWSSDK.Core" version="3.3.104" />
+        <dependency id="AWSSDK.Core" version="3.3.106" />
         <dependency id="AWSSDK.S3" version="3.3.110" />
 		<dependency id="Serilog" version="2.9.0.0" />
       </group>
 	  <group targetFramework="net462">
-        <dependency id="AWSSDK.Core" version="3.3.104" />
+        <dependency id="AWSSDK.Core" version="3.3.106" />
         <dependency id="AWSSDK.S3" version="3.3.110" />
 		<dependency id="Serilog" version="2.9.0.0" />
       </group>
 	  <group targetFramework="net47">
-        <dependency id="AWSSDK.Core" version="3.3.104" />
+        <dependency id="AWSSDK.Core" version="3.3.106" />
         <dependency id="AWSSDK.S3" version="3.3.110" />
 		<dependency id="Serilog" version="2.9.0.0" />
       </group>
 	  <group targetFramework="net472">
-        <dependency id="AWSSDK.Core" version="3.3.104" />
+        <dependency id="AWSSDK.Core" version="3.3.106" />
         <dependency id="AWSSDK.S3" version="3.3.110" />
 		<dependency id="Serilog" version="2.9.0.0" />
       </group>
 	  <group targetFramework="net48">
-        <dependency id="AWSSDK.Core" version="3.3.104" />
+        <dependency id="AWSSDK.Core" version="3.3.106" />
         <dependency id="AWSSDK.S3" version="3.3.110" />
 		<dependency id="Serilog" version="2.9.0.0" />
       </group>
       <group targetFramework="netstandard2.0">
         <dependency id="NETStandard.Library" version="2.0.0" />
-		<dependency id="AWSSDK.Core" version="3.3.104" />
+		<dependency id="AWSSDK.Core" version="3.3.106" />
         <dependency id="AWSSDK.S3" version="3.3.110" />
 		<dependency id="Serilog" version="2.9.0.0" />
       </group>
 	  <group targetFramework="netstandard2.1">
         <dependency id="NETStandard.Library" version="2.1.0" />
-		<dependency id="AWSSDK.Core" version="3.3.104" />
+		<dependency id="AWSSDK.Core" version="3.3.106" />
         <dependency id="AWSSDK.S3" version="3.3.110" />
 		<dependency id="Serilog" version="2.9.0.0" />
       </group>
       <group targetFramework="netcoreapp2.1">
-	    <dependency id="AWSSDK.Core" version="3.3.104" />
+	    <dependency id="AWSSDK.Core" version="3.3.106" />
         <dependency id="AWSSDK.S3" version="3.3.110" />
 		<dependency id="Serilog" version="2.9.0.0" />
       </group>
 	  <group targetFramework="netcoreapp3.0">
-        <dependency id="AWSSDK.Core" version="3.3.104" />
+        <dependency id="AWSSDK.Core" version="3.3.106" />
         <dependency id="AWSSDK.S3" version="3.3.110" />
 		<dependency id="Serilog" version="2.9.0.0" />
       </group>
 	  <group targetFramework="netcoreapp3.1">
-        <dependency id="AWSSDK.Core" version="3.3.104" />
+        <dependency id="AWSSDK.Core" version="3.3.106" />
         <dependency id="AWSSDK.S3" version="3.3.110" />
 		<dependency id="Serilog" version="2.9.0.0" />
       </group>
