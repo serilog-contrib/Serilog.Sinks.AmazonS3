@@ -39,6 +39,7 @@ Check out the how to use file [here](https://github.com/SeppPenner/Serilog.Sinks
 Change history
 --------------
 
+* **Version 1.0.9.0 (2020-05-10)** : Updated nuget packages, added option to add standard and custom formatters.
 * **Version 1.0.8.0 (2020-03-26)** : Updated nuget packages.
 * **Version 1.0.7.0 (2020-02-09)** : Updated nuget packages, updated available versions.
 * **Version 1.0.6.0 (2019-12-09)** : Fixed nuget package dependency bug.

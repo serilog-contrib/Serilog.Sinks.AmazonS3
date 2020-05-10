@@ -13,6 +13,9 @@ namespace Serilog.Sinks.AmazonS3.Tests
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    using Serilog.Formatting.Compact;
+
+
     /// <summary>   This class is used for some basic test regarding the Amazon S3 sink. </summary>
     [TestClass]
     public class AmazonS3BasicTests
@@ -82,6 +85,39 @@ namespace Serilog.Sinks.AmazonS3.Tests
                     AwsSecretAccessKey,
                     restrictedToMinimumLevel: LogEventLevel.Verbose,
                     outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                    fileSizeLimitBytes: 200,
+                    levelSwitch: levelSwitch,
+                    buffered: true,
+                    rollingInterval: RollingInterval.Minute,
+                    retainedFileCountLimit: 10,
+                    autoUploadEvents: true
+                )
+                .CreateLogger();
+
+            for (var x = 0; x < 200; x++)
+            {
+                var ex = new Exception("Test");
+                logger.Error(ex.ToString());
+            }
+        }
+
+        /// <summary>
+        ///     This method is used to test the JSON upload functionality.
+        /// </summary>
+        [TestMethod]
+        public void JsonFileUploadTest()
+        {
+            var levelSwitch = new LoggingLevelSwitch { MinimumLevel = LogEventLevel.Information };
+
+            var logger = new LoggerConfiguration()
+                .WriteTo.AmazonS3(
+                    new CompactJsonFormatter(),
+                    "log.json",
+                    BucketName,
+                    RegionEndpoint.EUWest2,
+                    AwsAccessKeyId,
+                    AwsSecretAccessKey,
+                    restrictedToMinimumLevel: LogEventLevel.Verbose,
                     fileSizeLimitBytes: 200,
                     levelSwitch: levelSwitch,
                     buffered: true,

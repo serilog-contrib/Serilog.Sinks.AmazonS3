@@ -38,6 +38,31 @@ for (var x = 0; x < 200; x++)
 }
 ```
 
+## Using JSON or custom formatters
+```csharp
+var levelSwitch = new LoggingLevelSwitch { MinimumLevel = LogEventLevel.Information };
+
+var logger = new LoggerConfiguration()
+	.WriteTo.AmazonS3(
+		new CompactJsonFormatter(),
+        "log.json",
+        "mytestbucket-aws",
+        Amazon.RegionEndpoint.EUWest2,
+        fileSizeLimitBytes: 200,
+        rollingInterval: RollingInterval.Minute,
+	)
+	.CreateLogger();
+
+for (var x = 0; x < 200; x++)
+{
+	var ex = new Exception("Test");
+	logger.Error(ex.ToString());
+}
+```
+
+For more information regarding this use case, see [Issue number 10](https://github.com/SeppPenner/Serilog.Sinks.AmazonS3/issues/10) and [Serilog formatting JSON](https://github.com/serilog/serilog/wiki/Formatting-Output#formatting-json).
+
+
 ## Exception handling
 You can pass a callback to the sink parameters on failure to define which action needs to be done if an exception occured on the sink side. If something is going wrong in the sink code, `failureCallback` will be executed.
 
@@ -66,14 +91,15 @@ The project can be found on [nuget](https://www.nuget.org/packages/HaemmerElectr
 
 |Parameter|Meaning|Example|Default value|
 |-|-|-|-|
+|formatter|The formatter that can be implemented as desired. See [Issue number 10](https://github.com/SeppPenner/Serilog.Sinks.AmazonS3/issues/10) and [Serilog formatting JSON](https://github.com/serilog/serilog/wiki/Formatting-Output#formatting-json) for more information.|`new CompactJsonFormatter()`|None, is optional.|
 |path|The main log file name used.|`"log.txt"`|None, is mandatory.|
 |bucketName|The name of the Amazon S3 bucket to use. Check: https://docs.aws.amazon.com/general/latest/gr/rande.html.|`"mytestbucket-aws"`|None, is mandatory.|
 |endpoint|The Amazon S3 endpoint location.|`RegionEndpoint.EUWest2`|None, is mandatory.|
-|awsAccessKeyId|The Amazon S3 access key id.|`ABCDEFGHIJKLMNOP`|None, is mandatory.|
-|awsSecretAccessKey|The Amazon S3 secret access key.|`c3fghsrgwegfn://asdfsdfsdgfsdg`|None, is mandatory.|
+|awsAccessKeyId|The Amazon S3 access key id.|`ABCDEFGHIJKLMNOP`|None, is mandatory. (Not required if you are using role based authentication).|
+|awsSecretAccessKey|The Amazon S3 secret access key.|`c3fghsrgwegfn://asdfsdfsdgfsdg`|None, is mandatory. (Not required if you are using role based authentication).|
 |restrictedToMinimumLevel|The minimum level for events passed through the sink. Ignored when `levelSwitch` is specified. Check: https://github.com/serilog/serilog/blob/dev/src/Serilog/Events/LogEventLevel.cs.|`LogEventLevel.Information`|`LogEventLevel.Verbose`|
-|outputTemplate|A message template describing the format used to write to the sink.|`"{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"`|`"{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"`|
-|formatProvider|The `IFormatProvider` to use. Supplies culture-specific formatting information. Check: https://docs.microsoft.com/en-us/dotnet/api/system.iformatprovider?view=netframework-4.8.|`new CultureInfo("de-DE")`|`null`|
+|outputTemplate|A message template describing the format used to write to the sink.|`"{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"`|`"{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"`. If `formatter` is specified: Not needed.|
+|formatProvider|The `IFormatProvider` to use. Supplies culture-specific formatting information. Check: https://docs.microsoft.com/en-us/dotnet/api/system.iformatprovider?view=netframework-4.8.|`new CultureInfo("de-DE")`|`null`.  If `formatter` is specified: Not needed.|
 |fileSizeLimitBytes|The number of bytes in a file. The sink rolls to a new file after the limit is reached.|`200`|`1L * 1024 * 1024 * 1024`|
 |levelSwitch|A switch allowing the pass-through minimum level to be changed at runtime. Check: https://nblumhardt.com/2014/10/dynamically-changing-the-serilog-level/.|`var levelSwitch = new LoggingLevelSwitch(); levelSwitch.MinimumLevel = LogEventLevel.Warning;`|`null`|
 |buffered|Indicates if flushing to the output file can be buffered or not.|`buffered: true`|`false`|
@@ -84,6 +110,8 @@ The project can be found on [nuget](https://www.nuget.org/packages/HaemmerElectr
 |autoUploadEvents|A flag indicating whether the log events file is updated immediately to Amazon S3 after a new log event is created.|`true`|`false`|
 |failureCallback|Optionally execute a callback if an exception has been throwed by the sink.|`failureCallback: e => Console.WriteLine($"An error occured in my sink: {e.Message}"))`|None.|
 |bucketPath|Optionally add a sub-path for the bucket. Files are stored on S3 `mytestbucket-aws/awsSubPath/log.txt` in the example below.|`bucketPath = "awsSubPath"`|`null`|
+
+Hint: Only `outputTemplate` and `formatProvider` together or the `formatter` can be used.
 
 ## Full example
 
