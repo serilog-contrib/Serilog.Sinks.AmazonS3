@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="WriteCountingStream.cs" company="Hämmer Electronics">
-// The project is licensed under the MIT license
+// The project is licensed under the MIT license.
 // </copyright>
 // <summary>
 //   Defines the WriteCountingStream type.
@@ -37,7 +37,6 @@ namespace Serilog.Sinks.AmazonS3
         ///     supports reading.
         /// </summary>
         /// <inheritdoc cref="Stream" />
-
         public override bool CanRead => false;
 
         /// <summary>
@@ -45,7 +44,6 @@ namespace Serilog.Sinks.AmazonS3
         ///     supports seeking.
         /// </summary>
         /// <inheritdoc cref="Stream" />
-
         public override bool CanSeek => this.stream.CanSeek;
 
         /// <summary>
@@ -53,19 +51,15 @@ namespace Serilog.Sinks.AmazonS3
         ///     supports writing.
         /// </summary>
         /// <inheritdoc cref="Stream" />
-
         public override bool CanWrite => true;
 
-        /// <summary>   Gets or sets the length of the counted value. </summary>
-        /// <value> The length of the counted value. </value>
-
+        /// <summary>Gets the length of the counted value. </summary>
         public long CountedLength { get; private set; }
 
         /// <summary>
         ///     When overridden in a derived class, gets the length in bytes of the stream.
         /// </summary>
         /// <inheritdoc cref="Stream" />
-
         public override long Length => this.stream.Length;
 
         /// <summary>
@@ -73,7 +67,6 @@ namespace Serilog.Sinks.AmazonS3
         /// </summary>
         /// <exception cref="NotSupportedException">    . </exception>
         /// <inheritdoc cref="Stream" />
-
         public override long Position
         {
             get => this.stream.Position;

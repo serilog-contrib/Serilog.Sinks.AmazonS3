@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RollingFileSink.cs" company="Hämmer Electronics">
-// The project is licensed under the MIT license
+// The project is licensed under the MIT license.
 // </copyright>
 // <summary>
 //   Defines the RollingFileSink type.
@@ -72,6 +72,9 @@ namespace Serilog.Sinks.AmazonS3
         /// <summary>   The text formatter. </summary>
         private readonly ITextFormatter textFormatter;
 
+        /// <summary>   The path where local files are stored. </summary>
+        private readonly string bucketPath;
+
         /// <summary>   The current file. </summary>
         private IFileSink currentFile;
 
@@ -86,9 +89,6 @@ namespace Serilog.Sinks.AmazonS3
 
         /// <summary>   The next checkpoint. </summary>
         private DateTime? nextCheckpoint;
-
-        /// <summary>   The path where local files are stored. </summary>
-        private readonly string bucketPath;
 
         /// <summary>   Initializes a new instance of the <see cref="RollingFileSink" /> class. </summary>
         /// <exception cref="ArgumentNullException">
@@ -281,7 +281,6 @@ namespace Serilog.Sinks.AmazonS3
         }
 
         /// <summary>   Gets or sets the failure callback. </summary>
-        /// <value> The failure callback. </value>
         public Action<Exception> FailureCallback { get; set; }
 
         /// <summary>
@@ -332,7 +331,7 @@ namespace Serilog.Sinks.AmazonS3
             }
             catch (Exception ex)
             {
-                FailureCallback?.Invoke(ex);
+                this.FailureCallback?.Invoke(ex);
                 throw;
             }
         }
@@ -435,6 +434,7 @@ namespace Serilog.Sinks.AmazonS3
                 .Where(n => StringComparer.OrdinalIgnoreCase.Compare(currentFileNameLocal, n) != 0)
                 .Skip(this.retainedFileCountLimit.Value - 1).ToList();
 
+            // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
             foreach (var obsolete in toRemove)
             {
                 var fullPath = Path.Combine(this.pathRoller.LogFileDirectory, obsolete);
@@ -444,7 +444,7 @@ namespace Serilog.Sinks.AmazonS3
                 }
                 catch (Exception ex)
                 {
-                    SelfLog.WriteLine("Error {0} while removing obsolete log file {1}", ex, fullPath);
+                    SelfLog.WriteLine($"Error {ex} while removing obsolete log file {fullPath}.");
                     throw;
                 }
             }
@@ -503,8 +503,8 @@ namespace Serilog.Sinks.AmazonS3
                 sequence = minSequence;
             }
 
-            const int maxAttempts = 3;
-            for (var attempt = 0; attempt < maxAttempts; attempt++)
+            const int MaxAttempts = 3;
+            for (var attempt = 0; attempt < MaxAttempts; attempt++)
             {
                 this.pathRoller.GetLogFilePath(now, sequence, out var path);
 
@@ -529,10 +529,7 @@ namespace Serilog.Sinks.AmazonS3
                         throw;
                     }
 
-                    SelfLog.WriteLine(
-                        "File target {0} was locked, attempting to open next in sequence (attempt {1})",
-                        path,
-                        attempt + 1);
+                    SelfLog.WriteLine($"File target {path} was locked, attempting to open next in sequence (attempt {attempt + 1}).");
                     sequence = (sequence ?? 0) + 1;
                     continue;
                 }
@@ -582,8 +579,8 @@ namespace Serilog.Sinks.AmazonS3
                         Key = key,
                         InputStream = fs
                     };
-                    return await client.PutObjectAsync(putRequest);
 
+                    return await client.PutObjectAsync(putRequest);
                 }
             }
             catch (AmazonS3Exception amazonS3Exception)

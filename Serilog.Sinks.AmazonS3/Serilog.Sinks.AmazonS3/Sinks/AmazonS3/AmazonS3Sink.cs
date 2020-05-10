@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AmazonS3Sink.cs" company="Hämmer Electronics">
-// The project is licensed under the MIT license
+// The project is licensed under the MIT license.
 // </copyright>
 // <summary>
 //   Defines the AmazonS3SqlSink type.

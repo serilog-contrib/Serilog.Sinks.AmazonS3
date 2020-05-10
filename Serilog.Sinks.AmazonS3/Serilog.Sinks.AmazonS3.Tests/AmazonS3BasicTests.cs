@@ -1,9 +1,11 @@
-// file:	AmazonS3BasicTests.cs
-//
-// summary:	Implements the amazon s 3 basic tests class
-
-using Serilog.Core;
-using Serilog.Events;
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AmazonS3BasicTests.cs" company="Hämmer Electronics">
+// The project is licensed under the MIT license.
+// </copyright>
+// <summary>
+//   This class is used for some basic test regarding the Amazon S3 sink.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Serilog.Sinks.AmazonS3.Tests
 {
@@ -13,8 +15,9 @@ namespace Serilog.Sinks.AmazonS3.Tests
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    using Serilog.Core;
+    using Serilog.Events;
     using Serilog.Formatting.Compact;
-
 
     /// <summary>   This class is used for some basic test regarding the Amazon S3 sink. </summary>
     [TestClass]
@@ -90,8 +93,7 @@ namespace Serilog.Sinks.AmazonS3.Tests
                     buffered: true,
                     rollingInterval: RollingInterval.Minute,
                     retainedFileCountLimit: 10,
-                    autoUploadEvents: true
-                )
+                    autoUploadEvents: true)
                 .CreateLogger();
 
             for (var x = 0; x < 200; x++)
@@ -123,8 +125,7 @@ namespace Serilog.Sinks.AmazonS3.Tests
                     buffered: true,
                     rollingInterval: RollingInterval.Minute,
                     retainedFileCountLimit: 10,
-                    autoUploadEvents: true
-                )
+                    autoUploadEvents: true)
                 .CreateLogger();
 
             for (var x = 0; x < 200; x++)

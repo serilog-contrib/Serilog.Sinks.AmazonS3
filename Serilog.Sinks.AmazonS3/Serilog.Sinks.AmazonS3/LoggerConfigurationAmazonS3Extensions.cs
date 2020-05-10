@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LoggerConfigurationAmazonS3Extensions.cs" company="Hämmer Electronics">
-// The project is licensed under the MIT license
+// The project is licensed under the MIT license.
 // </copyright>
 // <summary>
 //   This class contains the Amazon S3 logger configuration.

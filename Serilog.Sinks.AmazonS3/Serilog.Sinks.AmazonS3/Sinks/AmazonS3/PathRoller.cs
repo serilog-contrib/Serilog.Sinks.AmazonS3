@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PathRoller.cs" company="Hämmer Electronics">
-// The project is licensed under the MIT license
+// The project is licensed under the MIT license.
 // </copyright>
 // <summary>
 //   Defines the PathRoller type.
@@ -74,13 +74,9 @@ namespace Serilog.Sinks.AmazonS3
         }
 
         /// <summary>   Gets the directory search pattern. </summary>
-        /// <value> The directory search pattern. </value>
-
         public string DirectorySearchPattern { get; }
 
         /// <summary>   Gets the log file directory. </summary>
-        /// <value> The log file directory. </value>
-
         public string LogFileDirectory { get; }
 
         /// <summary>   Gets the current checkpoint. </summary>

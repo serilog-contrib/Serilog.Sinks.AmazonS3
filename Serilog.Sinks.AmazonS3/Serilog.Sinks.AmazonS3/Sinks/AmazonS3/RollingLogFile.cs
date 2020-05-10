@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RollingLogFile.cs" company="H�mmer Electronics">
-// The project is licensed under the MIT license
+// <copyright file="RollingLogFile.cs" company="Hämmer Electronics">
+// The project is licensed under the MIT license.
 // </copyright>
 // <summary>
 //   Defines the RollingLogFile type.
@@ -26,18 +26,12 @@ namespace Serilog.Sinks.AmazonS3
         }
 
         /// <summary>   Gets the date time. </summary>
-        /// <value> The date time. </value>
-
         public DateTime? DateTime { get; }
 
         /// <summary>   Gets the filename. </summary>
-        /// <value> The filename. </value>
-
         public string Filename { get; }
 
         /// <summary>   Gets the sequence number. </summary>
-        /// <value> The sequence number. </value>
-
         public int? SequenceNumber { get; }
     }
 }

@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FileLifecycleHooks.cs" company="H�mmer Electronics">
-// The project is licensed under the MIT license
+// <copyright file="FileLifecycleHooks.cs" company="Hämmer Electronics">
+// The project is licensed under the MIT license.
 // </copyright>
 // <summary>
 //   Defines the FileLifecycleHooks type.
