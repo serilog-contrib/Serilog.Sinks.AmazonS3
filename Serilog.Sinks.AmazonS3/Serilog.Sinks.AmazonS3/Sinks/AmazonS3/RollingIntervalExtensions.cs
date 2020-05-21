@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RollingIntervalExtensions.cs" company="Hämmer Electronics">
+// <copyright file="RollingIntervalExtensions.cs" company="Haemmer Electronics">
 // The project is licensed under the MIT license.
 // </copyright>
 // <summary>

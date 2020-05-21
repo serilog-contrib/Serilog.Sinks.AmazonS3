@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LoggerConfigurationAmazonS3Extensions.cs" company="Hämmer Electronics">
+// <copyright file="LoggerConfigurationAmazonS3Extensions.cs" company="Haemmer Electronics">
 // The project is licensed under the MIT license.
 // </copyright>
 // <summary>
