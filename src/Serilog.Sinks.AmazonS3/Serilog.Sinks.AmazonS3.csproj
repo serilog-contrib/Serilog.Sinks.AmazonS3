@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net46;net462;net47;net472;net48;netstandard2.0;netstandard2.1;netcoreapp2.1;netcoreapp3.1;</TargetFrameworks>
+    <AssemblyName>Serilog.Sinks.AmazonS3</AssemblyName>
+    <RootNamespace>Serilog</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageId>HaemmerElectronics.SeppPenner.DecimalMath</PackageId>
+    <Authors>SeppPenner</Authors>
+    <Company>Hämmer Electronics</Company>
+    <Copyright>Copyright © Hämmer Electronics</Copyright>
+    <Description>Serilog.Sinks.AmazonS3 is a library to save logging information from https://github.com/serilog/serilog to https://aws.amazon.com/s3/. The idea there was to upload log files to https://aws.amazon.com/s3/ to later evaluate them with https://aws.amazon.com/emr/ services. The assembly was written and tested in .Net Framework 4.8 and .Net Standard 2.0. This project makes use of the https://github.com/serilog/serilog-sinks-file's code in a major part, so thanks to all the https://github.com/serilog/serilog-sinks-file/graphs/contributors of this project :thumbsup:.</Description>
+    <PackageTags>c# csharp serilog amazon s3 amazons3 sink logging log</PackageTags>
+    <PackageProjectUrl>https://www.nuget.org/packages/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SeppPenner/Serilog.Sinks.AmazonS3</RepositoryUrl>
+    <PackageIcon>Icon.png</PackageIcon>
+    <RepositoryType>Github</RepositoryType>
+    <PackageReleaseNotes>Version 1.0.10.0 (2020-06-05): Updated nuget packages, adjusted build to Visual Studio, moved changelog to extra file.</PackageReleaseNotes>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="3.3.110.72" />
+    <PackageReference Include="GitVersionTask" Version="5.3.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Serilog" Version="2.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\License.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\Changelog.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\HowToUse.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\PolicyExample.json">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
