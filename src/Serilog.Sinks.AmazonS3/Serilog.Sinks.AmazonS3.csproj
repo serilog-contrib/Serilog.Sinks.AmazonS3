@@ -6,7 +6,7 @@
     <RootNamespace>Serilog</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageId>HaemmerElectronics.SeppPenner.DecimalMath</PackageId>
+    <PackageId>HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3</PackageId>
     <Authors>SeppPenner</Authors>
     <Company>Hämmer Electronics</Company>
     <Copyright>Copyright © Hämmer Electronics</Copyright>
