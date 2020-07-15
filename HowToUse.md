@@ -94,7 +94,8 @@ The project can be found on [nuget](https://www.nuget.org/packages/HaemmerElectr
 |formatter|The formatter that can be implemented as desired. See [Issue number 10](https://github.com/SeppPenner/Serilog.Sinks.AmazonS3/issues/10) and [Serilog formatting JSON](https://github.com/serilog/serilog/wiki/Formatting-Output#formatting-json) for more information.|`new CompactJsonFormatter()`|None, is optional.|
 |path|The main log file name used.|`"log.txt"`|None, is mandatory.|
 |bucketName|The name of the Amazon S3 bucket to use. Check: https://docs.aws.amazon.com/general/latest/gr/rande.html.|`"mytestbucket-aws"`|None, is mandatory.|
-|endpoint|The Amazon S3 endpoint location.|`RegionEndpoint.EUWest2`|None, is mandatory.|
+|endpoint|The Amazon S3 endpoint location.|`RegionEndpoint.EUWest2`|None, is mandatory. (Either `endpoint` or `serviceUrl` needs to be set.|
+|serviceUrl|The Amazon S3 service URL.|`?`|None, is mandatory. (Either `endpoint` or `serviceUrl` needs to be set.|
 |awsAccessKeyId|The Amazon S3 access key id.|`ABCDEFGHIJKLMNOP`|None, is mandatory. (Not required if you are using role based authentication).|
 |awsSecretAccessKey|The Amazon S3 secret access key.|`c3fghsrgwegfn://asdfsdfsdgfsdg`|None, is mandatory. (Not required if you are using role based authentication).|
 |restrictedToMinimumLevel|The minimum level for events passed through the sink. Ignored when `levelSwitch` is specified. Check: https://github.com/serilog/serilog/blob/dev/src/Serilog/Events/LogEventLevel.cs.|`LogEventLevel.Information`|`LogEventLevel.Verbose`|

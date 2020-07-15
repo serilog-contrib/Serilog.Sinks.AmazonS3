@@ -1,6 +1,7 @@
 Change history
 --------------
 
+* **Version 1.0.11.0 (2020-07-15)** : Updated nuget packages, added new constructor taking serviceUrl instead of endpoint (Thanks to @Galouw).
 * **Version 1.0.10.0 (2020-06-05)** : Updated nuget packages, adjusted build to Visual Studio, moved changelog to extra file.
 * **Version 1.0.9.0 (2020-05-10)** : Updated nuget packages, added option to add standard and custom formatters.
 * **Version 1.0.8.0 (2020-03-26)** : Updated nuget packages.

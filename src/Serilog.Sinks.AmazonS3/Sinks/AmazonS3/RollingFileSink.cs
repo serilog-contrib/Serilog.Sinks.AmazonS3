@@ -656,6 +656,7 @@ namespace Serilog.Sinks.AmazonS3
         {
             AmazonS3Client client;
 
+            // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
             if (this.endpoint != null)
             {
                 client = new AmazonS3Client(this.endpoint);
@@ -668,6 +669,7 @@ namespace Serilog.Sinks.AmazonS3
             // In the case that awsAccessKeyId and awsSecretAccessKey is passed, we use it. Otherwise authorization is given by roles in AWS directly.
             if (!string.IsNullOrEmpty(this.awsAccessKeyId) && !string.IsNullOrEmpty(this.awsSecretAccessKey))
             {
+                // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                 if (this.endpoint != null)
                 {
                     client = new AmazonS3Client(this.awsAccessKeyId, this.awsSecretAccessKey, this.endpoint);
@@ -676,7 +678,6 @@ namespace Serilog.Sinks.AmazonS3
                 {
                     client = new AmazonS3Client(this.awsAccessKeyId, this.awsSecretAccessKey, new AmazonS3Config { ServiceURL = this.serviceUrl });
                 }
-                
             }
 
             try
