@@ -48,6 +48,9 @@ namespace Serilog.Sinks.AmazonS3
         /// <summary>   The Amazon S3 key endpoint. </summary>
         private readonly RegionEndpoint endpoint;
 
+        /// <summary>   The Amazon S3 service url. </summary>
+        private readonly string serviceUrl;
+
         /// <summary>   Automatically upload all events immediately. </summary>
         private readonly bool autoUploadEvents;
 
@@ -174,6 +177,102 @@ namespace Serilog.Sinks.AmazonS3
             this.awsAccessKeyId = awsAccessKeyId;
             this.awsSecretAccessKey = awsSecretAccessKey;
             this.endpoint = endpoint;
+            this.pathRoller = new PathRoller(path, rollingInterval);
+            this.textFormatter = textFormatter;
+            this.fileSizeLimitBytes = fileSizeLimitBytes;
+            this.retainedFileCountLimit = retainedFileCountLimit;
+            this.encoding = encoding;
+            this.buffered = buffered;
+            this.rollOnFileSizeLimit = rollOnFileSizeLimit;
+            this.fileLifecycleHooks = fileLifecycleHooks;
+            this.autoUploadEvents = autoUploadEvents;
+            this.bucketPath = bucketPath;
+        }
+
+        /// <summary>   Initializes a new instance of the <see cref="RollingFileSink" /> class. </summary>
+        /// <exception cref="ArgumentNullException">
+        ///     An <see cref="ArgumentNullException" /> thrown
+        ///     when the path is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     Negative value provided; file size limit must be
+        ///     non-negative. or Zero or negative value provided;
+        ///     retained file count limit must be at least 1.
+        /// </exception>
+        /// <param name="path">                     The path. </param>
+        /// <param name="textFormatter">            The text formatter. </param>
+        /// <param name="fileSizeLimitBytes">       The file size limit bytes. </param>
+        /// <param name="retainedFileCountLimit">   The retained file count limit. </param>
+        /// <param name="encoding">                 The encoding. </param>
+        /// <param name="buffered">                 if set to <c>true</c> [buffered]. </param>
+        /// <param name="rollingInterval">          The rolling interval. </param>
+        /// <param name="rollOnFileSizeLimit">      if set to <c>true</c> [roll on file size limit]. </param>
+        /// <param name="fileLifecycleHooks">       The file lifecycle hooks. </param>
+        /// <param name="bucketName">               The Amazon S3 bucket name. </param>
+        /// <param name="serviceUrl">               The Amazon S3 service url. </param>
+        /// <param name="awsAccessKeyId">           The Amazon S3 access key id. </param>
+        /// <param name="awsSecretAccessKey">       The Amazon S3 access key. </param>
+        /// <param name="autoUploadEvents">         Automatically upload all events immediately. </param>
+        /// <param name="failureCallback">          (Optional) The failure callback. </param>
+        /// <param name="bucketPath">               (Optional) The Amazon S3 bucket path. </param>
+        public RollingFileSink(
+            string path,
+            ITextFormatter textFormatter,
+            long? fileSizeLimitBytes,
+            int? retainedFileCountLimit,
+            Encoding encoding,
+            bool buffered,
+            RollingInterval rollingInterval,
+            bool rollOnFileSizeLimit,
+            FileLifecycleHooks fileLifecycleHooks,
+            string bucketName,
+            string serviceUrl,
+            string awsAccessKeyId,
+            string awsSecretAccessKey,
+            bool autoUploadEvents,
+            Action<Exception> failureCallback = null,
+            string bucketPath = null)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
+            if (string.IsNullOrWhiteSpace(bucketName))
+            {
+                throw new ArgumentNullException(nameof(bucketName));
+            }
+
+            if (string.IsNullOrWhiteSpace(awsAccessKeyId))
+            {
+                throw new ArgumentNullException(nameof(awsAccessKeyId));
+            }
+
+            if (string.IsNullOrWhiteSpace(awsSecretAccessKey))
+            {
+                throw new ArgumentNullException(nameof(awsSecretAccessKey));
+            }
+
+            if (fileSizeLimitBytes.HasValue && fileSizeLimitBytes < 0)
+            {
+                throw new ArgumentException("Negative value provided; file size limit must be non-negative.");
+            }
+
+            if (retainedFileCountLimit.HasValue && retainedFileCountLimit < 1)
+            {
+                throw new ArgumentException(
+                    "Zero or negative value provided; retained file count limit must be at least 1.");
+            }
+
+            if (failureCallback != null)
+            {
+                this.FailureCallback = failureCallback;
+            }
+
+            this.bucketName = bucketName;
+            this.awsAccessKeyId = awsAccessKeyId;
+            this.awsSecretAccessKey = awsSecretAccessKey;
+            this.serviceUrl = serviceUrl;
             this.pathRoller = new PathRoller(path, rollingInterval);
             this.textFormatter = textFormatter;
             this.fileSizeLimitBytes = fileSizeLimitBytes;
@@ -555,12 +654,29 @@ namespace Serilog.Sinks.AmazonS3
         /// <returns>   An asynchronous result that yields a PutObjectResponse. </returns>
         private async Task<PutObjectResponse> UploadFileToS3()
         {
-            var client = new AmazonS3Client(this.endpoint);
+            AmazonS3Client client;
+
+            if (this.endpoint != null)
+            {
+                client = new AmazonS3Client(this.endpoint);
+            }
+            else
+            {
+                client = new AmazonS3Client(new AmazonS3Config { ServiceURL = this.serviceUrl });
+            }
 
             // In the case that awsAccessKeyId and awsSecretAccessKey is passed, we use it. Otherwise authorization is given by roles in AWS directly.
             if (!string.IsNullOrEmpty(this.awsAccessKeyId) && !string.IsNullOrEmpty(this.awsSecretAccessKey))
             {
-                client = new AmazonS3Client(this.awsAccessKeyId, this.awsSecretAccessKey, this.endpoint);
+                if (this.endpoint != null)
+                {
+                    client = new AmazonS3Client(this.awsAccessKeyId, this.awsSecretAccessKey, this.endpoint);
+                }
+                else
+                {
+                    client = new AmazonS3Client(this.awsAccessKeyId, this.awsSecretAccessKey, new AmazonS3Config { ServiceURL = this.serviceUrl });
+                }
+                
             }
 
             try
