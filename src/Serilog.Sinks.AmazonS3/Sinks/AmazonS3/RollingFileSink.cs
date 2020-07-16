@@ -49,7 +49,7 @@ namespace Serilog.Sinks.AmazonS3
         private readonly RegionEndpoint endpoint;
 
         /// <summary>   The Amazon S3 service url. </summary>
-        private readonly string serviceUrl;
+        private readonly string serviceUrl = "s3.amazonaws.com";
 
         /// <summary>   Automatically upload all events immediately. </summary>
         private readonly bool autoUploadEvents;
