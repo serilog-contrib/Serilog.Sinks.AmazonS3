@@ -389,8 +389,16 @@ namespace Serilog.Sinks.AmazonS3
         /// <inheritdoc cref="IDisposable" />
         public void Dispose()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
+            lock (this.syncRoot)
+            {
+                if (this.currentFile == null)
+                {
+                    return;
+                }
+
+                this.CloseFile();
+                this.isDisposed = true;
+            }
         }
 
         /// <summary>   Emit the provided log event to the sink. </summary>
@@ -424,7 +432,7 @@ namespace Serilog.Sinks.AmazonS3
 
                     if (this.autoUploadEvents)
                     {
-                        this.UploadFileToS3().Wait();
+                        this.UploadFileToS3().ConfigureAwait(false);
                     }
                 }
             }
@@ -503,7 +511,7 @@ namespace Serilog.Sinks.AmazonS3
 
                 this.CloseFile();
 
-                this.UploadFileToS3().Wait();
+                this.UploadFileToS3().ConfigureAwait(false);
 
                 this.OpenFile(now, minSequence);
             }
@@ -522,16 +530,20 @@ namespace Serilog.Sinks.AmazonS3
 
             // We consider the current file to exist, even if nothing's been written yet,
             // because files are only opened on response to an event being processed.
-            var potentialMatches = Directory
-                .GetFiles(this.pathRoller.LogFileDirectory, this.pathRoller.DirectorySearchPattern)
-                .Select(Path.GetFileName).Union(new[] { currentFileNameLocal });
+            var potentialMatches = Directory.GetFiles(this.pathRoller.LogFileDirectory, this.pathRoller.DirectorySearchPattern)
+                .Select(Path.GetFileName)
+                .Union(new[] { currentFileNameLocal });
 
-            var newestFirst = this.pathRoller.SelectMatches(potentialMatches).OrderByDescending(m => m.DateTime)
-                .ThenByDescending(m => m.SequenceNumber).Select(m => m.Filename);
+            var newestFirst = this.pathRoller
+                .SelectMatches(potentialMatches)
+                .OrderByDescending(m => m.DateTime)
+                .ThenByDescending(m => m.SequenceNumber);
 
             var toRemove = newestFirst
-                .Where(n => StringComparer.OrdinalIgnoreCase.Compare(currentFileNameLocal, n) != 0)
-                .Skip(this.retainedFileCountLimit.Value - 1).ToList();
+                .Where(n => StringComparer.OrdinalIgnoreCase.Compare(currentFileNameLocal, n.Filename) != 0)
+                .SkipWhile((f, i) => ShouldRetainFile(i))
+                .Select(x => x.Filename)
+                .ToList();
 
             // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
             foreach (var obsolete in toRemove)
@@ -543,10 +555,19 @@ namespace Serilog.Sinks.AmazonS3
                 }
                 catch (Exception ex)
                 {
-                    SelfLog.WriteLine($"Error {ex} while removing obsolete log file {fullPath}.");
-                    throw;
+                    SelfLog.WriteLine("Error {0} while processing obsolete log file {1}", ex, fullPath);
                 }
             }
+        }
+
+        /// <summary>
+        /// Checks whether the file should be retained or not.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns>A <see cref="bool"/> value indicating whether the file should be retained or not.</returns>
+        private bool ShouldRetainFile(int index)
+        {
+            return !this.retainedFileCountLimit.HasValue || index < this.retainedFileCountLimit.Value - 1;
         }
 
         /// <summary>   Closes the file. </summary>
@@ -602,8 +623,8 @@ namespace Serilog.Sinks.AmazonS3
                 sequence = minSequence;
             }
 
-            const int MaxAttempts = 3;
-            for (var attempt = 0; attempt < MaxAttempts; attempt++)
+            const int maxAttempts = 3;
+            for (var attempt = 0; attempt < maxAttempts; attempt++)
             {
                 this.pathRoller.GetLogFilePath(now, sequence, out var path);
 
@@ -644,7 +665,7 @@ namespace Serilog.Sinks.AmazonS3
         ///     condition occurs.
         /// </exception>
         /// <exception cref="AmazonS3Exception">
-        ///     Thrown when an Amazon S 3 error condition
+        ///     Thrown when an Amazon S3 error condition
         ///     occurs.
         /// </exception>
         /// <exception cref="Exception">
@@ -689,6 +710,11 @@ namespace Serilog.Sinks.AmazonS3
                     var key = string.IsNullOrWhiteSpace(this.bucketPath) ?
                         Path.GetFileName(this.currentFileName).Replace("\\", "/") :
                         Path.Combine(this.bucketPath, Path.GetFileName(this.currentFileName)).Replace("\\", "/");
+
+                    if (fs.Length == 0)
+                    {
+                        return null;
+                    }
 
                     var putRequest = new PutObjectRequest
                     {
