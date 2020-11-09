@@ -1,60 +1,53 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RollingIntervalExtensions.cs" company="Hämmer Electronics">
-// The project is licensed under the MIT license.
+// The project is double licensed under the MIT license and the Apache License, Version 2.0.
+// This code is a partly modified source code of the original Serilog code.
+// The original license is:
+//
+// --------------------------------------------------------------------------------------------------------------------
+// Copyright 2013-2016 Serilog Contributors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------------------------------------------
+//
 // </copyright>
 // <summary>
-//   Defines the RollingIntervalExtensions type.
+//   This class contains extension methods for the <see cref="RollingInterval"/> enumeration.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Serilog.Sinks.AmazonS3
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    ///     This class provides some extensions for the <see cref="RollingInterval" /> class.
+    /// This class contains extension methods for the <see cref="RollingInterval"/> enumeration.
     /// </summary>
     public static class RollingIntervalExtensions
     {
-        /// <summary>   Gets the current checkpoint. </summary>
-        /// <exception cref="ArgumentException">    Invalid rolling interval. </exception>
-        /// <param name="interval"> The interval. </param>
-        /// <param name="instant">  The instant. </param>
-        /// <returns>   A <see cref="DateTime" /> value that gives the current checkpoint. </returns>
-        public static DateTime? GetCurrentCheckpoint(this RollingInterval interval, DateTime instant)
-        {
-            switch (interval)
-            {
-                case RollingInterval.Year:
-                    return new DateTime(instant.Year, 1, 1, 0, 0, 0, instant.Kind);
-                case RollingInterval.Month:
-                    return new DateTime(instant.Year, instant.Month, 1, 0, 0, 0, instant.Kind);
-                case RollingInterval.Day:
-                    return new DateTime(instant.Year, instant.Month, instant.Day, 0, 0, 0, instant.Kind);
-                case RollingInterval.Hour:
-                    return new DateTime(instant.Year, instant.Month, instant.Day, instant.Hour, 0, 0, instant.Kind);
-                case RollingInterval.Minute:
-                    return new DateTime(
-                        instant.Year,
-                        instant.Month,
-                        instant.Day,
-                        instant.Hour,
-                        instant.Minute,
-                        0,
-                        instant.Kind);
-                default:
-                    throw new ArgumentException("Invalid rolling interval");
-            }
-        }
-
-        /// <summary>   Gets the format for the <see cref="RollingInterval" />. </summary>
-        /// <exception cref="ArgumentException">    Invalid rolling interval. </exception>
-        /// <param name="interval"> The interval. </param>
-        /// <returns>   The format for the <see cref="RollingInterval" />. </returns>
+        /// <summary>
+        /// Gets the format <see cref="string"/>.
+        /// </summary>
+        /// <param name="interval">The interval.</param>
+        /// <returns>The format <see cref="string"/>.</returns>
+        [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1122:UseStringEmptyForEmptyStrings", Justification = "Reviewed. Suppression is OK here.")]
         public static string GetFormat(this RollingInterval interval)
         {
             switch (interval)
             {
+                case RollingInterval.Infinite:
+                    return "";
                 case RollingInterval.Year:
                     return "yyyy";
                 case RollingInterval.Month:
@@ -70,19 +63,49 @@ namespace Serilog.Sinks.AmazonS3
             }
         }
 
-        /// <summary>   Gets the next checkpoint. </summary>
-        /// <exception cref="ArgumentException">    Invalid rolling interval. </exception>
-        /// <param name="interval"> The interval. </param>
-        /// <param name="instant">  The instant. </param>
-        /// <returns>   A <see cref="DateTime" /> value that gives the next checkpoint. </returns>
-        public static DateTime? GetNextCheckpoint(this RollingInterval interval, DateTime instant)
+        /// <summary>
+        /// Gets the current check point as <see cref="DateTime"/>.
+        /// </summary>
+        /// <param name="interval">The interval.</param>
+        /// <param name="dateTime">The date time.</param>
+        /// <returns>The current check point as <see cref="DateTime"/>.</returns>
+        public static DateTime? GetCurrentCheckpoint(this RollingInterval interval, DateTime dateTime)
         {
-            var current = GetCurrentCheckpoint(interval, instant);
+            switch (interval)
+            {
+                case RollingInterval.Infinite:
+                    return null;
+                case RollingInterval.Year:
+                    return new DateTime(dateTime.Year, 1, 1, 0, 0, 0, dateTime.Kind);
+                case RollingInterval.Month:
+                    return new DateTime(dateTime.Year, dateTime.Month, 1, 0, 0, 0, dateTime.Kind);
+                case RollingInterval.Day:
+                    return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0, dateTime.Kind);
+                case RollingInterval.Hour:
+                    return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, 0, 0, dateTime.Kind);
+                case RollingInterval.Minute:
+                    return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, 0, dateTime.Kind);
+                default:
+                    throw new ArgumentException("Invalid rolling interval");
+            }
+        }
+
+        /// <summary>
+        /// Gets the next check point as <see cref="DateTime"/>.
+        /// </summary>
+        /// <param name="interval">The interval.</param>
+        /// <param name="dateTime">The date time.</param>
+        /// <returns>The next check point as <see cref="DateTime"/>.</returns>
+        public static DateTime? GetNextCheckpoint(this RollingInterval interval, DateTime dateTime)
+        {
+            var current = GetCurrentCheckpoint(interval, dateTime);
+
             if (current == null)
             {
                 return null;
             }
 
+            // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
             switch (interval)
             {
                 case RollingInterval.Year:

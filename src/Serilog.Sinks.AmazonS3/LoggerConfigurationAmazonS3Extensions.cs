@@ -19,10 +19,12 @@ namespace Serilog
     using Serilog.Core;
     using Serilog.Events;
     using Serilog.Formatting;
-    using Serilog.Formatting.Display;
     using Serilog.Sinks.AmazonS3;
+    using Serilog.Sinks.PeriodicBatching;
 
-    /// <summary>   This class contains the Amazon S3 logger configuration. </summary>
+    /// <summary>
+    /// This class contains the Amazon S3 logger configuration.
+    /// </summary>
     [SuppressMessage(
         "StyleCop.CSharp.DocumentationRules",
         "SA1650:ElementDocumentationMustBeSpelledCorrectly",
@@ -31,95 +33,82 @@ namespace Serilog
     // ReSharper disable once UnusedMember.Global
     public static class LoggerConfigurationAmazonS3Extensions
     {
-        /// <summary>   The default file size limit bytes. </summary>
-        private const long DefaultFileSizeLimitBytes = 1L * 1024 * 1024 * 1024;
-
-        /// <summary>   The default output template. </summary>
+        /// <summary>
+        /// The default output template.
+        /// </summary>
         private const string DefaultOutputTemplate =
             "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}";
 
-        /// <summary>   The default retained file count limit. </summary>
-        private const int DefaultRetainedFileCountLimit = 31;
+        /// <summary>
+        /// The default batch size limit.
+        /// </summary>
+        private const int DefaultBatchSizeLimit = 100;
 
-        /// <summary>   Write log events to the specified file. </summary>
+        /// <summary>
+        /// The default value to eagerly emit the first event.
+        /// </summary>
+        private const bool DefaultEagerlyEmitFirstEvent = true;
+
+        /// <summary>
+        /// The default queue size limit.
+        /// </summary>
+        private const int DefaultQueueSizeLimit = 10000;
+
+        /// <summary>
+        /// The default encoding.
+        /// </summary>
+        private static readonly Encoding DefaultEncoding = Encoding.UTF8;
+
+        /// <summary>
+        /// The default batching period.
+        /// </summary>
+        private static readonly TimeSpan DefaultBatchingPeriod = TimeSpan.FromSeconds(2);
+
+        /// <summary>Write log events to the specified file.</summary>
         /// <exception cref="ArgumentNullException">
-        ///     Thrown when one or more required arguments are
-        ///     null.
+        /// Thrown when one or more required arguments are
+        /// null.
         /// </exception>
-        /// <exception cref="ArgumentException">
-        ///     Thrown when one or more arguments have
-        ///     unsupported or illegal values.
-        /// </exception>
-        /// <param name="sinkConfiguration">        Logger sink configuration. </param>
-        /// <param name="path">                     Path to the file. </param>
-        /// <param name="bucketName">               The Amazon S3 bucket name. </param>
-        /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
-        /// <param name="awsAccessKeyId">           The Amazon S3 access key id. </param>
-        /// <param name="awsSecretAccessKey">       The Amazon S3 access key. </param>
-        /// <param name="autoUploadEvents">         Automatically upload all events immediately. </param>
+        /// <param name="sinkConfiguration">The logger sink configuration.</param>
+        /// <param name="path">The path to the file</param>
+        /// <param name="bucketName">The Amazon S3 bucket name.</param>
+        /// <param name="endpoint">The Amazon S3 endpoint.</param>
+        /// <param name="awsAccessKeyId">The Amazon S3 access key id.</param>
+        /// <param name="awsSecretAccessKey">The Amazon S3 access key.</param>
         /// <param name="restrictedToMinimumLevel">
-        ///     (Optional)
-        ///     The minimum level for
-        ///     events passed through the sink. Ignored when
-        ///     <paramref name="levelSwitch" /> is specified.
+        /// (Optional)
+        /// The minimum level for
+        /// events passed through the sink. Ignored when
+        /// <paramref name="levelSwitch" /> is specified.
         /// </param>
-        /// <param name="outputTemplate">
-        ///     (Optional)
-        ///     A message template describing the format used to
-        ///     write to the sink.
-        ///     the default is "{Timestamp:yyyy-MM-dd
-        ///     HH:mm:ss.fff zzz} [{Level:u3}]
-        ///     {Message:lj}{NewLine}{Exception}".
-        /// </param>
+        /// <param name="outputTemplate">The output template.</param>
         /// <param name="formatProvider">
-        ///     (Optional)
-        ///     Supplies culture-specific formatting information, or
-        ///     null.
-        /// </param>
-        /// <param name="fileSizeLimitBytes">
-        ///     (Optional)
-        ///     The approximate maximum size, in bytes, to which a
-        ///     log file will be allowed to grow.
-        ///     For unrestricted growth, pass null. The default
-        ///     is 1 GB. To avoid writing partial events, the
-        ///     last event within the limit will be written in
-        ///     full even if it exceeds the limit.
+        /// (Optional)
+        /// Supplies culture-specific formatting information, or
+        /// null.
         /// </param>
         /// <param name="levelSwitch">
-        ///     (Optional)
-        ///     A switch allowing the pass-through minimum level
-        ///     to be changed at runtime.
-        /// </param>
-        /// <param name="buffered">
-        ///     (Optional)
-        ///     Indicates if flushing to the output file can be
-        ///     buffered or not. The default
-        ///     is false.
+        /// (Optional)
+        /// A switch allowing the pass-through minimum level
+        /// to be changed at runtime.
         /// </param>
         /// <param name="rollingInterval">
-        ///     (Optional)
-        ///     The interval at which logging will roll over to a new
-        ///     file.
-        /// </param>
-        /// <param name="retainedFileCountLimit">
-        ///     (Optional)
-        ///     The maximum number of log files that will be retained,
-        ///     including the current log file. For unlimited
-        ///     retention, pass null. The default is 31.
+        /// (Optional)
+        /// The interval at which logging will roll over to a new
+        /// file.
         /// </param>
         /// <param name="encoding">
-        ///     (Optional)
-        ///     Character encoding used to write the text file. The
-        ///     default is UTF-8 without BOM.
+        /// (Optional)
+        /// Character encoding used to write the text file. The
+        /// default is UTF-8 without BOM.
         /// </param>
-        /// <param name="hooks">
-        ///     (Optional)
-        ///     Optionally enables hooking into log file lifecycle
-        ///     events.
-        /// </param>
-        /// <param name="failureCallback">          (Optional) The failure callback. </param>
-        /// <param name="bucketPath">               (Optional) The Amazon S3 bucket path. </param>
-        /// <returns>   Configuration object allowing method chaining. </returns>
+        /// <param name="failureCallback">The failure callback.</param>
+        /// <param name="bucketPath">The Amazon S3 bucket path.</param>
+        /// <param name="batchSizeLimit">The batch size limit.</param>
+        /// <param name="batchingPeriod">The batching period.</param>
+        /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
+        /// <param name="queueSizeLimit">The queue size limit.</param>
+        /// <returns>The configuration object allowing method chaining.</returns>
         public static LoggerConfiguration AmazonS3(
             this LoggerSinkConfiguration sinkConfiguration,
             string path,
@@ -127,19 +116,18 @@ namespace Serilog
             RegionEndpoint endpoint,
             string awsAccessKeyId,
             string awsSecretAccessKey,
-            bool autoUploadEvents = false,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
             string outputTemplate = DefaultOutputTemplate,
             IFormatProvider formatProvider = null,
-            long? fileSizeLimitBytes = DefaultFileSizeLimitBytes,
             LoggingLevelSwitch levelSwitch = null,
-            bool buffered = false,
             RollingInterval rollingInterval = RollingInterval.Day,
-            int? retainedFileCountLimit = DefaultRetainedFileCountLimit,
             Encoding encoding = null,
-            FileLifecycleHooks hooks = null,
             Action<Exception> failureCallback = null,
-            string bucketPath = null)
+            string bucketPath = null,
+            int? batchSizeLimit = DefaultBatchSizeLimit,
+            TimeSpan? batchingPeriod = null,
+            bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
+            int? queueSizeLimit = DefaultQueueSizeLimit)
         {
             if (sinkConfiguration == null)
             {
@@ -171,138 +159,93 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(awsSecretAccessKey));
             }
 
-            if (retainedFileCountLimit.HasValue && retainedFileCountLimit < 1)
+            if (string.IsNullOrWhiteSpace(outputTemplate))
             {
-                throw new ArgumentException(
-                    "Zero or negative value provided; retained file count limit must be at least 1.");
+                outputTemplate = DefaultOutputTemplate;
             }
 
-            if (outputTemplate == null)
+            if (encoding == null)
             {
-                throw new ArgumentNullException(nameof(outputTemplate));
+                encoding = DefaultEncoding;
             }
 
-            var formatter = new MessageTemplateTextFormatter(outputTemplate, formatProvider);
-            return sinkConfiguration.Sink(
-                new AmazonS3Sink(
-                    formatter,
-                    path,
-                    fileSizeLimitBytes,
-                    buffered,
-                    encoding,
-                    rollingInterval,
-                    retainedFileCountLimit,
-                    hooks,
-                    bucketName,
-                    endpoint,
-                    awsAccessKeyId,
-                    awsSecretAccessKey,
-                    autoUploadEvents,
-                    failureCallback,
-                    bucketPath),
-                restrictedToMinimumLevel,
-                levelSwitch);
+            if (batchingPeriod == null)
+            {
+                batchingPeriod = DefaultBatchingPeriod;
+            }
+
+            var amazonS3Sink = new AmazonS3Sink(path, bucketName, endpoint, awsAccessKeyId, awsSecretAccessKey, outputTemplate, formatProvider, rollingInterval, encoding, failureCallback, bucketPath);
+
+            var batchingOptions = new PeriodicBatchingSinkOptions
+            {
+                BatchSizeLimit = batchSizeLimit ?? DefaultBatchSizeLimit,
+                Period = (TimeSpan)batchingPeriod,
+                EagerlyEmitFirstEvent = eagerlyEmitFirstEvent ?? DefaultEagerlyEmitFirstEvent,
+                QueueLimit = queueSizeLimit ?? DefaultQueueSizeLimit
+            };
+
+            var batchingSink = new PeriodicBatchingSink(amazonS3Sink, batchingOptions);
+            return sinkConfiguration.Sink(batchingSink, restrictedToMinimumLevel, levelSwitch);
         }
 
-        /// <summary>   Write log events to the specified file. </summary>
+        /// <summary>Write log events to the specified file.</summary>
         /// <exception cref="ArgumentNullException">
-        ///     Thrown when one or more required arguments are
-        ///     null.
+        /// Thrown when one or more required arguments are
+        /// null.
         /// </exception>
-        /// <exception cref="ArgumentException">
-        ///     Thrown when one or more arguments have
-        ///     unsupported or illegal values.
-        /// </exception>
-        /// <param name="sinkConfiguration">        Logger sink configuration. </param>
-        /// <param name="path">                     Path to the file. </param>
-        /// <param name="bucketName">               The Amazon S3 bucket name. </param>
-        /// <param name="serviceUrl">               The Amazon S3 service url. </param>
-        /// <param name="awsAccessKeyId">           The Amazon S3 access key id. </param>
-        /// <param name="awsSecretAccessKey">       The Amazon S3 access key. </param>
-        /// <param name="autoUploadEvents">         Automatically upload all events immediately. </param>
+        /// <param name="sinkConfiguration">The logger sink configuration.</param>
+        /// <param name="path">The path to the file.</param>
+        /// <param name="bucketName">The Amazon S3 bucket name.</param>
+        /// <param name="endpoint">The Amazon S3 endpoint.</param>
+        /// <param name="awsAccessKeyId">The Amazon S3 access key id.</param>
+        /// <param name="awsSecretAccessKey">The Amazon S3 access key.</param>
         /// <param name="restrictedToMinimumLevel">
-        ///     (Optional)
-        ///     The minimum level for
-        ///     events passed through the sink. Ignored when
-        ///     <paramref name="levelSwitch" /> is specified.
-        /// </param>
-        /// <param name="outputTemplate">
-        ///     (Optional)
-        ///     A message template describing the format used to
-        ///     write to the sink.
-        ///     the default is "{Timestamp:yyyy-MM-dd
-        ///     HH:mm:ss.fff zzz} [{Level:u3}]
-        ///     {Message:lj}{NewLine}{Exception}".
-        /// </param>
-        /// <param name="formatProvider">
-        ///     (Optional)
-        ///     Supplies culture-specific formatting information, or
-        ///     null.
-        /// </param>
-        /// <param name="fileSizeLimitBytes">
-        ///     (Optional)
-        ///     The approximate maximum size, in bytes, to which a
-        ///     log file will be allowed to grow.
-        ///     For unrestricted growth, pass null. The default
-        ///     is 1 GB. To avoid writing partial events, the
-        ///     last event within the limit will be written in
-        ///     full even if it exceeds the limit.
+        /// (Optional)
+        /// The minimum level for
+        /// events passed through the sink. Ignored when
+        /// <paramref name="levelSwitch" /> is specified.
         /// </param>
         /// <param name="levelSwitch">
-        ///     (Optional)
-        ///     A switch allowing the pass-through minimum level
-        ///     to be changed at runtime.
+        /// (Optional)
+        /// A switch allowing the pass-through minimum level
+        /// to be changed at runtime.
         /// </param>
-        /// <param name="buffered">
-        ///     (Optional)
-        ///     Indicates if flushing to the output file can be
-        ///     buffered or not. The default
-        ///     is false.
-        /// </param>
+        /// <param name="formatter">The formatter.</param>
         /// <param name="rollingInterval">
-        ///     (Optional)
-        ///     The interval at which logging will roll over to a new
-        ///     file.
-        /// </param>
-        /// <param name="retainedFileCountLimit">
-        ///     (Optional)
-        ///     The maximum number of log files that will be retained,
-        ///     including the current log file. For unlimited
-        ///     retention, pass null. The default is 31.
+        /// (Optional)
+        /// The interval at which logging will roll over to a new
+        /// file.
         /// </param>
         /// <param name="encoding">
-        ///     (Optional)
-        ///     Character encoding used to write the text file. The
-        ///     default is UTF-8 without BOM.
+        /// (Optional)
+        /// Character encoding used to write the text file. The
+        /// default is UTF-8 without BOM.
         /// </param>
-        /// <param name="hooks">
-        ///     (Optional)
-        ///     Optionally enables hooking into log file lifecycle
-        ///     events.
-        /// </param>
-        /// <param name="failureCallback">          (Optional) The failure callback. </param>
-        /// <param name="bucketPath">               (Optional) The Amazon S3 bucket path. </param>
-        /// <returns>   Configuration object allowing method chaining. </returns>
+        /// <param name="failureCallback">The failure callback.</param>
+        /// <param name="bucketPath">The Amazon S3 bucket path.</param>
+        /// <param name="batchSizeLimit">The batch size limit.</param>
+        /// <param name="batchingPeriod">The batching period.</param>
+        /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
+        /// <param name="queueSizeLimit">The queue size limit.</param>
+        /// <returns>The configuration object allowing method chaining.</returns>
         public static LoggerConfiguration AmazonS3(
-            this LoggerSinkConfiguration sinkConfiguration,
-            string path,
-            string bucketName,
-            string serviceUrl,
-            string awsAccessKeyId,
-            string awsSecretAccessKey,
-            bool autoUploadEvents = false,
-            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
-            string outputTemplate = DefaultOutputTemplate,
-            IFormatProvider formatProvider = null,
-            long? fileSizeLimitBytes = DefaultFileSizeLimitBytes,
-            LoggingLevelSwitch levelSwitch = null,
-            bool buffered = false,
-            RollingInterval rollingInterval = RollingInterval.Day,
-            int? retainedFileCountLimit = DefaultRetainedFileCountLimit,
-            Encoding encoding = null,
-            FileLifecycleHooks hooks = null,
-            Action<Exception> failureCallback = null,
-            string bucketPath = null)
+                this LoggerSinkConfiguration sinkConfiguration,
+                string path,
+                string bucketName,
+                RegionEndpoint endpoint,
+                string awsAccessKeyId,
+                string awsSecretAccessKey,
+                LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
+                LoggingLevelSwitch levelSwitch = null,
+                ITextFormatter formatter = null,
+                RollingInterval rollingInterval = RollingInterval.Day,
+                Encoding encoding = null,
+                Action<Exception> failureCallback = null,
+                string bucketPath = null,
+                int? batchSizeLimit = DefaultBatchSizeLimit,
+                TimeSpan? batchingPeriod = null,
+                bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
+                int? queueSizeLimit = DefaultQueueSizeLimit)
         {
             if (sinkConfiguration == null)
             {
@@ -319,7 +262,352 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(bucketName));
             }
 
-            if (serviceUrl == null)
+            if (endpoint == null)
+            {
+                throw new ArgumentNullException(nameof(endpoint));
+            }
+
+            if (string.IsNullOrWhiteSpace(awsAccessKeyId))
+            {
+                throw new ArgumentNullException(nameof(awsAccessKeyId));
+            }
+
+            if (string.IsNullOrWhiteSpace(awsSecretAccessKey))
+            {
+                throw new ArgumentNullException(nameof(awsSecretAccessKey));
+            }
+
+            if (formatter == null)
+            {
+                throw new ArgumentNullException(nameof(formatter));
+            }
+
+            if (encoding == null)
+            {
+                encoding = DefaultEncoding;
+            }
+
+            if (batchingPeriod == null)
+            {
+                batchingPeriod = DefaultBatchingPeriod;
+            }
+
+            var amazonS3Sink = new AmazonS3Sink(path, bucketName, endpoint, awsAccessKeyId, awsSecretAccessKey, formatter, rollingInterval, encoding, failureCallback, bucketPath);
+
+            var batchingOptions = new PeriodicBatchingSinkOptions
+            {
+                BatchSizeLimit = batchSizeLimit ?? DefaultBatchSizeLimit,
+                Period = (TimeSpan)batchingPeriod,
+                EagerlyEmitFirstEvent = eagerlyEmitFirstEvent ?? DefaultEagerlyEmitFirstEvent,
+                QueueLimit = queueSizeLimit ?? DefaultQueueSizeLimit
+            };
+
+            var batchingSink = new PeriodicBatchingSink(amazonS3Sink, batchingOptions);
+            return sinkConfiguration.Sink(batchingSink, restrictedToMinimumLevel, levelSwitch);
+        }
+
+        /// <summary>Write log events to the specified file.</summary>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when one or more required arguments are
+        /// null.
+        /// </exception>
+        /// <param name="sinkConfiguration">The logger sink configuration.</param>
+        /// <param name="path">The path to the file.</param>
+        /// <param name="bucketName">The Amazon S3 bucket name.</param>
+        /// <param name="endpoint">The Amazon S3 endpoint.</param>
+        /// <param name="restrictedToMinimumLevel">
+        /// (Optional)
+        /// The minimum level for
+        /// events passed through the sink. Ignored when
+        /// <paramref name="levelSwitch" /> is specified.
+        /// </param>
+        /// <param name="levelSwitch">
+        /// (Optional)
+        /// A switch allowing the pass-through minimum level
+        /// to be changed at runtime.
+        /// </param>
+        /// <param name="outputTemplate">
+        /// (Optional)
+        /// A message template describing the format used to
+        /// write to the sink.
+        /// The default is "{Timestamp:yyyy-MM-dd
+        /// HH:mm:ss.fff zzz} [{Level:u3}]
+        /// {Message:lj}{NewLine}{Exception}".
+        /// </param>
+        /// <param name="formatProvider">
+        /// (Optional)
+        /// Supplies culture-specific formatting information, or
+        /// null.
+        /// </param>
+        /// <param name="rollingInterval">
+        /// (Optional)
+        /// The interval at which logging will roll over to a new
+        /// file.
+        /// </param>
+        /// <param name="encoding">
+        /// (Optional)
+        /// Character encoding used to write the text file. The
+        /// default is UTF-8 without BOM.
+        /// </param>
+        /// <param name="failureCallback">The failure callback.</param>
+        /// <param name="bucketPath">The Amazon S3 bucket path.</param>
+        /// <param name="batchSizeLimit">The batch size limit.</param>
+        /// <param name="batchingPeriod">The batching period.</param>
+        /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
+        /// <param name="queueSizeLimit">The queue size limit.</param>
+        /// <returns>The configuration object allowing method chaining.</returns>
+        public static LoggerConfiguration AmazonS3(
+            this LoggerSinkConfiguration sinkConfiguration,
+            string path,
+            string bucketName,
+            RegionEndpoint endpoint,
+            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
+            LoggingLevelSwitch levelSwitch = null,
+            string outputTemplate = DefaultOutputTemplate,
+            IFormatProvider formatProvider = null,
+            RollingInterval rollingInterval = RollingInterval.Day,
+            Encoding encoding = null,
+            Action<Exception> failureCallback = null,
+            string bucketPath = null,
+            int? batchSizeLimit = DefaultBatchSizeLimit,
+            TimeSpan? batchingPeriod = null,
+            bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
+            int? queueSizeLimit = DefaultQueueSizeLimit)
+        {
+            if (sinkConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(sinkConfiguration));
+            }
+
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
+            if (string.IsNullOrWhiteSpace(bucketName))
+            {
+                throw new ArgumentNullException(nameof(bucketName));
+            }
+
+            if (endpoint == null)
+            {
+                throw new ArgumentNullException(nameof(endpoint));
+            }
+
+            if (string.IsNullOrWhiteSpace(outputTemplate))
+            {
+                outputTemplate = DefaultOutputTemplate;
+            }
+
+            if (encoding == null)
+            {
+                encoding = DefaultEncoding;
+            }
+
+            if (batchingPeriod == null)
+            {
+                batchingPeriod = DefaultBatchingPeriod;
+            }
+
+            var amazonS3Sink = new AmazonS3Sink(path, bucketName, endpoint, outputTemplate, formatProvider, rollingInterval, encoding, failureCallback, bucketPath);
+
+            var batchingOptions = new PeriodicBatchingSinkOptions
+            {
+                BatchSizeLimit = batchSizeLimit ?? DefaultBatchSizeLimit,
+                Period = (TimeSpan)batchingPeriod,
+                EagerlyEmitFirstEvent = eagerlyEmitFirstEvent ?? DefaultEagerlyEmitFirstEvent,
+                QueueLimit = queueSizeLimit ?? DefaultQueueSizeLimit
+            };
+
+            var batchingSink = new PeriodicBatchingSink(amazonS3Sink, batchingOptions);
+            return sinkConfiguration.Sink(batchingSink, restrictedToMinimumLevel, levelSwitch);
+        }
+
+        /// <summary>Write log events to the specified file.</summary>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when one or more required arguments are
+        /// null.
+        /// </exception>
+        /// <param name="sinkConfiguration">The logger sink configuration.</param>
+        /// <param name="path">The path to the file.</param>
+        /// <param name="bucketName">The Amazon S3 bucket name.</param>
+        /// <param name="endpoint">The Amazon S3 endpoint.</param>
+        /// <param name="restrictedToMinimumLevel">
+        /// (Optional)
+        /// The minimum level for
+        /// events passed through the sink. Ignored when
+        /// <paramref name="levelSwitch" /> is specified.
+        /// </param>
+        /// <param name="levelSwitch">
+        /// (Optional)
+        /// A switch allowing the pass-through minimum level
+        /// to be changed at runtime.
+        /// </param>
+        /// <param name="formatter">The formatter.</param>
+        /// <param name="rollingInterval">
+        /// (Optional)
+        /// The interval at which logging will roll over to a new
+        /// file.
+        /// </param>
+        /// <param name="encoding">
+        /// (Optional)
+        /// Character encoding used to write the text file. The
+        /// default is UTF-8 without BOM.
+        /// </param>
+        /// <param name="failureCallback">The failure callback.</param>
+        /// <param name="bucketPath">The Amazon S3 bucket path.</param>
+        /// <param name="batchSizeLimit">The batch size limit.</param>
+        /// <param name="batchingPeriod">The batching period.</param>
+        /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
+        /// <param name="queueSizeLimit">The queue size limit.</param>
+        /// <returns>The configuration object allowing method chaining.</returns>
+        public static LoggerConfiguration AmazonS3(
+            this LoggerSinkConfiguration sinkConfiguration,
+            string path,
+            string bucketName,
+            RegionEndpoint endpoint,
+            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
+            LoggingLevelSwitch levelSwitch = null,
+            ITextFormatter formatter = null,
+            RollingInterval rollingInterval = RollingInterval.Day,
+            Encoding encoding = null,
+            Action<Exception> failureCallback = null,
+            string bucketPath = null,
+            int? batchSizeLimit = DefaultBatchSizeLimit,
+            TimeSpan? batchingPeriod = null,
+            bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
+            int? queueSizeLimit = DefaultQueueSizeLimit)
+        {
+            if (sinkConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(sinkConfiguration));
+            }
+
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
+            if (string.IsNullOrWhiteSpace(bucketName))
+            {
+                throw new ArgumentNullException(nameof(bucketName));
+            }
+
+            if (endpoint == null)
+            {
+                throw new ArgumentNullException(nameof(endpoint));
+            }
+
+            if (formatter == null)
+            {
+                throw new ArgumentNullException(nameof(formatter));
+            }
+
+            if (encoding == null)
+            {
+                encoding = DefaultEncoding;
+            }
+
+            if (batchingPeriod == null)
+            {
+                batchingPeriod = DefaultBatchingPeriod;
+            }
+
+            var amazonS3Sink = new AmazonS3Sink(path, bucketName, endpoint, formatter, rollingInterval, encoding, failureCallback, bucketPath);
+
+            var batchingOptions = new PeriodicBatchingSinkOptions
+            {
+                BatchSizeLimit = batchSizeLimit ?? DefaultBatchSizeLimit,
+                Period = (TimeSpan)batchingPeriod,
+                EagerlyEmitFirstEvent = eagerlyEmitFirstEvent ?? DefaultEagerlyEmitFirstEvent,
+                QueueLimit = queueSizeLimit ?? DefaultQueueSizeLimit
+            };
+
+            var batchingSink = new PeriodicBatchingSink(amazonS3Sink, batchingOptions);
+            return sinkConfiguration.Sink(batchingSink, restrictedToMinimumLevel, levelSwitch);
+        }
+
+        /// <summary>Write log events to the specified file.</summary>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when one or more required arguments are
+        /// null.
+        /// </exception>
+        /// <param name="sinkConfiguration">The logger sink configuration.</param>
+        /// <param name="path">The path to the file</param>
+        /// <param name="bucketName">The Amazon S3 bucket name.</param>
+        /// <param name="serviceUrl">The Amazon S3 service url.</param>
+        /// <param name="awsAccessKeyId">The Amazon S3 access key id.</param>
+        /// <param name="awsSecretAccessKey">The Amazon S3 access key.</param>
+        /// <param name="restrictedToMinimumLevel">
+        /// (Optional)
+        /// The minimum level for
+        /// events passed through the sink. Ignored when
+        /// <paramref name="levelSwitch" /> is specified.
+        /// </param>
+        /// <param name="outputTemplate">The output template.</param>
+        /// <param name="formatProvider">
+        /// (Optional)
+        /// Supplies culture-specific formatting information, or
+        /// null.
+        /// </param>
+        /// <param name="levelSwitch">
+        /// (Optional)
+        /// A switch allowing the pass-through minimum level
+        /// to be changed at runtime.
+        /// </param>
+        /// <param name="rollingInterval">
+        /// (Optional)
+        /// The interval at which logging will roll over to a new
+        /// file.
+        /// </param>
+        /// <param name="encoding">
+        /// (Optional)
+        /// Character encoding used to write the text file. The
+        /// default is UTF-8 without BOM.
+        /// </param>
+        /// <param name="failureCallback">The failure callback.</param>
+        /// <param name="bucketPath">The Amazon S3 bucket path.</param>
+        /// <param name="batchSizeLimit">The batch size limit.</param>
+        /// <param name="batchingPeriod">The batching period.</param>
+        /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
+        /// <param name="queueSizeLimit">The queue size limit.</param>
+        /// <returns>The configuration object allowing method chaining.</returns>
+        public static LoggerConfiguration AmazonS3(
+            this LoggerSinkConfiguration sinkConfiguration,
+            string path,
+            string bucketName,
+            string serviceUrl,
+            string awsAccessKeyId,
+            string awsSecretAccessKey,
+            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
+            string outputTemplate = DefaultOutputTemplate,
+            IFormatProvider formatProvider = null,
+            LoggingLevelSwitch levelSwitch = null,
+            RollingInterval rollingInterval = RollingInterval.Day,
+            Encoding encoding = null,
+            Action<Exception> failureCallback = null,
+            string bucketPath = null,
+            int? batchSizeLimit = DefaultBatchSizeLimit,
+            TimeSpan? batchingPeriod = null,
+            bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
+            int? queueSizeLimit = DefaultQueueSizeLimit)
+        {
+            if (sinkConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(sinkConfiguration));
+            }
+
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
+            if (string.IsNullOrWhiteSpace(bucketName))
+            {
+                throw new ArgumentNullException(nameof(bucketName));
+            }
+
+            if (string.IsNullOrWhiteSpace(serviceUrl))
             {
                 throw new ArgumentNullException(nameof(serviceUrl));
             }
@@ -334,125 +622,93 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(awsSecretAccessKey));
             }
 
-            if (retainedFileCountLimit.HasValue && retainedFileCountLimit < 1)
+            if (string.IsNullOrWhiteSpace(outputTemplate))
             {
-                throw new ArgumentException(
-                    "Zero or negative value provided; retained file count limit must be at least 1.");
+                outputTemplate = DefaultOutputTemplate;
             }
 
-            if (outputTemplate == null)
+            if (encoding == null)
             {
-                throw new ArgumentNullException(nameof(outputTemplate));
+                encoding = DefaultEncoding;
             }
 
-            var formatter = new MessageTemplateTextFormatter(outputTemplate, formatProvider);
-            return sinkConfiguration.Sink(
-                new AmazonS3Sink(
-                    formatter,
-                    path,
-                    fileSizeLimitBytes,
-                    buffered,
-                    encoding,
-                    rollingInterval,
-                    retainedFileCountLimit,
-                    hooks,
-                    bucketName,
-                    serviceUrl,
-                    awsAccessKeyId,
-                    awsSecretAccessKey,
-                    autoUploadEvents,
-                    failureCallback,
-                    bucketPath),
-                restrictedToMinimumLevel,
-                levelSwitch);
+            if (batchingPeriod == null)
+            {
+                batchingPeriod = DefaultBatchingPeriod;
+            }
+
+            var amazonS3Sink = new AmazonS3Sink(path, bucketName, serviceUrl, awsAccessKeyId, awsSecretAccessKey, outputTemplate, formatProvider, rollingInterval, encoding, failureCallback, bucketPath);
+
+            var batchingOptions = new PeriodicBatchingSinkOptions
+            {
+                BatchSizeLimit = batchSizeLimit ?? DefaultBatchSizeLimit,
+                Period = (TimeSpan)batchingPeriod,
+                EagerlyEmitFirstEvent = eagerlyEmitFirstEvent ?? DefaultEagerlyEmitFirstEvent,
+                QueueLimit = queueSizeLimit ?? DefaultQueueSizeLimit
+            };
+
+            var batchingSink = new PeriodicBatchingSink(amazonS3Sink, batchingOptions);
+            return sinkConfiguration.Sink(batchingSink, restrictedToMinimumLevel, levelSwitch);
         }
 
-        /// <summary>   Write log events to the specified file. </summary>
+        /// <summary>Write log events to the specified file.</summary>
         /// <exception cref="ArgumentNullException">
-        ///     Thrown when one or more required arguments are
-        ///     null.
+        /// Thrown when one or more required arguments are
+        /// null.
         /// </exception>
-        /// <exception cref="ArgumentException">
-        ///     Thrown when one or more arguments have
-        ///     unsupported or illegal values.
-        /// </exception>
-        /// <param name="sinkConfiguration">        Logger sink configuration. </param>
-        /// <param name="formatter">                The formatter.</param>
-        /// <param name="path">                     Path to the file. </param>
-        /// <param name="bucketName">               The Amazon S3 bucket name. </param>
-        /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
-        /// <param name="awsAccessKeyId">           The Amazon S3 access key id. </param>
-        /// <param name="awsSecretAccessKey">       The Amazon S3 access key. </param>
-        /// <param name="autoUploadEvents">         Automatically upload all events immediately. </param>
+        /// <param name="sinkConfiguration">The logger sink configuration.</param>
+        /// <param name="path">The path to the file.</param>
+        /// <param name="bucketName">The Amazon S3 bucket name.</param>
+        /// <param name="serviceUrl">The Amazon S3 service url.</param>
+        /// <param name="awsAccessKeyId">The Amazon S3 access key id.</param>
+        /// <param name="awsSecretAccessKey">The Amazon S3 access key.</param>
         /// <param name="restrictedToMinimumLevel">
-        ///     (Optional)
-        ///     The minimum level for
-        ///     events passed through the sink. Ignored when
-        ///     <paramref name="levelSwitch" /> is specified.
-        /// </param>
-        /// <param name="fileSizeLimitBytes">
-        ///     (Optional)
-        ///     The approximate maximum size, in bytes, to which a
-        ///     log file will be allowed to grow.
-        ///     For unrestricted growth, pass null. The default
-        ///     is 1 GB. To avoid writing partial events, the
-        ///     last event within the limit will be written in
-        ///     full even if it exceeds the limit.
+        /// (Optional)
+        /// The minimum level for
+        /// events passed through the sink. Ignored when
+        /// <paramref name="levelSwitch" /> is specified.
         /// </param>
         /// <param name="levelSwitch">
-        ///     (Optional)
-        ///     A switch allowing the pass-through minimum level
-        ///     to be changed at runtime.
+        /// (Optional)
+        /// A switch allowing the pass-through minimum level
+        /// to be changed at runtime.
         /// </param>
-        /// <param name="buffered">
-        ///     (Optional)
-        ///     Indicates if flushing to the output file can be
-        ///     buffered or not. The default
-        ///     is false.
-        /// </param>
+        /// <param name="formatter">The formatter.</param>
         /// <param name="rollingInterval">
-        ///     (Optional)
-        ///     The interval at which logging will roll over to a new
-        ///     file.
-        /// </param>
-        /// <param name="retainedFileCountLimit">
-        ///     (Optional)
-        ///     The maximum number of log files that will be retained,
-        ///     including the current log file. For unlimited
-        ///     retention, pass null. The default is 31.
+        /// (Optional)
+        /// The interval at which logging will roll over to a new
+        /// file.
         /// </param>
         /// <param name="encoding">
-        ///     (Optional)
-        ///     Character encoding used to write the text file. The
-        ///     default is UTF-8 without BOM.
+        /// (Optional)
+        /// Character encoding used to write the text file. The
+        /// default is UTF-8 without BOM.
         /// </param>
-        /// <param name="hooks">
-        ///     (Optional)
-        ///     Optionally enables hooking into log file lifecycle
-        ///     events.
-        /// </param>
-        /// <param name="failureCallback">          (Optional) The failure callback. </param>
-        /// <param name="bucketPath">               (Optional) The Amazon S3 bucket path. </param>
-        /// <returns>   Configuration object allowing method chaining. </returns>
+        /// <param name="failureCallback">The failure callback.</param>
+        /// <param name="bucketPath">The Amazon S3 bucket path.</param>
+        /// <param name="batchSizeLimit">The batch size limit.</param>
+        /// <param name="batchingPeriod">The batching period.</param>
+        /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
+        /// <param name="queueSizeLimit">The queue size limit.</param>
+        /// <returns>The configuration object allowing method chaining.</returns>
         public static LoggerConfiguration AmazonS3(
-            this LoggerSinkConfiguration sinkConfiguration,
-            ITextFormatter formatter,
-            string path,
-            string bucketName,
-            RegionEndpoint endpoint,
-            string awsAccessKeyId,
-            string awsSecretAccessKey,
-            bool autoUploadEvents = false,
-            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
-            long? fileSizeLimitBytes = DefaultFileSizeLimitBytes,
-            LoggingLevelSwitch levelSwitch = null,
-            bool buffered = false,
-            RollingInterval rollingInterval = RollingInterval.Day,
-            int? retainedFileCountLimit = DefaultRetainedFileCountLimit,
-            Encoding encoding = null,
-            FileLifecycleHooks hooks = null,
-            Action<Exception> failureCallback = null,
-            string bucketPath = null)
+                this LoggerSinkConfiguration sinkConfiguration,
+                string path,
+                string bucketName,
+                string serviceUrl,
+                string awsAccessKeyId,
+                string awsSecretAccessKey,
+                LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
+                LoggingLevelSwitch levelSwitch = null,
+                ITextFormatter formatter = null,
+                RollingInterval rollingInterval = RollingInterval.Day,
+                Encoding encoding = null,
+                Action<Exception> failureCallback = null,
+                string bucketPath = null,
+                int? batchSizeLimit = DefaultBatchSizeLimit,
+                TimeSpan? batchingPeriod = null,
+                bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
+                int? queueSizeLimit = DefaultQueueSizeLimit)
         {
             if (sinkConfiguration == null)
             {
@@ -469,9 +725,9 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(bucketName));
             }
 
-            if (endpoint == null)
+            if (string.IsNullOrWhiteSpace(serviceUrl))
             {
-                throw new ArgumentNullException(nameof(endpoint));
+                throw new ArgumentNullException(nameof(serviceUrl));
             }
 
             if (string.IsNullOrWhiteSpace(awsAccessKeyId))
@@ -484,133 +740,102 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(awsSecretAccessKey));
             }
 
-            if (retainedFileCountLimit.HasValue && retainedFileCountLimit < 1)
-            {
-                throw new ArgumentException(
-                    "Zero or negative value provided; retained file count limit must be at least 1.");
-            }
-
             if (formatter == null)
             {
                 throw new ArgumentNullException(nameof(formatter));
             }
 
-            return sinkConfiguration.Sink(
-                new AmazonS3Sink(
-                    formatter,
-                    path,
-                    fileSizeLimitBytes,
-                    buffered,
-                    encoding,
-                    rollingInterval,
-                    retainedFileCountLimit,
-                    hooks,
-                    bucketName,
-                    endpoint,
-                    awsAccessKeyId,
-                    awsSecretAccessKey,
-                    autoUploadEvents,
-                    failureCallback,
-                    bucketPath),
-                restrictedToMinimumLevel,
-                levelSwitch);
+            if (encoding == null)
+            {
+                encoding = DefaultEncoding;
+            }
+
+            if (batchingPeriod == null)
+            {
+                batchingPeriod = DefaultBatchingPeriod;
+            }
+
+            var amazonS3Sink = new AmazonS3Sink(path, bucketName, serviceUrl, awsAccessKeyId, awsSecretAccessKey, formatter, rollingInterval, encoding, failureCallback, bucketPath);
+
+            var batchingOptions = new PeriodicBatchingSinkOptions
+            {
+                BatchSizeLimit = batchSizeLimit ?? DefaultBatchSizeLimit,
+                Period = (TimeSpan)batchingPeriod,
+                EagerlyEmitFirstEvent = eagerlyEmitFirstEvent ?? DefaultEagerlyEmitFirstEvent,
+                QueueLimit = queueSizeLimit ?? DefaultQueueSizeLimit
+            };
+
+            var batchingSink = new PeriodicBatchingSink(amazonS3Sink, batchingOptions);
+            return sinkConfiguration.Sink(batchingSink, restrictedToMinimumLevel, levelSwitch);
         }
 
-        /// <summary>   Write log events to the specified file. </summary>
+        /// <summary>Write log events to the specified file.</summary>
         /// <exception cref="ArgumentNullException">
-        ///     Thrown when one or more required arguments are
-        ///     null.
+        /// Thrown when one or more required arguments are
+        /// null.
         /// </exception>
-        /// <exception cref="ArgumentException">
-        ///     Thrown when one or more arguments have
-        ///     unsupported or illegal values.
-        /// </exception>
-        /// <param name="sinkConfiguration">        Logger sink configuration. </param>
-        /// <param name="path">                     Path to the file. </param>
-        /// <param name="bucketName">               The Amazon S3 bucket name. </param>
-        /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
-        /// <param name="autoUploadEvents">         Automatically upload all events immediately. </param>
+        /// <param name="sinkConfiguration">The logger sink configuration.</param>
+        /// <param name="path">The path to the file.</param>
+        /// <param name="bucketName">The Amazon S3 bucket name.</param>
+        /// <param name="serviceUrl">The Amazon S3 service url.</param>
         /// <param name="restrictedToMinimumLevel">
-        ///     (Optional)
-        ///     The minimum level for
-        ///     events passed through the sink. Ignored when
-        ///     <paramref name="levelSwitch" /> is specified.
+        /// (Optional)
+        /// The minimum level for
+        /// events passed through the sink. Ignored when
+        /// <paramref name="levelSwitch" /> is specified.
+        /// </param>
+        /// <param name="levelSwitch">
+        /// (Optional)
+        /// A switch allowing the pass-through minimum level
+        /// to be changed at runtime.
         /// </param>
         /// <param name="outputTemplate">
-        ///     (Optional)
-        ///     A message template describing the format used to
-        ///     write to the sink.
-        ///     the default is "{Timestamp:yyyy-MM-dd
-        ///     HH:mm:ss.fff zzz} [{Level:u3}]
-        ///     {Message:lj}{NewLine}{Exception}".
+        /// (Optional)
+        /// A message template describing the format used to
+        /// write to the sink.
+        /// The default is "{Timestamp:yyyy-MM-dd
+        /// HH:mm:ss.fff zzz} [{Level:u3}]
+        /// {Message:lj}{NewLine}{Exception}".
         /// </param>
         /// <param name="formatProvider">
-        ///     (Optional)
-        ///     Supplies culture-specific formatting information, or
-        ///     null.
-        /// </param>
-        /// <param name="fileSizeLimitBytes">
-        ///     (Optional)
-        ///     The approximate maximum size, in bytes, to which a
-        ///     log file will be allowed to grow.
-        ///     For unrestricted growth, pass null. The default
-        ///     is 1 GB. To avoid writing partial events, the
-        ///     last event within the limit will be written in
-        ///     full even if it exceeds the limit.
-        /// </param>
-        /// <param name="levelSwitch">
-        ///     (Optional)
-        ///     A switch allowing the pass-through minimum level
-        ///     to be changed at runtime.
-        /// </param>
-        /// <param name="buffered">
-        ///     (Optional)
-        ///     Indicates if flushing to the output file can be
-        ///     buffered or not. The default
-        ///     is false.
+        /// (Optional)
+        /// Supplies culture-specific formatting information, or
+        /// null.
         /// </param>
         /// <param name="rollingInterval">
-        ///     (Optional)
-        ///     The interval at which logging will roll over to a new
-        ///     file.
-        /// </param>
-        /// <param name="retainedFileCountLimit">
-        ///     (Optional)
-        ///     The maximum number of log files that will be retained,
-        ///     including the current log file. For unlimited
-        ///     retention, pass null. The default is 31.
+        /// (Optional)
+        /// The interval at which logging will roll over to a new
+        /// file.
         /// </param>
         /// <param name="encoding">
-        ///     (Optional)
-        ///     Character encoding used to write the text file. The
-        ///     default is UTF-8 without BOM.
+        /// (Optional)
+        /// Character encoding used to write the text file. The
+        /// default is UTF-8 without BOM.
         /// </param>
-        /// <param name="hooks">
-        ///     (Optional)
-        ///     Optionally enables hooking into log file lifecycle
-        ///     events.
-        /// </param>
-        /// <param name="failureCallback">          (Optional) The failure callback. </param>
-        /// <param name="bucketPath">               (Optional) The Amazon S3 bucket path. </param>
-        /// <returns>   Configuration object allowing method chaining. </returns>
+        /// <param name="failureCallback">The failure callback.</param>
+        /// <param name="bucketPath">The Amazon S3 bucket path.</param>
+        /// <param name="batchSizeLimit">The batch size limit.</param>
+        /// <param name="batchingPeriod">The batching period.</param>
+        /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
+        /// <param name="queueSizeLimit">The queue size limit.</param>
+        /// <returns>The configuration object allowing method chaining.</returns>
         public static LoggerConfiguration AmazonS3(
             this LoggerSinkConfiguration sinkConfiguration,
             string path,
             string bucketName,
-            RegionEndpoint endpoint,
-            bool autoUploadEvents = false,
+            string serviceUrl,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
+            LoggingLevelSwitch levelSwitch = null,
             string outputTemplate = DefaultOutputTemplate,
             IFormatProvider formatProvider = null,
-            long? fileSizeLimitBytes = DefaultFileSizeLimitBytes,
-            LoggingLevelSwitch levelSwitch = null,
-            bool buffered = false,
             RollingInterval rollingInterval = RollingInterval.Day,
-            int? retainedFileCountLimit = DefaultRetainedFileCountLimit,
             Encoding encoding = null,
-            FileLifecycleHooks hooks = null,
             Action<Exception> failureCallback = null,
-            string bucketPath = null)
+            string bucketPath = null,
+            int? batchSizeLimit = DefaultBatchSizeLimit,
+            TimeSpan? batchingPeriod = null,
+            bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
+            int? queueSizeLimit = DefaultQueueSizeLimit)
         {
             if (sinkConfiguration == null)
             {
@@ -627,124 +852,94 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(bucketName));
             }
 
-            if (endpoint == null)
+            if (string.IsNullOrWhiteSpace(serviceUrl))
             {
-                throw new ArgumentNullException(nameof(endpoint));
+                throw new ArgumentNullException(nameof(serviceUrl));
             }
 
-            if (retainedFileCountLimit.HasValue && retainedFileCountLimit < 1)
+            if (string.IsNullOrWhiteSpace(outputTemplate))
             {
-                throw new ArgumentException(
-                    "Zero or negative value provided; retained file count limit must be at least 1.");
+                outputTemplate = DefaultOutputTemplate;
             }
 
-            if (outputTemplate == null)
+            if (encoding == null)
             {
-                throw new ArgumentNullException(nameof(outputTemplate));
+                encoding = DefaultEncoding;
             }
 
-            var formatter = new MessageTemplateTextFormatter(outputTemplate, formatProvider);
-            return sinkConfiguration.Sink(
-                new AmazonS3Sink(
-                    formatter,
-                    path,
-                    fileSizeLimitBytes,
-                    buffered,
-                    encoding,
-                    rollingInterval,
-                    retainedFileCountLimit,
-                    hooks,
-                    bucketName,
-                    endpoint,
-                    autoUploadEvents,
-                    failureCallback,
-                    bucketPath),
-                restrictedToMinimumLevel,
-                levelSwitch);
+            if (batchingPeriod == null)
+            {
+                batchingPeriod = DefaultBatchingPeriod;
+            }
+
+            var amazonS3Sink = new AmazonS3Sink(path, bucketName, serviceUrl, outputTemplate, formatProvider, rollingInterval, encoding, failureCallback, bucketPath);
+
+            var batchingOptions = new PeriodicBatchingSinkOptions
+            {
+                BatchSizeLimit = batchSizeLimit ?? DefaultBatchSizeLimit,
+                Period = (TimeSpan)batchingPeriod,
+                EagerlyEmitFirstEvent = eagerlyEmitFirstEvent ?? DefaultEagerlyEmitFirstEvent,
+                QueueLimit = queueSizeLimit ?? DefaultQueueSizeLimit
+            };
+
+            var batchingSink = new PeriodicBatchingSink(amazonS3Sink, batchingOptions);
+            return sinkConfiguration.Sink(batchingSink, restrictedToMinimumLevel, levelSwitch);
         }
 
-        /// <summary>   Write log events to the specified file. </summary>
+        /// <summary>Write log events to the specified file.</summary>
         /// <exception cref="ArgumentNullException">
-        ///     Thrown when one or more required arguments are
-        ///     null.
+        /// Thrown when one or more required arguments are
+        /// null.
         /// </exception>
-        /// <exception cref="ArgumentException">
-        ///     Thrown when one or more arguments have
-        ///     unsupported or illegal values.
-        /// </exception>
-        /// <param name="sinkConfiguration">        Logger sink configuration. </param>
-        /// <param name="formatter">                The formatter.</param>
-        /// <param name="path">                     Path to the file. </param>
-        /// <param name="bucketName">               The Amazon S3 bucket name. </param>
-        /// <param name="endpoint">                 The Amazon S3 endpoint. </param>
-        /// <param name="autoUploadEvents">         Automatically upload all events immediately. </param>
+        /// <param name="sinkConfiguration">The logger sink configuration.</param>
+        /// <param name="path">The path to the file.</param>
+        /// <param name="bucketName">The Amazon S3 bucket name.</param>
+        /// <param name="serviceUrl">The Amazon S3 service url.</param>
         /// <param name="restrictedToMinimumLevel">
-        ///     (Optional)
-        ///     The minimum level for
-        ///     events passed through the sink. Ignored when
-        ///     <paramref name="levelSwitch" /> is specified.
-        /// </param>
-        /// <param name="fileSizeLimitBytes">
-        ///     (Optional)
-        ///     The approximate maximum size, in bytes, to which a
-        ///     log file will be allowed to grow.
-        ///     For unrestricted growth, pass null. The default
-        ///     is 1 GB. To avoid writing partial events, the
-        ///     last event within the limit will be written in
-        ///     full even if it exceeds the limit.
+        /// (Optional)
+        /// The minimum level for
+        /// events passed through the sink. Ignored when
+        /// <paramref name="levelSwitch" /> is specified.
         /// </param>
         /// <param name="levelSwitch">
-        ///     (Optional)
-        ///     A switch allowing the pass-through minimum level
-        ///     to be changed at runtime.
+        /// (Optional)
+        /// A switch allowing the pass-through minimum level
+        /// to be changed at runtime.
         /// </param>
-        /// <param name="buffered">
-        ///     (Optional)
-        ///     Indicates if flushing to the output file can be
-        ///     buffered or not. The default
-        ///     is false.
-        /// </param>
+        /// <param name="formatter">The formatter.</param>
         /// <param name="rollingInterval">
-        ///     (Optional)
-        ///     The interval at which logging will roll over to a new
-        ///     file.
-        /// </param>
-        /// <param name="retainedFileCountLimit">
-        ///     (Optional)
-        ///     The maximum number of log files that will be retained,
-        ///     including the current log file. For unlimited
-        ///     retention, pass null. The default is 31.
+        /// (Optional)
+        /// The interval at which logging will roll over to a new
+        /// file.
         /// </param>
         /// <param name="encoding">
-        ///     (Optional)
-        ///     Character encoding used to write the text file. The
-        ///     default is UTF-8 without BOM.
+        /// (Optional)
+        /// Character encoding used to write the text file. The
+        /// default is UTF-8 without BOM.
         /// </param>
-        /// <param name="hooks">
-        ///     (Optional)
-        ///     Optionally enables hooking into log file lifecycle
-        ///     events.
-        /// </param>
-        /// <param name="failureCallback">          (Optional) The failure callback. </param>
-        /// <param name="bucketPath">               (Optional) The Amazon S3 bucket path. </param>
-        /// <returns>   Configuration object allowing method chaining. </returns>
+        /// <param name="failureCallback">The failure callback.</param>
+        /// <param name="bucketPath">The Amazon S3 bucket path.</param>
+        /// <param name="batchSizeLimit">The batch size limit.</param>
+        /// <param name="batchingPeriod">The batching period.</param>
+        /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
+        /// <param name="queueSizeLimit">The queue size limit.</param>
+        /// <returns>The configuration object allowing method chaining.</returns>
         public static LoggerConfiguration AmazonS3(
             this LoggerSinkConfiguration sinkConfiguration,
-            ITextFormatter formatter,
             string path,
             string bucketName,
-            RegionEndpoint endpoint,
-            bool autoUploadEvents = false,
+            string serviceUrl,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
-            long? fileSizeLimitBytes = DefaultFileSizeLimitBytes,
             LoggingLevelSwitch levelSwitch = null,
-            bool buffered = false,
+            ITextFormatter formatter = null,
             RollingInterval rollingInterval = RollingInterval.Day,
-            int? retainedFileCountLimit = DefaultRetainedFileCountLimit,
             Encoding encoding = null,
-            FileLifecycleHooks hooks = null,
             Action<Exception> failureCallback = null,
-            string bucketPath = null)
+            string bucketPath = null,
+            int? batchSizeLimit = DefaultBatchSizeLimit,
+            TimeSpan? batchingPeriod = null,
+            bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
+            int? queueSizeLimit = DefaultQueueSizeLimit)
         {
             if (sinkConfiguration == null)
             {
@@ -761,15 +956,9 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(bucketName));
             }
 
-            if (endpoint == null)
+            if (string.IsNullOrWhiteSpace(serviceUrl))
             {
-                throw new ArgumentNullException(nameof(endpoint));
-            }
-
-            if (retainedFileCountLimit.HasValue && retainedFileCountLimit < 1)
-            {
-                throw new ArgumentException(
-                    "Zero or negative value provided; retained file count limit must be at least 1.");
+                throw new ArgumentNullException(nameof(serviceUrl));
             }
 
             if (formatter == null)
@@ -777,23 +966,28 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(formatter));
             }
 
-            return sinkConfiguration.Sink(
-                new AmazonS3Sink(
-                    formatter,
-                    path,
-                    fileSizeLimitBytes,
-                    buffered,
-                    encoding,
-                    rollingInterval,
-                    retainedFileCountLimit,
-                    hooks,
-                    bucketName,
-                    endpoint,
-                    autoUploadEvents,
-                    failureCallback,
-                    bucketPath),
-                restrictedToMinimumLevel,
-                levelSwitch);
+            if (encoding == null)
+            {
+                encoding = DefaultEncoding;
+            }
+
+            if (batchingPeriod == null)
+            {
+                batchingPeriod = DefaultBatchingPeriod;
+            }
+
+            var amazonS3Sink = new AmazonS3Sink(path, bucketName, serviceUrl, formatter, rollingInterval, encoding, failureCallback, bucketPath);
+
+            var batchingOptions = new PeriodicBatchingSinkOptions
+            {
+                BatchSizeLimit = batchSizeLimit ?? DefaultBatchSizeLimit,
+                Period = (TimeSpan)batchingPeriod,
+                EagerlyEmitFirstEvent = eagerlyEmitFirstEvent ?? DefaultEagerlyEmitFirstEvent,
+                QueueLimit = queueSizeLimit ?? DefaultQueueSizeLimit
+            };
+
+            var batchingSink = new PeriodicBatchingSink(amazonS3Sink, batchingOptions);
+            return sinkConfiguration.Sink(batchingSink, restrictedToMinimumLevel, levelSwitch);
         }
     }
 }
