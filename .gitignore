@@ -261,4 +261,4 @@ __pycache__/
 *.pyc
 
 # Private tests with valid keys
-AmazonS3BasicTestsPrivate.cs
+AmazonS3BasicTestsWithCredentials.cs
