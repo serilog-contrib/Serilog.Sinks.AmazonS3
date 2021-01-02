@@ -3,7 +3,7 @@ Serilog.Sinks.AmazonS3
 
 Serilog.Sinks.AmazonS3 is a library to save logging information from [Serilog](https://github.com/serilog/serilog) to [Amazon S3](https://aws.amazon.com/s3/).
 The idea there was to upload log files to [Amazon S3](https://aws.amazon.com/s3/) to later evaluate them with [Amazon EMR](https://aws.amazon.com/emr/) services.
-The assembly was written and tested in .Net Framework 4.8 and .Net Standard 2.0.
+The assembly was written and tested in .Net 5.0.
 This project makes use of the [Serilog.Sinks.File](https://github.com/serilog/serilog-sinks-file)'s code in a major part,
 so thanks to all the [contributors](https://github.com/serilog/serilog-sinks-file/graphs/contributors) of this project :thumbsup:.
 
