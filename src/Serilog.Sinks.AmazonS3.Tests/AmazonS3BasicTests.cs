@@ -27,17 +27,17 @@ namespace Serilog.Sinks.AmazonS3.Tests
         /// <summary>
         /// The Amazon S3 access key id.
         /// </summary>
-        private const string AwsAccessKeyId = "Dummy";
+        private readonly string awsAccessKeyId = Environment.GetEnvironmentVariable("AwsAccessKeyId");
 
         /// <summary>
         /// The Amazon S3 secret access key.
         /// </summary>
-        private const string AwsSecretAccessKey = "Dummy";
+        private readonly string awsSecretAccessKey = Environment.GetEnvironmentVariable("AwsSecretAccessKey");
 
         /// <summary>
         /// The Amazon S3 bucket name.
         /// </summary>
-        private const string BucketName = "dummy";
+        private readonly string awsBucketName = Environment.GetEnvironmentVariable("AwsBucketName");
 
         /// <summary>
         /// This method is used to test a basic file upload to Amazon S3 with no credentials (IAM).
@@ -47,7 +47,7 @@ namespace Serilog.Sinks.AmazonS3.Tests
         {
             var logger = new LoggerConfiguration().WriteTo.AmazonS3(
                 "log.txt",
-                BucketName,
+                this.awsBucketName,
                 RegionEndpoint.EUWest2,
                 LogEventLevel.Verbose,
                 outputTemplate: null,
@@ -79,10 +79,10 @@ namespace Serilog.Sinks.AmazonS3.Tests
         {
             var logger = new LoggerConfiguration().WriteTo.AmazonS3(
                 "log.txt",
-                BucketName,
+                this.awsBucketName,
                 RegionEndpoint.EUWest2,
-                AwsAccessKeyId,
-                AwsSecretAccessKey,
+                this.awsAccessKeyId,
+                this.awsSecretAccessKey,
                 LogEventLevel.Verbose,
                 outputTemplate: null,
                 formatProvider: null,
@@ -111,10 +111,10 @@ namespace Serilog.Sinks.AmazonS3.Tests
         {
             var logger = new LoggerConfiguration().WriteTo.AmazonS3(
                 "log.txt",
-                BucketName,
+                this.awsBucketName,
                 RegionEndpoint.EUWest2,
-                AwsAccessKeyId,
-                AwsSecretAccessKey,
+                this.awsAccessKeyId,
+                this.awsSecretAccessKey,
                 LogEventLevel.Verbose,
                 formatter: new CompactJsonFormatter(),
                 levelSwitch: null,
