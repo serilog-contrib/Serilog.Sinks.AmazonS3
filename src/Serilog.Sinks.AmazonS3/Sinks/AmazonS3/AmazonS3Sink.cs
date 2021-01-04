@@ -401,7 +401,8 @@ namespace Serilog.Sinks.AmazonS3
             }
             catch (Exception ex)
             {
-                SelfLog.WriteLine($"{ex.Message}{ex.StackTrace}");
+                SelfLog.WriteLine($"{ex.Message} {ex.StackTrace}");
+                this.FailureCallback?.Invoke(ex);
             }
         }
 
