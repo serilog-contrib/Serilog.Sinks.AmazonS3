@@ -13,10 +13,8 @@ namespace Serilog.Sinks.AmazonS3
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
 
-    using Amazon;
     using Amazon.S3;
     using Amazon.S3.Model;
 
@@ -24,7 +22,6 @@ namespace Serilog.Sinks.AmazonS3
 
     using Serilog.Debugging;
     using Serilog.Events;
-    using Serilog.Formatting;
     using Serilog.Formatting.Display;
     using Serilog.Sinks.PeriodicBatching;
 
@@ -34,345 +31,27 @@ namespace Serilog.Sinks.AmazonS3
     public class AmazonS3Sink : IBatchedLogEventSink
     {
         /// <summary>
-        /// The AWS access key identifier.
+        /// The Amazon S3 options.
         /// </summary>
-        private readonly string awsAccessKeyId;
-
-        /// <summary>
-        /// The AWS secret access key.
-        /// </summary>
-        private readonly string awsSecretAccessKey;
-
-        /// <summary>
-        /// The Amazon S3 bucket name.
-        /// </summary>
-        private readonly string bucketName;
-
-        /// <summary>
-        /// The path where local files are stored.
-        /// </summary>
-        private readonly string bucketPath;
-
-        /// <summary>
-        /// The encoding.
-        /// </summary>
-        private readonly Encoding encoding;
-
-        /// <summary>
-        /// The Amazon S3 key endpoint.
-        /// </summary>
-        private readonly RegionEndpoint endpoint;
-
-        /// <summary>
-        /// The local path where the files are stored.
-        /// </summary>
-        private readonly string path;
-
-        /// <summary>
-        /// The Amazon S3 service url.
-        /// </summary>
-        private readonly string serviceUrl = "s3.amazonaws.com";
-
-        /// <summary>
-        /// The path roller.
-        /// </summary>
-        private readonly PathRoller pathRoller;
-
-        /// <summary>
-        /// The text formatter.
-        /// </summary>
-        private readonly ITextFormatter formatter;
-
-        /// <summary>
-        /// The next checkpoint.
-        /// </summary>
-        private DateTime? nextCheckpoint;
-
-        /// <summary>
-        /// The current file sequence number.
-        /// </summary>
-        private int? currentFileSequence;
+        private readonly AmazonS3Options amazonS3Options = new AmazonS3Options();
 
         /// <summary>Initializes a new instance of the <see cref="AmazonS3Sink" /> class. </summary>
         /// <exception cref="ArgumentNullException">A given value is null.</exception>
-        /// <param name="path">The path.</param>
-        /// <param name="bucketName"> The Amazon S3 bucket name.</param>
-        /// <param name="endpoint">The Amazon S3 endpoint.</param>
-        /// <param name="awsAccessKeyId">The Amazon S3 access key id.</param>
-        /// <param name="awsSecretAccessKey">The Amazon S3 secret access key.</param>
-        /// <param name="outputTemplate">The output template.</param>
-        /// <param name="formatProvider">The format provider.</param>
-        /// <param name="rollingInterval">The rolling interval.</param>
-        /// <param name="encoding">The encoding.</param>
-        /// <param name="failureCallback">The failure callback.</param>
-        /// <param name="bucketPath">The Amazon S3 bucket path.</param>
-        public AmazonS3Sink(
-            string path,
-            string bucketName,
-            RegionEndpoint endpoint,
-            string awsAccessKeyId,
-            string awsSecretAccessKey,
-            string outputTemplate,
-            IFormatProvider formatProvider,
-            RollingInterval rollingInterval,
-            Encoding encoding,
-            Action<Exception> failureCallback = null,
-            string bucketPath = null)
+        /// <param name="amazonS3Options">The Amazon S3 options.</param>
+        public AmazonS3Sink(AmazonS3Options amazonS3Options)
         {
-            this.path = path;
-            this.bucketName = bucketName;
-            this.endpoint = endpoint;
-            this.awsAccessKeyId = awsAccessKeyId;
-            this.awsSecretAccessKey = awsSecretAccessKey;
-            var textFormatter = new MessageTemplateTextFormatter(outputTemplate, formatProvider);
-            this.formatter = textFormatter;
-            this.pathRoller = new PathRoller(path, rollingInterval);
-            this.encoding = encoding;
-            this.FailureCallback = failureCallback;
-            this.bucketPath = bucketPath;
+            this.amazonS3Options.Path = amazonS3Options.Path;
+            this.amazonS3Options.BucketName = amazonS3Options.BucketName;
+            this.amazonS3Options.Endpoint = amazonS3Options.Endpoint;
+            this.amazonS3Options.AwsAccessKeyId = amazonS3Options.AwsAccessKeyId;
+            this.amazonS3Options.AwsSecretAccessKey = amazonS3Options.AwsSecretAccessKey;
+            var textFormatter = new MessageTemplateTextFormatter(amazonS3Options.OutputTemplate, amazonS3Options.FormatProvider);
+            this.amazonS3Options.Formatter = textFormatter;
+            this.amazonS3Options.PathRoller = new PathRoller(amazonS3Options.Path, amazonS3Options.RollingInterval);
+            this.amazonS3Options.Encoding = amazonS3Options.Encoding;
+            this.amazonS3Options.FailureCallback = amazonS3Options.FailureCallback;
+            this.amazonS3Options.BucketPath = amazonS3Options.BucketPath;
         }
-
-        /// <summary>Initializes a new instance of the <see cref="AmazonS3Sink" /> class. </summary>
-        /// <exception cref="ArgumentNullException">A given value is null.</exception>
-        /// <param name="path">The path.</param>
-        /// <param name="bucketName"> The Amazon S3 bucket name.</param>
-        /// <param name="endpoint">The Amazon S3 endpoint.</param>
-        /// <param name="awsAccessKeyId">The Amazon S3 access key id.</param>
-        /// <param name="awsSecretAccessKey">The Amazon S3 secret access key.</param>
-        /// <param name="formatter">The formatter.</param>
-        /// <param name="rollingInterval">The rolling interval.</param>
-        /// <param name="encoding">The encoding.</param>
-        /// <param name="failureCallback">The failure callback.</param>
-        /// <param name="bucketPath">The Amazon S3 bucket path.</param>
-        public AmazonS3Sink(
-            string path,
-            string bucketName,
-            RegionEndpoint endpoint,
-            string awsAccessKeyId,
-            string awsSecretAccessKey,
-            ITextFormatter formatter,
-            RollingInterval rollingInterval,
-            Encoding encoding,
-            Action<Exception> failureCallback = null,
-            string bucketPath = null)
-        {
-            this.path = path;
-            this.bucketName = bucketName;
-            this.endpoint = endpoint;
-            this.awsAccessKeyId = awsAccessKeyId;
-            this.awsSecretAccessKey = awsSecretAccessKey;
-            this.formatter = formatter;
-            this.pathRoller = new PathRoller(path, rollingInterval);
-            this.encoding = encoding;
-            this.FailureCallback = failureCallback;
-            this.bucketPath = bucketPath;
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="AmazonS3Sink" /> class. </summary>
-        /// <exception cref="ArgumentNullException">A given value is null.</exception>
-        /// <param name="path">The path.</param>
-        /// <param name="bucketName">The Amazon S3 bucket name.</param>
-        /// <param name="endpoint">The Amazon S3 endpoint.</param>
-        /// <param name="outputTemplate">The output template.</param>
-        /// <param name="formatProvider">The format provider.</param>
-        /// <param name="rollingInterval">The rolling interval.</param>
-        /// <param name="encoding">The encoding.</param>
-        /// <param name="failureCallback">The failure callback.</param>
-        /// <param name="bucketPath">The Amazon S3 bucket path.</param>
-        public AmazonS3Sink(
-            string path,
-            string bucketName,
-            RegionEndpoint endpoint,
-            string outputTemplate,
-            IFormatProvider formatProvider,
-            RollingInterval rollingInterval,
-            Encoding encoding,
-            Action<Exception> failureCallback = null,
-            string bucketPath = null)
-        {
-            this.path = path;
-            this.bucketName = bucketName;
-            this.endpoint = endpoint;
-            var textFormatter = new MessageTemplateTextFormatter(outputTemplate, formatProvider);
-            this.formatter = textFormatter;
-            this.pathRoller = new PathRoller(this.path, rollingInterval);
-            this.encoding = encoding;
-            this.FailureCallback = failureCallback;
-            this.bucketPath = bucketPath;
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="AmazonS3Sink" /> class. </summary>
-        /// <exception cref="ArgumentNullException">A given value is null.</exception>
-        /// <param name="path">The path.</param>
-        /// <param name="bucketName">The Amazon S3 bucket name.</param>
-        /// <param name="endpoint">The Amazon S3 endpoint.</param>
-        /// <param name="formatter">The formatter.</param>
-        /// <param name="rollingInterval">The rolling interval.</param>
-        /// <param name="encoding">The encoding.</param>
-        /// <param name="failureCallback">The failure callback.</param>
-        /// <param name="bucketPath">The Amazon S3 bucket path.</param>
-        public AmazonS3Sink(
-            string path,
-            string bucketName,
-            RegionEndpoint endpoint,
-            ITextFormatter formatter,
-            RollingInterval rollingInterval,
-            Encoding encoding,
-            Action<Exception> failureCallback = null,
-            string bucketPath = null)
-        {
-            this.path = path;
-            this.bucketName = bucketName;
-            this.endpoint = endpoint;
-            this.formatter = formatter;
-            this.pathRoller = new PathRoller(this.path, rollingInterval);
-            this.encoding = encoding;
-            this.FailureCallback = failureCallback;
-            this.bucketPath = bucketPath;
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="AmazonS3Sink" /> class. </summary>
-        /// <exception cref="ArgumentNullException">A given value is null.</exception>
-        /// <param name="path">The path.</param>
-        /// <param name="bucketName"> The Amazon S3 bucket name.</param>
-        /// <param name="serviceUrl">The Amazon S3 service url.</param>
-        /// <param name="awsAccessKeyId">The Amazon S3 access key id.</param>
-        /// <param name="awsSecretAccessKey">The Amazon S3 secret access key.</param>
-        /// <param name="outputTemplate">The output template.</param>
-        /// <param name="formatProvider">The format provider.</param>
-        /// <param name="rollingInterval">The rolling interval.</param>
-        /// <param name="encoding">The encoding.</param>
-        /// <param name="failureCallback">The failure callback.</param>
-        /// <param name="bucketPath">The Amazon S3 bucket path.</param>
-        public AmazonS3Sink(
-            string path,
-            string bucketName,
-            string serviceUrl,
-            string awsAccessKeyId,
-            string awsSecretAccessKey,
-            string outputTemplate,
-            IFormatProvider formatProvider,
-            RollingInterval rollingInterval,
-            Encoding encoding,
-            Action<Exception> failureCallback = null,
-            string bucketPath = null)
-        {
-            this.path = path;
-            this.bucketName = bucketName;
-            this.serviceUrl = serviceUrl;
-            this.awsAccessKeyId = awsAccessKeyId;
-            this.awsSecretAccessKey = awsSecretAccessKey;
-            var textFormatter = new MessageTemplateTextFormatter(outputTemplate, formatProvider);
-            this.formatter = textFormatter;
-            this.pathRoller = new PathRoller(path, rollingInterval);
-            this.encoding = encoding;
-            this.FailureCallback = failureCallback;
-            this.bucketPath = bucketPath;
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="AmazonS3Sink" /> class. </summary>
-        /// <exception cref="ArgumentNullException">A given value is null.</exception>
-        /// <param name="path">The path.</param>
-        /// <param name="bucketName"> The Amazon S3 bucket name.</param>
-        /// <param name="serviceUrl">The Amazon S3 service url.</param>
-        /// <param name="awsAccessKeyId">The Amazon S3 access key id.</param>
-        /// <param name="awsSecretAccessKey">The Amazon S3 secret access key.</param>
-        /// <param name="formatter">The formatter.</param>
-        /// <param name="rollingInterval">The rolling interval.</param>
-        /// <param name="encoding">The encoding.</param>
-        /// <param name="failureCallback">The failure callback.</param>
-        /// <param name="bucketPath">The Amazon S3 bucket path.</param>
-        public AmazonS3Sink(
-            string path,
-            string bucketName,
-            string serviceUrl,
-            string awsAccessKeyId,
-            string awsSecretAccessKey,
-            ITextFormatter formatter,
-            RollingInterval rollingInterval,
-            Encoding encoding,
-            Action<Exception> failureCallback = null,
-            string bucketPath = null)
-        {
-            this.path = path;
-            this.bucketName = bucketName;
-            this.serviceUrl = serviceUrl;
-            this.awsAccessKeyId = awsAccessKeyId;
-            this.awsSecretAccessKey = awsSecretAccessKey;
-            this.formatter = formatter;
-            this.pathRoller = new PathRoller(path, rollingInterval);
-            this.encoding = encoding;
-            this.FailureCallback = failureCallback;
-            this.bucketPath = bucketPath;
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="AmazonS3Sink" /> class. </summary>
-        /// <exception cref="ArgumentNullException">A given value is null.</exception>
-        /// <param name="path">The path.</param>
-        /// <param name="bucketName">The Amazon S3 bucket name.</param>
-        /// <param name="serviceUrl">The Amazon S3 service url.</param>
-        /// <param name="outputTemplate">The output template.</param>
-        /// <param name="formatProvider">The format provider.</param>
-        /// <param name="rollingInterval">The rolling interval.</param>
-        /// <param name="encoding">The encoding.</param>
-        /// <param name="failureCallback">The failure callback.</param>
-        /// <param name="bucketPath">The Amazon S3 bucket path.</param>
-        public AmazonS3Sink(
-            string path,
-            string bucketName,
-            string serviceUrl,
-            string outputTemplate,
-            IFormatProvider formatProvider,
-            RollingInterval rollingInterval,
-            Encoding encoding,
-            Action<Exception> failureCallback = null,
-            string bucketPath = null)
-        {
-            this.path = path;
-            this.bucketName = bucketName;
-            this.serviceUrl = serviceUrl;
-            var textFormatter = new MessageTemplateTextFormatter(outputTemplate, formatProvider);
-            this.formatter = textFormatter;
-            this.pathRoller = new PathRoller(this.path, rollingInterval);
-            this.encoding = encoding;
-            this.FailureCallback = failureCallback;
-            this.bucketPath = bucketPath;
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="AmazonS3Sink" /> class. </summary>
-        /// <exception cref="ArgumentNullException">A given value is null.</exception>
-        /// <param name="path">The path.</param>
-        /// <param name="bucketName">The Amazon S3 bucket name.</param>
-        /// <param name="serviceUrl">The Amazon S3 service url.</param>
-        /// <param name="formatter">The formatter.</param>
-        /// <param name="rollingInterval">The rolling interval.</param>
-        /// <param name="encoding">The encoding.</param>
-        /// <param name="failureCallback">The failure callback.</param>
-        /// <param name="bucketPath">The Amazon S3 bucket path.</param>
-        public AmazonS3Sink(
-            string path,
-            string bucketName,
-            string serviceUrl,
-            ITextFormatter formatter,
-            RollingInterval rollingInterval,
-            Encoding encoding,
-            Action<Exception> failureCallback = null,
-            string bucketPath = null)
-        {
-            this.path = path;
-            this.bucketName = bucketName;
-            this.serviceUrl = serviceUrl;
-            this.formatter = formatter;
-            this.pathRoller = new PathRoller(this.path, rollingInterval);
-            this.encoding = encoding;
-            this.FailureCallback = failureCallback;
-            this.bucketPath = bucketPath;
-        }
-
-        /// <summary>
-        /// Gets or sets the failure callback.
-        /// </summary>
-        public Action<Exception> FailureCallback { get; set; }
 
         /// <summary>Emit a batch of log events, running asynchronously.</summary>
         /// <param name="batch">The batch of events to emit.</param>
@@ -388,7 +67,7 @@ namespace Serilog.Sinks.AmazonS3
 
             foreach (var logEvent in batch)
             {
-                this.formatter.Format(logEvent, fileInformation.OutputWriter);
+                this.amazonS3Options.Formatter.Format(logEvent, fileInformation.OutputWriter);
             }
 
             await fileInformation.OutputWriter.FlushAsync();
@@ -402,7 +81,7 @@ namespace Serilog.Sinks.AmazonS3
             catch (Exception ex)
             {
                 SelfLog.WriteLine($"{ex.Message} {ex.StackTrace}");
-                this.FailureCallback?.Invoke(ex);
+                this.amazonS3Options.FailureCallback?.Invoke(ex);
             }
         }
 
@@ -424,7 +103,7 @@ namespace Serilog.Sinks.AmazonS3
         {
             var fileName = this.AlignCurrentFileTo(DateTime.Now, true);
 
-            var directory = Path.GetDirectoryName(this.path);
+            var directory = Path.GetDirectoryName(this.amazonS3Options.Path);
             if (!string.IsNullOrWhiteSpace(directory) && !Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
@@ -434,7 +113,7 @@ namespace Serilog.Sinks.AmazonS3
             return new FileInformation
             {
                 FileName = fileName,
-                OutputWriter = new StreamWriter(outputStream, this.encoding)
+                OutputWriter = new StreamWriter(outputStream, this.amazonS3Options.Encoding)
             };
         }
 
@@ -446,26 +125,26 @@ namespace Serilog.Sinks.AmazonS3
         /// <returns>The file name as <see cref="string"/>.</returns>
         private string AlignCurrentFileTo(DateTime now, bool nextSequence = false)
         {
-            if (!this.nextCheckpoint.HasValue)
+            if (!this.amazonS3Options.NextCheckpoint.HasValue)
             {
                 return this.GetFileName(now);
             }
 
             // ReSharper disable once InvertIf
-            if (nextSequence || now >= this.nextCheckpoint.Value)
+            if (nextSequence || now >= this.amazonS3Options.NextCheckpoint.Value)
             {
                 int? minSequence = null;
 
                 // ReSharper disable once InvertIf
                 if (nextSequence)
                 {
-                    if (this.currentFileSequence == null)
+                    if (this.amazonS3Options.CurrentFileSequence == null)
                     {
                         minSequence = 1;
                     }
                     else
                     {
-                        minSequence = this.currentFileSequence.Value + 1;
+                        minSequence = this.amazonS3Options.CurrentFileSequence.Value + 1;
                     }
                 }
 
@@ -483,16 +162,16 @@ namespace Serilog.Sinks.AmazonS3
         /// <returns>The file name as <see cref="string"/>.</returns>
         private string GetFileName(DateTime now, int? minSequence = null)
         {
-            var currentCheckpoint = this.pathRoller.GetCurrentCheckpoint(now);
-            this.nextCheckpoint = this.pathRoller.GetNextCheckpoint(now);
+            var currentCheckpoint = this.amazonS3Options.PathRoller.GetCurrentCheckpoint(now);
+            this.amazonS3Options.NextCheckpoint = this.amazonS3Options.PathRoller.GetNextCheckpoint(now);
 
             var existingFiles = Enumerable.Empty<string>();
 
             try
             {
-                if (Directory.Exists(this.pathRoller.LogFileDirectory))
+                if (Directory.Exists(this.amazonS3Options.PathRoller.LogFileDirectory))
                 {
-                    existingFiles = Directory.GetFiles(this.pathRoller.LogFileDirectory, this.pathRoller.DirectorySearchPattern).Select(Path.GetFileName);
+                    existingFiles = Directory.GetFiles(this.amazonS3Options.PathRoller.LogFileDirectory, this.amazonS3Options.PathRoller.DirectorySearchPattern).Select(Path.GetFileName);
                 }
             }
             catch (DirectoryNotFoundException)
@@ -500,7 +179,7 @@ namespace Serilog.Sinks.AmazonS3
                 // Ignored
             }
 
-            var latestForThisCheckpoint = this.pathRoller
+            var latestForThisCheckpoint = this.amazonS3Options.PathRoller
                 .SelectMatches(existingFiles)
                 .Where(m => m.DateTime == currentCheckpoint)
                 .OrderByDescending(m => m.SequenceNumber)
@@ -516,8 +195,8 @@ namespace Serilog.Sinks.AmazonS3
                 }
             }
 
-            this.pathRoller.GetLogFilePath(now, sequence, out var localPath);
-            this.currentFileSequence = sequence;
+            this.amazonS3Options.PathRoller.GetLogFilePath(now, sequence, out var localPath);
+            this.amazonS3Options.CurrentFileSequence = sequence;
             return localPath;
         }
 
@@ -545,35 +224,35 @@ namespace Serilog.Sinks.AmazonS3
             AmazonS3Client client;
 
             // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-            if (this.endpoint != null)
+            if (this.amazonS3Options.Endpoint != null)
             {
-                client = new AmazonS3Client(this.endpoint);
+                client = new AmazonS3Client(this.amazonS3Options.Endpoint);
             }
             else
             {
                 client = new AmazonS3Client(
                     new AmazonS3Config
                     {
-                        ServiceURL = this.serviceUrl
+                        ServiceURL = this.amazonS3Options.ServiceUrl
                     });
             }
 
             // In the case that awsAccessKeyId and awsSecretAccessKey is passed, we use it. Otherwise authorization is given by roles in AWS directly.
-            if (!string.IsNullOrEmpty(this.awsAccessKeyId) && !string.IsNullOrEmpty(this.awsSecretAccessKey))
+            if (!string.IsNullOrEmpty(this.amazonS3Options.AwsAccessKeyId) && !string.IsNullOrEmpty(this.amazonS3Options.AwsSecretAccessKey))
             {
                 // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-                if (this.endpoint != null)
+                if (this.amazonS3Options.Endpoint != null)
                 {
-                    client = new AmazonS3Client(this.awsAccessKeyId, this.awsSecretAccessKey, this.endpoint);
+                    client = new AmazonS3Client(this.amazonS3Options.AwsAccessKeyId, this.amazonS3Options.AwsSecretAccessKey, this.amazonS3Options.Endpoint);
                 }
                 else
                 {
                     client = new AmazonS3Client(
-                        this.awsAccessKeyId,
-                        this.awsSecretAccessKey,
+                        this.amazonS3Options.AwsAccessKeyId,
+                        this.amazonS3Options.AwsSecretAccessKey,
                         new AmazonS3Config
                         {
-                            ServiceURL = this.serviceUrl
+                            ServiceURL = this.amazonS3Options.ServiceUrl
                         });
                 }
             }
@@ -582,24 +261,26 @@ namespace Serilog.Sinks.AmazonS3
             {
                 // S3 does not support updates, files are automatically rewritten so we will have to upload the entire file
                 // Open the file for shared reading and writing
-                using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+
+                var key = string.IsNullOrWhiteSpace(this.amazonS3Options.BucketPath)
+                              ? Path.GetFileName(fileName).Replace("\\", "/")
+                              : Path.Combine(this.amazonS3Options.BucketPath, Path.GetFileName(fileName))
+                                  .Replace("\\", "/");
+
+                if (fs.Length == 0)
                 {
-                    var key = string.IsNullOrWhiteSpace(this.bucketPath) ? Path.GetFileName(fileName).Replace("\\", "/") : Path.Combine(this.bucketPath, Path.GetFileName(fileName)).Replace("\\", "/");
-
-                    if (fs.Length == 0)
-                    {
-                        return null;
-                    }
-
-                    var putRequest = new PutObjectRequest
-                    {
-                        BucketName = this.bucketName,
-                        Key = key,
-                        InputStream = fs
-                    };
-
-                    return await client.PutObjectAsync(putRequest);
+                    return null;
                 }
+
+                var putRequest = new PutObjectRequest
+                {
+                    BucketName = this.amazonS3Options.BucketName,
+                    Key = key,
+                    InputStream = fs
+                };
+
+                return await client.PutObjectAsync(putRequest);
             }
             catch (AmazonS3Exception amazonS3Exception)
             {

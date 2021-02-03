@@ -174,7 +174,22 @@ namespace Serilog
                 batchingPeriod = DefaultBatchingPeriod;
             }
 
-            var amazonS3Sink = new AmazonS3Sink(path, bucketName, endpoint, awsAccessKeyId, awsSecretAccessKey, outputTemplate, formatProvider, rollingInterval, encoding, failureCallback, bucketPath);
+            var options = new AmazonS3Options
+            {
+                Path = path,
+                BucketName = bucketName,
+                Endpoint = endpoint,
+                AwsAccessKeyId = awsAccessKeyId,
+                AwsSecretAccessKey = awsSecretAccessKey,
+                OutputTemplate = outputTemplate,
+                FormatProvider = formatProvider,
+                RollingInterval = rollingInterval,
+                Encoding = encoding,
+                FailureCallback = failureCallback,
+                BucketPath = bucketPath
+            };
+
+            var amazonS3Sink = new AmazonS3Sink(options);
 
             var batchingOptions = new PeriodicBatchingSinkOptions
             {
@@ -292,7 +307,21 @@ namespace Serilog
                 batchingPeriod = DefaultBatchingPeriod;
             }
 
-            var amazonS3Sink = new AmazonS3Sink(path, bucketName, endpoint, awsAccessKeyId, awsSecretAccessKey, formatter, rollingInterval, encoding, failureCallback, bucketPath);
+            var options = new AmazonS3Options
+            {
+                Path = path,
+                BucketName = bucketName,
+                Endpoint = endpoint,
+                AwsAccessKeyId = awsAccessKeyId,
+                AwsSecretAccessKey = awsSecretAccessKey,
+                Formatter = formatter,
+                RollingInterval = rollingInterval,
+                Encoding = encoding,
+                FailureCallback = failureCallback,
+                BucketPath = bucketPath
+            };
+
+            var amazonS3Sink = new AmazonS3Sink(options);
 
             var batchingOptions = new PeriodicBatchingSinkOptions
             {
@@ -409,7 +438,20 @@ namespace Serilog
                 batchingPeriod = DefaultBatchingPeriod;
             }
 
-            var amazonS3Sink = new AmazonS3Sink(path, bucketName, endpoint, outputTemplate, formatProvider, rollingInterval, encoding, failureCallback, bucketPath);
+            var options = new AmazonS3Options
+            {
+                Path = path,
+                BucketName = bucketName,
+                Endpoint = endpoint,
+                OutputTemplate = outputTemplate,
+                FormatProvider = formatProvider,
+                RollingInterval = rollingInterval,
+                Encoding = encoding,
+                FailureCallback = failureCallback,
+                BucketPath = bucketPath
+            };
+
+            var amazonS3Sink = new AmazonS3Sink(options);
 
             var batchingOptions = new PeriodicBatchingSinkOptions
             {
@@ -513,7 +555,19 @@ namespace Serilog
                 batchingPeriod = DefaultBatchingPeriod;
             }
 
-            var amazonS3Sink = new AmazonS3Sink(path, bucketName, endpoint, formatter, rollingInterval, encoding, failureCallback, bucketPath);
+            var options = new AmazonS3Options
+            {
+                Path = path,
+                BucketName = bucketName,
+                Endpoint = endpoint,
+                Formatter = formatter,
+                RollingInterval = rollingInterval,
+                Encoding = encoding,
+                FailureCallback = failureCallback,
+                BucketPath = bucketPath
+            };
+
+            var amazonS3Sink = new AmazonS3Sink(options);
 
             var batchingOptions = new PeriodicBatchingSinkOptions
             {
@@ -637,7 +691,22 @@ namespace Serilog
                 batchingPeriod = DefaultBatchingPeriod;
             }
 
-            var amazonS3Sink = new AmazonS3Sink(path, bucketName, serviceUrl, awsAccessKeyId, awsSecretAccessKey, outputTemplate, formatProvider, rollingInterval, encoding, failureCallback, bucketPath);
+            var options = new AmazonS3Options
+            {
+                Path = path,
+                BucketName = bucketName,
+                ServiceUrl = serviceUrl,
+                AwsAccessKeyId = awsAccessKeyId,
+                AwsSecretAccessKey = awsSecretAccessKey,
+                OutputTemplate = outputTemplate,
+                FormatProvider = formatProvider,
+                RollingInterval = rollingInterval,
+                Encoding = encoding,
+                FailureCallback = failureCallback,
+                BucketPath = bucketPath
+            };
+
+            var amazonS3Sink = new AmazonS3Sink(options);
 
             var batchingOptions = new PeriodicBatchingSinkOptions
             {
@@ -755,7 +824,21 @@ namespace Serilog
                 batchingPeriod = DefaultBatchingPeriod;
             }
 
-            var amazonS3Sink = new AmazonS3Sink(path, bucketName, serviceUrl, awsAccessKeyId, awsSecretAccessKey, formatter, rollingInterval, encoding, failureCallback, bucketPath);
+            var options = new AmazonS3Options
+            {
+                Path = path,
+                BucketName = bucketName,
+                ServiceUrl = serviceUrl,
+                AwsAccessKeyId = awsAccessKeyId,
+                AwsSecretAccessKey = awsSecretAccessKey,
+                Formatter = formatter,
+                RollingInterval = rollingInterval,
+                Encoding = encoding,
+                FailureCallback = failureCallback,
+                BucketPath = bucketPath
+            };
+
+            var amazonS3Sink = new AmazonS3Sink(options);
 
             var batchingOptions = new PeriodicBatchingSinkOptions
             {
@@ -872,7 +955,20 @@ namespace Serilog
                 batchingPeriod = DefaultBatchingPeriod;
             }
 
-            var amazonS3Sink = new AmazonS3Sink(path, bucketName, serviceUrl, outputTemplate, formatProvider, rollingInterval, encoding, failureCallback, bucketPath);
+            var options = new AmazonS3Options
+            {
+                Path = path,
+                BucketName = bucketName,
+                ServiceUrl = serviceUrl,
+                OutputTemplate = outputTemplate,
+                FormatProvider = formatProvider,
+                RollingInterval = rollingInterval,
+                Encoding = encoding,
+                FailureCallback = failureCallback,
+                BucketPath = bucketPath
+            };
+
+            var amazonS3Sink = new AmazonS3Sink(options);
 
             var batchingOptions = new PeriodicBatchingSinkOptions
             {
@@ -976,7 +1072,19 @@ namespace Serilog
                 batchingPeriod = DefaultBatchingPeriod;
             }
 
-            var amazonS3Sink = new AmazonS3Sink(path, bucketName, serviceUrl, formatter, rollingInterval, encoding, failureCallback, bucketPath);
+            var options = new AmazonS3Options
+            {
+                Path = path,
+                BucketName = bucketName,
+                ServiceUrl = serviceUrl,
+                Formatter = formatter,
+                RollingInterval = rollingInterval,
+                Encoding = encoding,
+                FailureCallback = failureCallback,
+                BucketPath = bucketPath
+            };
+
+            var amazonS3Sink = new AmazonS3Sink(options);
 
             var batchingOptions = new PeriodicBatchingSinkOptions
             {
