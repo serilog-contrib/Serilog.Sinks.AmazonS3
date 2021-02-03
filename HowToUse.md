@@ -91,6 +91,8 @@ The project can be found on [nuget](https://www.nuget.org/packages/HaemmerElectr
 
 |Parameter|Meaning|Example|Default value|
 |-|-|-|-|
+
+|client|The Amazon S3 client. It will be created in the sink from the given options if the specified one is `null`.|`new AmazonS3Client()`|`null`|
 |formatter|The formatter that can be implemented as desired. See [Issue number 10](https://github.com/SeppPenner/Serilog.Sinks.AmazonS3/issues/10) and [Serilog formatting JSON](https://github.com/serilog/serilog/wiki/Formatting-Output#formatting-json) for more information.|`new CompactJsonFormatter()`|None, is optional.|
 |path|The main log file name used.|`"log.txt"`|None, is mandatory.|
 |bucketName|The name of the Amazon S3 bucket to use. Check: https://docs.aws.amazon.com/general/latest/gr/rande.html.|`"mytestbucket-aws"`|None, is mandatory.|
