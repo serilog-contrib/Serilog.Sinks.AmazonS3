@@ -100,7 +100,7 @@ namespace Serilog.Sinks.AmazonS3
         {
             var current = GetCurrentCheckpoint(interval, dateTime);
 
-            if (current == null)
+            if (current is null)
             {
                 return null;
             }

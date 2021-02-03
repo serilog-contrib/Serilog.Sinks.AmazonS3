@@ -58,7 +58,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <returns>A <see cref="Task"/> returning any asynchronous operation.</returns>
         public async Task EmitBatchAsync(IEnumerable<LogEvent> batch)
         {
-            if (batch == null)
+            if (batch is null)
             {
                 throw new ArgumentNullException(nameof(batch));
             }
@@ -138,7 +138,7 @@ namespace Serilog.Sinks.AmazonS3
                 // ReSharper disable once InvertIf
                 if (nextSequence)
                 {
-                    if (this.amazonS3Options.CurrentFileSequence == null)
+                    if (this.amazonS3Options.CurrentFileSequence is null)
                     {
                         minSequence = 1;
                     }
@@ -189,7 +189,7 @@ namespace Serilog.Sinks.AmazonS3
 
             if (minSequence != null)
             {
-                if (sequence == null || sequence.Value < minSequence.Value)
+                if (sequence is null || sequence.Value < minSequence.Value)
                 {
                     sequence = minSequence;
                 }
@@ -271,7 +271,7 @@ namespace Serilog.Sinks.AmazonS3
                               : Path.Combine(this.amazonS3Options.BucketPath, Path.GetFileName(fileName))
                                   .Replace("\\", "/");
 
-                if (fs.Length == 0)
+                if (fs.Length is 0)
                 {
                     return null;
                 }

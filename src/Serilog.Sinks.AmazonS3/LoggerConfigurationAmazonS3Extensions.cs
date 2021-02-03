@@ -130,7 +130,7 @@ namespace Serilog
             bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
             int? queueSizeLimit = DefaultQueueSizeLimit)
         {
-            if (sinkConfiguration == null)
+            if (sinkConfiguration is null)
             {
                 throw new ArgumentNullException(nameof(sinkConfiguration));
             }
@@ -145,7 +145,7 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(bucketName));
             }
 
-            if (endpoint == null)
+            if (endpoint is null)
             {
                 throw new ArgumentNullException(nameof(endpoint));
             }
@@ -165,12 +165,12 @@ namespace Serilog
                 outputTemplate = DefaultOutputTemplate;
             }
 
-            if (encoding == null)
+            if (encoding is null)
             {
                 encoding = DefaultEncoding;
             }
 
-            if (batchingPeriod == null)
+            if (batchingPeriod is null)
             {
                 batchingPeriod = DefaultBatchingPeriod;
             }
@@ -263,7 +263,7 @@ namespace Serilog
                 bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
                 int? queueSizeLimit = DefaultQueueSizeLimit)
         {
-            if (sinkConfiguration == null)
+            if (sinkConfiguration is null)
             {
                 throw new ArgumentNullException(nameof(sinkConfiguration));
             }
@@ -278,7 +278,7 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(bucketName));
             }
 
-            if (endpoint == null)
+            if (endpoint is null)
             {
                 throw new ArgumentNullException(nameof(endpoint));
             }
@@ -293,17 +293,17 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(awsSecretAccessKey));
             }
 
-            if (formatter == null)
+            if (formatter is null)
             {
                 throw new ArgumentNullException(nameof(formatter));
             }
 
-            if (encoding == null)
+            if (encoding is null)
             {
                 encoding = DefaultEncoding;
             }
 
-            if (batchingPeriod == null)
+            if (batchingPeriod is null)
             {
                 batchingPeriod = DefaultBatchingPeriod;
             }
@@ -404,7 +404,7 @@ namespace Serilog
             bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
             int? queueSizeLimit = DefaultQueueSizeLimit)
         {
-            if (sinkConfiguration == null)
+            if (sinkConfiguration is null)
             {
                 throw new ArgumentNullException(nameof(sinkConfiguration));
             }
@@ -419,7 +419,7 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(bucketName));
             }
 
-            if (endpoint == null)
+            if (endpoint is null)
             {
                 throw new ArgumentNullException(nameof(endpoint));
             }
@@ -429,12 +429,12 @@ namespace Serilog
                 outputTemplate = DefaultOutputTemplate;
             }
 
-            if (encoding == null)
+            if (encoding is null)
             {
                 encoding = DefaultEncoding;
             }
 
-            if (batchingPeriod == null)
+            if (batchingPeriod is null)
             {
                 batchingPeriod = DefaultBatchingPeriod;
             }
@@ -521,7 +521,7 @@ namespace Serilog
             bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
             int? queueSizeLimit = DefaultQueueSizeLimit)
         {
-            if (sinkConfiguration == null)
+            if (sinkConfiguration is null)
             {
                 throw new ArgumentNullException(nameof(sinkConfiguration));
             }
@@ -536,22 +536,22 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(bucketName));
             }
 
-            if (endpoint == null)
+            if (endpoint is null)
             {
                 throw new ArgumentNullException(nameof(endpoint));
             }
 
-            if (formatter == null)
+            if (formatter is null)
             {
                 throw new ArgumentNullException(nameof(formatter));
             }
 
-            if (encoding == null)
+            if (encoding is null)
             {
                 encoding = DefaultEncoding;
             }
 
-            if (batchingPeriod == null)
+            if (batchingPeriod is null)
             {
                 batchingPeriod = DefaultBatchingPeriod;
             }
@@ -647,7 +647,7 @@ namespace Serilog
             bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
             int? queueSizeLimit = DefaultQueueSizeLimit)
         {
-            if (sinkConfiguration == null)
+            if (sinkConfiguration is null)
             {
                 throw new ArgumentNullException(nameof(sinkConfiguration));
             }
@@ -682,12 +682,12 @@ namespace Serilog
                 outputTemplate = DefaultOutputTemplate;
             }
 
-            if (encoding == null)
+            if (encoding is null)
             {
                 encoding = DefaultEncoding;
             }
 
-            if (batchingPeriod == null)
+            if (batchingPeriod is null)
             {
                 batchingPeriod = DefaultBatchingPeriod;
             }
@@ -780,7 +780,7 @@ namespace Serilog
                 bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
                 int? queueSizeLimit = DefaultQueueSizeLimit)
         {
-            if (sinkConfiguration == null)
+            if (sinkConfiguration is null)
             {
                 throw new ArgumentNullException(nameof(sinkConfiguration));
             }
@@ -810,17 +810,17 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(awsSecretAccessKey));
             }
 
-            if (formatter == null)
+            if (formatter is null)
             {
                 throw new ArgumentNullException(nameof(formatter));
             }
 
-            if (encoding == null)
+            if (encoding is null)
             {
                 encoding = DefaultEncoding;
             }
 
-            if (batchingPeriod == null)
+            if (batchingPeriod is null)
             {
                 batchingPeriod = DefaultBatchingPeriod;
             }
@@ -921,7 +921,7 @@ namespace Serilog
             bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
             int? queueSizeLimit = DefaultQueueSizeLimit)
         {
-            if (sinkConfiguration == null)
+            if (sinkConfiguration is null)
             {
                 throw new ArgumentNullException(nameof(sinkConfiguration));
             }
@@ -946,12 +946,12 @@ namespace Serilog
                 outputTemplate = DefaultOutputTemplate;
             }
 
-            if (encoding == null)
+            if (encoding is null)
             {
                 encoding = DefaultEncoding;
             }
 
-            if (batchingPeriod == null)
+            if (batchingPeriod is null)
             {
                 batchingPeriod = DefaultBatchingPeriod;
             }
@@ -1038,7 +1038,7 @@ namespace Serilog
             bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
             int? queueSizeLimit = DefaultQueueSizeLimit)
         {
-            if (sinkConfiguration == null)
+            if (sinkConfiguration is null)
             {
                 throw new ArgumentNullException(nameof(sinkConfiguration));
             }
@@ -1058,17 +1058,17 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(serviceUrl));
             }
 
-            if (formatter == null)
+            if (formatter is null)
             {
                 throw new ArgumentNullException(nameof(formatter));
             }
 
-            if (encoding == null)
+            if (encoding is null)
             {
                 encoding = DefaultEncoding;
             }
 
-            if (batchingPeriod == null)
+            if (batchingPeriod is null)
             {
                 batchingPeriod = DefaultBatchingPeriod;
             }
@@ -1167,12 +1167,12 @@ namespace Serilog
             bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
             int? queueSizeLimit = DefaultQueueSizeLimit)
         {
-            if (sinkConfiguration == null)
+            if (sinkConfiguration is null)
             {
                 throw new ArgumentNullException(nameof(sinkConfiguration));
             }
 
-            if (client == null)
+            if (client is null)
             {
                 throw new ArgumentNullException(nameof(client));
             }
@@ -1192,12 +1192,12 @@ namespace Serilog
                 outputTemplate = DefaultOutputTemplate;
             }
 
-            if (encoding == null)
+            if (encoding is null)
             {
                 encoding = DefaultEncoding;
             }
 
-            if (batchingPeriod == null)
+            if (batchingPeriod is null)
             {
                 batchingPeriod = DefaultBatchingPeriod;
             }
@@ -1284,12 +1284,12 @@ namespace Serilog
             bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
             int? queueSizeLimit = DefaultQueueSizeLimit)
         {
-            if (sinkConfiguration == null)
+            if (sinkConfiguration is null)
             {
                 throw new ArgumentNullException(nameof(sinkConfiguration));
             }
 
-            if (client == null)
+            if (client is null)
             {
                 throw new ArgumentNullException(nameof(client));
             }
@@ -1304,17 +1304,17 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(bucketName));
             }
 
-            if (formatter == null)
+            if (formatter is null)
             {
                 throw new ArgumentNullException(nameof(formatter));
             }
 
-            if (encoding == null)
+            if (encoding is null)
             {
                 encoding = DefaultEncoding;
             }
 
-            if (batchingPeriod == null)
+            if (batchingPeriod is null)
             {
                 batchingPeriod = DefaultBatchingPeriod;
             }

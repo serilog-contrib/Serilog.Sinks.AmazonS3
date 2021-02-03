@@ -81,7 +81,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="interval">The interval.</param>
         public PathRoller(string path, RollingInterval interval)
         {
-            if (path == null)
+            if (path is null)
             {
                 throw new ArgumentNullException(nameof(path));
             }
