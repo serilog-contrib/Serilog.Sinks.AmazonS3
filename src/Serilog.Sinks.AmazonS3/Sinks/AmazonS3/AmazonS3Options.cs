@@ -13,6 +13,7 @@ namespace Serilog.Sinks.AmazonS3
     using System.Text;
 
     using Amazon;
+    using Amazon.S3;
 
     using Serilog.Formatting;
 
@@ -21,6 +22,11 @@ namespace Serilog.Sinks.AmazonS3
     /// </summary>
     public class AmazonS3Options
     {
+        /// <summary>
+        /// Gets or sets the Amazon S3 client.
+        /// </summary>
+        public AmazonS3Client AmazonS3Client { get; set; }
+
         /// <summary>
         /// Gets or sets the AWS access key identifier.
         /// </summary>

@@ -14,6 +14,7 @@ namespace Serilog
     using System.Text;
 
     using Amazon;
+    using Amazon.S3;
 
     using Serilog.Configuration;
     using Serilog.Core;
@@ -1077,6 +1078,252 @@ namespace Serilog
                 Path = path,
                 BucketName = bucketName,
                 ServiceUrl = serviceUrl,
+                Formatter = formatter,
+                RollingInterval = rollingInterval,
+                Encoding = encoding,
+                FailureCallback = failureCallback,
+                BucketPath = bucketPath
+            };
+
+            var amazonS3Sink = new AmazonS3Sink(options);
+
+            var batchingOptions = new PeriodicBatchingSinkOptions
+            {
+                BatchSizeLimit = batchSizeLimit ?? DefaultBatchSizeLimit,
+                Period = (TimeSpan)batchingPeriod,
+                EagerlyEmitFirstEvent = eagerlyEmitFirstEvent ?? DefaultEagerlyEmitFirstEvent,
+                QueueLimit = queueSizeLimit ?? DefaultQueueSizeLimit
+            };
+
+            var batchingSink = new PeriodicBatchingSink(amazonS3Sink, batchingOptions);
+            return sinkConfiguration.Sink(batchingSink, restrictedToMinimumLevel, levelSwitch);
+        }
+
+        /// <summary>Write log events to the specified file.</summary>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when one or more required arguments are
+        /// null.
+        /// </exception>
+        /// <param name="sinkConfiguration">The logger sink configuration.</param>
+        /// <param name="client">The Amazon S3 client.</param>
+        /// <param name="path">The path to the file.</param>
+        /// <param name="bucketName">The Amazon S3 bucket name.</param>
+        /// <param name="restrictedToMinimumLevel">
+        /// (Optional)
+        /// The minimum level for
+        /// events passed through the sink. Ignored when
+        /// <paramref name="levelSwitch" /> is specified.
+        /// </param>
+        /// <param name="outputTemplate">
+        /// (Optional)
+        /// A message template describing the format used to
+        /// write to the sink.
+        /// The default is "{Timestamp:yyyy-MM-dd
+        /// HH:mm:ss.fff zzz} [{Level:u3}]
+        /// {Message:lj}{NewLine}{Exception}".
+        /// </param>
+        /// <param name="formatProvider">
+        /// (Optional)
+        /// Supplies culture-specific formatting information, or
+        /// null.
+        /// </param>
+        /// <param name="levelSwitch">
+        /// (Optional)
+        /// A switch allowing the pass-through minimum level
+        /// to be changed at runtime.
+        /// </param>
+        /// <param name="rollingInterval">
+        /// (Optional)
+        /// The interval at which logging will roll over to a new
+        /// file.
+        /// </param>
+        /// <param name="encoding">
+        /// (Optional)
+        /// Character encoding used to write the text file. The
+        /// default is UTF-8 without BOM.
+        /// </param>
+        /// <param name="failureCallback">The failure callback.</param>
+        /// <param name="bucketPath">The Amazon S3 bucket path.</param>
+        /// <param name="batchSizeLimit">The batch size limit.</param>
+        /// <param name="batchingPeriod">The batching period.</param>
+        /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
+        /// <param name="queueSizeLimit">The queue size limit.</param>
+        /// <returns>The configuration object allowing method chaining.</returns>
+        public static LoggerConfiguration AmazonS3(
+            this LoggerSinkConfiguration sinkConfiguration,
+            AmazonS3Client client,
+            string path,
+            string bucketName,
+            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
+            string outputTemplate = DefaultOutputTemplate,
+            IFormatProvider formatProvider = null,
+            LoggingLevelSwitch levelSwitch = null,
+            RollingInterval rollingInterval = RollingInterval.Day,
+            Encoding encoding = null,
+            Action<Exception> failureCallback = null,
+            string bucketPath = null,
+            int? batchSizeLimit = DefaultBatchSizeLimit,
+            TimeSpan? batchingPeriod = null,
+            bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
+            int? queueSizeLimit = DefaultQueueSizeLimit)
+        {
+            if (sinkConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(sinkConfiguration));
+            }
+
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
+            if (string.IsNullOrWhiteSpace(bucketName))
+            {
+                throw new ArgumentNullException(nameof(bucketName));
+            }
+
+            if (string.IsNullOrWhiteSpace(outputTemplate))
+            {
+                outputTemplate = DefaultOutputTemplate;
+            }
+
+            if (encoding == null)
+            {
+                encoding = DefaultEncoding;
+            }
+
+            if (batchingPeriod == null)
+            {
+                batchingPeriod = DefaultBatchingPeriod;
+            }
+
+            var options = new AmazonS3Options
+            {
+                AmazonS3Client = client,
+                Path = path,
+                BucketName = bucketName,
+                OutputTemplate = outputTemplate,
+                FormatProvider = formatProvider,
+                RollingInterval = rollingInterval,
+                Encoding = encoding,
+                FailureCallback = failureCallback,
+                BucketPath = bucketPath
+            };
+
+            var amazonS3Sink = new AmazonS3Sink(options);
+
+            var batchingOptions = new PeriodicBatchingSinkOptions
+            {
+                BatchSizeLimit = batchSizeLimit ?? DefaultBatchSizeLimit,
+                Period = (TimeSpan)batchingPeriod,
+                EagerlyEmitFirstEvent = eagerlyEmitFirstEvent ?? DefaultEagerlyEmitFirstEvent,
+                QueueLimit = queueSizeLimit ?? DefaultQueueSizeLimit
+            };
+
+            var batchingSink = new PeriodicBatchingSink(amazonS3Sink, batchingOptions);
+            return sinkConfiguration.Sink(batchingSink, restrictedToMinimumLevel, levelSwitch);
+        }
+
+        /// <summary>Write log events to the specified file.</summary>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when one or more required arguments are
+        /// null.
+        /// </exception>
+        /// <param name="sinkConfiguration">The logger sink configuration.</param>
+        /// <param name="client">The Amazon S3 client.</param>
+        /// <param name="path">The path to the file.</param>
+        /// <param name="bucketName">The Amazon S3 bucket name.</param>
+        /// <param name="restrictedToMinimumLevel">
+        /// (Optional)
+        /// The minimum level for
+        /// events passed through the sink. Ignored when
+        /// <paramref name="levelSwitch" /> is specified.
+        /// </param>
+        /// <param name="levelSwitch">
+        /// (Optional)
+        /// A switch allowing the pass-through minimum level
+        /// to be changed at runtime.
+        /// </param>
+        /// <param name="formatter">The formatter.</param>
+        /// <param name="rollingInterval">
+        /// (Optional)
+        /// The interval at which logging will roll over to a new
+        /// file.
+        /// </param>
+        /// <param name="encoding">
+        /// (Optional)
+        /// Character encoding used to write the text file. The
+        /// default is UTF-8 without BOM.
+        /// </param>
+        /// <param name="failureCallback">The failure callback.</param>
+        /// <param name="bucketPath">The Amazon S3 bucket path.</param>
+        /// <param name="batchSizeLimit">The batch size limit.</param>
+        /// <param name="batchingPeriod">The batching period.</param>
+        /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
+        /// <param name="queueSizeLimit">The queue size limit.</param>
+        /// <returns>The configuration object allowing method chaining.</returns>
+        public static LoggerConfiguration AmazonS3(
+            this LoggerSinkConfiguration sinkConfiguration,
+            AmazonS3Client client,
+            string path,
+            string bucketName,
+            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
+            LoggingLevelSwitch levelSwitch = null,
+            ITextFormatter formatter = null,
+            RollingInterval rollingInterval = RollingInterval.Day,
+            Encoding encoding = null,
+            Action<Exception> failureCallback = null,
+            string bucketPath = null,
+            int? batchSizeLimit = DefaultBatchSizeLimit,
+            TimeSpan? batchingPeriod = null,
+            bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
+            int? queueSizeLimit = DefaultQueueSizeLimit)
+        {
+            if (sinkConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(sinkConfiguration));
+            }
+
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
+            if (string.IsNullOrWhiteSpace(bucketName))
+            {
+                throw new ArgumentNullException(nameof(bucketName));
+            }
+
+            if (formatter == null)
+            {
+                throw new ArgumentNullException(nameof(formatter));
+            }
+
+            if (encoding == null)
+            {
+                encoding = DefaultEncoding;
+            }
+
+            if (batchingPeriod == null)
+            {
+                batchingPeriod = DefaultBatchingPeriod;
+            }
+
+            var options = new AmazonS3Options
+            {
+                AmazonS3Client = client,
+                Path = path,
+                BucketName = bucketName,
                 Formatter = formatter,
                 RollingInterval = rollingInterval,
                 Encoding = encoding,

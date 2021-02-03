@@ -221,39 +221,42 @@ namespace Serilog.Sinks.AmazonS3
         // ReSharper disable once UnusedMethodReturnValue.Local
         private async Task<PutObjectResponse> UploadFileToS3(string fileName)
         {
-            AmazonS3Client client;
+            var client = this.amazonS3Options.AmazonS3Client;
 
-            // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-            if (this.amazonS3Options.Endpoint != null)
-            {
-                client = new AmazonS3Client(this.amazonS3Options.Endpoint);
-            }
-            else
-            {
-                client = new AmazonS3Client(
-                    new AmazonS3Config
-                    {
-                        ServiceURL = this.amazonS3Options.ServiceUrl
-                    });
-            }
-
-            // In the case that awsAccessKeyId and awsSecretAccessKey is passed, we use it. Otherwise authorization is given by roles in AWS directly.
-            if (!string.IsNullOrEmpty(this.amazonS3Options.AwsAccessKeyId) && !string.IsNullOrEmpty(this.amazonS3Options.AwsSecretAccessKey))
+            if (client is null)
             {
                 // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                 if (this.amazonS3Options.Endpoint != null)
                 {
-                    client = new AmazonS3Client(this.amazonS3Options.AwsAccessKeyId, this.amazonS3Options.AwsSecretAccessKey, this.amazonS3Options.Endpoint);
+                    client = new AmazonS3Client(this.amazonS3Options.Endpoint);
                 }
                 else
                 {
                     client = new AmazonS3Client(
-                        this.amazonS3Options.AwsAccessKeyId,
-                        this.amazonS3Options.AwsSecretAccessKey,
                         new AmazonS3Config
                         {
                             ServiceURL = this.amazonS3Options.ServiceUrl
                         });
+                }
+
+                // In the case that awsAccessKeyId and awsSecretAccessKey is passed, we use it. Otherwise authorization is given by roles in AWS directly.
+                if (!string.IsNullOrEmpty(this.amazonS3Options.AwsAccessKeyId) && !string.IsNullOrEmpty(this.amazonS3Options.AwsSecretAccessKey))
+                {
+                    // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+                    if (this.amazonS3Options.Endpoint != null)
+                    {
+                        client = new AmazonS3Client(this.amazonS3Options.AwsAccessKeyId, this.amazonS3Options.AwsSecretAccessKey, this.amazonS3Options.Endpoint);
+                    }
+                    else
+                    {
+                        client = new AmazonS3Client(
+                            this.amazonS3Options.AwsAccessKeyId,
+                            this.amazonS3Options.AwsSecretAccessKey,
+                            new AmazonS3Config
+                            {
+                                ServiceURL = this.amazonS3Options.ServiceUrl
+                            });
+                    }
                 }
             }
 
