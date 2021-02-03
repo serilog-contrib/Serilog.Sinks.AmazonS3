@@ -16,7 +16,7 @@
     <RepositoryUrl>https://github.com/SeppPenner/Serilog.Sinks.AmazonS3</RepositoryUrl>
     <PackageIcon>Icon.png</PackageIcon>
     <RepositoryType>Github</RepositoryType>
-    <PackageReleaseNotes>Version 1.0.12.0 (2020-07-16):Added default AWS S3 serviceUrl.</PackageReleaseNotes>
+    <PackageReleaseNotes>Version 1.1.0.0 (2021-02-03): Big rework of the sink to make it work better. Check the options to configure the new sink.</PackageReleaseNotes>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
