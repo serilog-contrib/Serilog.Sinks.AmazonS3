@@ -32,7 +32,7 @@ so thanks to all the [contributors](https://github.com/serilog/serilog-sinks-fil
 * https://dotnet.microsoft.com/download/dotnet-framework
 * https://dotnet.microsoft.com/download/dotnet-core
 
-## Basic usage:
+## Basic usage
 Check out the how to use file [here](https://github.com/SeppPenner/Serilog.Sinks.AmazonS3/blob/master/HowToUse.md).
 
 ## Install

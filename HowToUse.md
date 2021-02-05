@@ -1,4 +1,4 @@
-## Basic usage:
+## Basic usage
 ```csharp
 var logger = new LoggerConfiguration().WriteTo
     .AmazonS3(
@@ -87,7 +87,7 @@ for (var x = 0; x < 200; x++)
 
 The project can be found on [nuget](https://www.nuget.org/packages/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3/).
 
-## Configuration options:
+## Configuration options
 
 |Parameter|Meaning|Example|Default value|
 |-|-|-|-|
