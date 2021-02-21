@@ -67,6 +67,8 @@ namespace Serilog.Sinks.AmazonS3.Tests
                 var ex = new Exception("Test");
                 logger.Error(ex.ToString());
             }
+
+            Log.CloseAndFlush();
         }
 
         /// <summary>
@@ -101,6 +103,8 @@ namespace Serilog.Sinks.AmazonS3.Tests
                 var ex = new Exception("Test");
                 logger.Error(ex.ToString());
             }
+
+            Log.CloseAndFlush();
         }
 
         /// <summary>
@@ -132,6 +136,8 @@ namespace Serilog.Sinks.AmazonS3.Tests
                 var ex = new Exception("Test");
                 logger.Error(ex.ToString());
             }
+
+            Log.CloseAndFlush();
         }
     }
 }
