@@ -45,8 +45,17 @@ namespace Serilog.Sinks.AmazonS3
             this.amazonS3Options.Endpoint = amazonS3Options.Endpoint;
             this.amazonS3Options.AwsAccessKeyId = amazonS3Options.AwsAccessKeyId;
             this.amazonS3Options.AwsSecretAccessKey = amazonS3Options.AwsSecretAccessKey;
-            var textFormatter = new MessageTemplateTextFormatter(amazonS3Options.OutputTemplate, amazonS3Options.FormatProvider);
-            this.amazonS3Options.Formatter = textFormatter;
+
+            if (amazonS3Options.Formatter is null)
+            {
+                var textFormatter = new MessageTemplateTextFormatter(amazonS3Options.OutputTemplate, amazonS3Options.FormatProvider);
+                this.amazonS3Options.Formatter = textFormatter;
+            }
+            else
+            {
+                this.amazonS3Options.Formatter = amazonS3Options.Formatter;
+            }
+
             this.amazonS3Options.PathRoller = new PathRoller(amazonS3Options.Path, amazonS3Options.RollingInterval);
             this.amazonS3Options.Encoding = amazonS3Options.Encoding;
             this.amazonS3Options.FailureCallback = amazonS3Options.FailureCallback;
