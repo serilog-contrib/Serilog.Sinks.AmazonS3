@@ -1,6 +1,7 @@
 Change history
 --------------
 
+* **Version 1.1.1.0 (2021-02-21)** : Fixed a null reference exception with the formatter property.
 * **Version 1.1.0.0 (2021-02-03)** : Big rework of the sink to make it work better. Check the options to configure the new sink.
 * **Version 1.0.12.0 (2020-07-16)** : Added default AWS S3 serviceUrl.
 * **Version 1.0.11.0 (2020-07-15)** : Updated nuget packages, added new constructor taking serviceUrl instead of endpoint (Thanks to [Galouw](https://github.com/Galouw)).
