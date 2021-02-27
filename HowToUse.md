@@ -7,7 +7,6 @@ var logger = new LoggerConfiguration().WriteTo
         Amazon.RegionEndpoint.EUWest2,
         "ABCDEFGHIJKLMNOP",
         "c3fghsrgwegfn://asdfsdfsdgfsdg",
-        fileSizeLimitBytes: 200,
         rollingInterval: RollingInterval.Minute)
     .CreateLogger();
 
@@ -27,7 +26,6 @@ var logger = new LoggerConfiguration().WriteTo
         "log.txt",
         "mytestbucket-aws",
         Amazon.RegionEndpoint.EUWest2,
-        fileSizeLimitBytes: 200,
         rollingInterval: RollingInterval.Minute)
     .CreateLogger();
 
@@ -48,7 +46,6 @@ var logger = new LoggerConfiguration()
         "log.json",
         "mytestbucket-aws",
         Amazon.RegionEndpoint.EUWest2,
-        fileSizeLimitBytes: 200,
         rollingInterval: RollingInterval.Minute,
 	)
 	.CreateLogger();
@@ -72,7 +69,6 @@ var logger = new LoggerConfiguration().WriteTo
         "log.txt",
         "mytestbucket-aws",
         Amazon.RegionEndpoint.EUWest2,
-        fileSizeLimitBytes: 200,
         rollingInterval: RollingInterval.Minute,
 		failureCallback: e => Console.WriteLine($"An error occured in my sink: {e.Message}")
 		)
@@ -102,14 +98,9 @@ The project can be found on [nuget](https://www.nuget.org/packages/HaemmerElectr
 |restrictedToMinimumLevel|The minimum level for events passed through the sink. Ignored when `levelSwitch` is specified. Check: https://github.com/serilog/serilog/blob/dev/src/Serilog/Events/LogEventLevel.cs.|`LogEventLevel.Information`|`LogEventLevel.Verbose`|
 |outputTemplate|A message template describing the format used to write to the sink.|`"{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"`|`"{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"`. If `formatter` is specified: Not needed.|
 |formatProvider|The `IFormatProvider` to use. Supplies culture-specific formatting information. Check: https://docs.microsoft.com/en-us/dotnet/api/system.iformatprovider?view=netframework-4.8.|`new CultureInfo("de-DE")`|`null`.  If `formatter` is specified: Not needed.|
-|fileSizeLimitBytes|The number of bytes in a file. The sink rolls to a new file after the limit is reached.|`200`|`1L * 1024 * 1024 * 1024`|
 |levelSwitch|A switch allowing the pass-through minimum level to be changed at runtime. Check: https://nblumhardt.com/2014/10/dynamically-changing-the-serilog-level/.|`var levelSwitch = new LoggingLevelSwitch(); levelSwitch.MinimumLevel = LogEventLevel.Warning;`|`null`|
-|buffered|Indicates if flushing to the output file can be buffered or not.|`buffered: true`|`false`|
 |rollingInterval|The interval at which logging will roll over to a new file. Check: https://github.com/serilog/serilog-sinks-file/blob/dev/src/Serilog.Sinks.File/RollingInterval.cs.|`rollingInterval: RollingInterval.Minute`|`RollingInterval.Day`|
-|retainedFileCountLimit|The maximum number of log files that will be retained, including the current log file. For unlimited retention, pass `null`.|`10`|`31`|
 |encoding|Character encoding used to write the text file. Check: https://docs.microsoft.com/de-de/dotnet/api/system.text.encoding?view=netframework-4.8.|`encoding: Encoding.Unicode`|`null` meaning `Encoding.UTF8`|
-|hooks|Optionally enables hooking into log file lifecycle events. Check: https://github.com/serilog/serilog-sinks-file/blob/dev/src/Serilog.Sinks.File/Sinks/File/FileLifecycleHooks.cs and https://github.com/cocowalla/serilog-sinks-file-header/blob/master/src/Serilog.Sinks.File.Header/HeaderWriter.cs.|`hooks: new HeaderWriter("Timestamp,Level,Message")`|`null`|
-|autoUploadEvents|A flag indicating whether the log events file is updated immediately to Amazon S3 after a new log event is created.|`true`|`false`|
 |failureCallback|Optionally execute a callback if an exception has been throwed by the sink.|`failureCallback: e => Console.WriteLine($"An error occured in my sink: {e.Message}"))`|None.|
 |bucketPath|Optionally add a sub-path for the bucket. Files are stored on S3 `mytestbucket-aws/awsSubPath/log.txt` in the example below.|`bucketPath = "awsSubPath"`|`null`|
 
@@ -131,13 +122,9 @@ var logger = new LoggerConfiguration().WriteTo
         restrictedToMinimumLevel:LogEventLevel.Verbose,
         outputTemplate:"{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
         new CultureInfo("de-DE"),
-        fileSizeLimitBytes: 200,
         levelSwitch: levelSwitch,
-        buffered: true,
         rollingInterval: RollingInterval.Minute,
-        retainedFileCountLimit: 10,
         encoding: Encoding.Unicode,
-        hooks: new HeaderWriter("Timestamp,Level,Message"),
 		failureCallback: e => Console.WriteLine($"An error occured in my sink: {e.Message}"),
 		bucketPath = "awsSubPath"
 		)
