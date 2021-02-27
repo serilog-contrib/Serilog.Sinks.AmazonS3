@@ -86,6 +86,7 @@ namespace Serilog.Sinks.AmazonS3
             {
                 var result = await this.UploadFileToS3(fileInformation.FileName);
                 SelfLog.WriteLine($"Uploaded data to Amazon S3 with result: {JsonConvert.SerializeObject(result)}.");
+                File.Delete(fileInformation.FileName);
             }
             catch (Exception ex)
             {
@@ -113,12 +114,14 @@ namespace Serilog.Sinks.AmazonS3
             var fileName = this.AlignCurrentFileTo(DateTime.Now, true);
 
             var directory = Path.GetDirectoryName(this.amazonS3Options.Path);
+
             if (!string.IsNullOrWhiteSpace(directory) && !Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
             }
 
             var outputStream = File.Open(fileName, FileMode.Append, FileAccess.Write, FileShare.Read);
+
             return new FileInformation
             {
                 FileName = fileName,
