@@ -103,10 +103,14 @@ The project can be found on [nuget](https://www.nuget.org/packages/HaemmerElectr
 |encoding|Character encoding used to write the text file. Check: https://docs.microsoft.com/de-de/dotnet/api/system.text.encoding?view=netframework-4.8.|`encoding: Encoding.Unicode`|`null` meaning `Encoding.UTF8`|
 |failureCallback|Optionally execute a callback if an exception has been throwed by the sink.|`failureCallback: e => Console.WriteLine($"An error occured in my sink: {e.Message}"))`|None.|
 |bucketPath|Optionally add a sub-path for the bucket. Files are stored on S3 `mytestbucket-aws/awsSubPath/log.txt` in the example below.|`bucketPath = "awsSubPath"`|`null`|
+|batchSizeLimit|The batch size limit meaning the limit until the batching sink fires the events (e.g. uploads the events as file to S3).|`batchSizeLimit = 20`|`100`|
+|batchingPeriod|The batching period meaning the period after which the batching sink checks whether the `batchSizeLimit` is reached.|`batchingPeriod = TimeSpan.FromSeconds(5)`|`TimeSpan.FromSeconds(2)`|
+|eagerlyEmitFirstEvent|A value indicating whether the first event should be emitted immediately or not.|`eagerlyEmitFirstEvent = false`|`true`|
+|queueSizeLimit|The queue size limit meaning the limit until the last not emitted events are discarded (Standard mechanims to stop queue overflows).|`queueSizeLimit = 2000`|`10000`|
 
 Hint: Only `outputTemplate` and `formatProvider` together or the `formatter` can be used.
 
-## Full example
+## Bigger example
 
 ```csharp
 var levelSwitch = new LoggingLevelSwitch();
