@@ -165,15 +165,8 @@ namespace Serilog
                 outputTemplate = DefaultOutputTemplate;
             }
 
-            if (encoding is null)
-            {
-                encoding = DefaultEncoding;
-            }
-
-            if (batchingPeriod is null)
-            {
-                batchingPeriod = DefaultBatchingPeriod;
-            }
+            encoding ??= DefaultEncoding;
+            batchingPeriod ??= DefaultBatchingPeriod;
 
             var options = new AmazonS3Options
             {
@@ -298,15 +291,8 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(formatter));
             }
 
-            if (encoding is null)
-            {
-                encoding = DefaultEncoding;
-            }
-
-            if (batchingPeriod is null)
-            {
-                batchingPeriod = DefaultBatchingPeriod;
-            }
+            encoding ??= DefaultEncoding;
+            batchingPeriod ??= DefaultBatchingPeriod;
 
             var options = new AmazonS3Options
             {
@@ -429,15 +415,8 @@ namespace Serilog
                 outputTemplate = DefaultOutputTemplate;
             }
 
-            if (encoding is null)
-            {
-                encoding = DefaultEncoding;
-            }
-
-            if (batchingPeriod is null)
-            {
-                batchingPeriod = DefaultBatchingPeriod;
-            }
+            encoding ??= DefaultEncoding;
+            batchingPeriod ??= DefaultBatchingPeriod;
 
             var options = new AmazonS3Options
             {
@@ -546,15 +525,8 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(formatter));
             }
 
-            if (encoding is null)
-            {
-                encoding = DefaultEncoding;
-            }
-
-            if (batchingPeriod is null)
-            {
-                batchingPeriod = DefaultBatchingPeriod;
-            }
+            encoding ??= DefaultEncoding;
+            batchingPeriod ??= DefaultBatchingPeriod;
 
             var options = new AmazonS3Options
             {
@@ -682,15 +654,8 @@ namespace Serilog
                 outputTemplate = DefaultOutputTemplate;
             }
 
-            if (encoding is null)
-            {
-                encoding = DefaultEncoding;
-            }
-
-            if (batchingPeriod is null)
-            {
-                batchingPeriod = DefaultBatchingPeriod;
-            }
+            encoding ??= DefaultEncoding;
+            batchingPeriod ??= DefaultBatchingPeriod;
 
             var options = new AmazonS3Options
             {
@@ -815,15 +780,8 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(formatter));
             }
 
-            if (encoding is null)
-            {
-                encoding = DefaultEncoding;
-            }
-
-            if (batchingPeriod is null)
-            {
-                batchingPeriod = DefaultBatchingPeriod;
-            }
+            encoding ??= DefaultEncoding;
+            batchingPeriod ??= DefaultBatchingPeriod;
 
             var options = new AmazonS3Options
             {
@@ -946,15 +904,8 @@ namespace Serilog
                 outputTemplate = DefaultOutputTemplate;
             }
 
-            if (encoding is null)
-            {
-                encoding = DefaultEncoding;
-            }
-
-            if (batchingPeriod is null)
-            {
-                batchingPeriod = DefaultBatchingPeriod;
-            }
+            encoding ??= DefaultEncoding;
+            batchingPeriod ??= DefaultBatchingPeriod;
 
             var options = new AmazonS3Options
             {
@@ -1063,15 +1014,8 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(formatter));
             }
 
-            if (encoding is null)
-            {
-                encoding = DefaultEncoding;
-            }
-
-            if (batchingPeriod is null)
-            {
-                batchingPeriod = DefaultBatchingPeriod;
-            }
+            encoding ??= DefaultEncoding;
+            batchingPeriod ??= DefaultBatchingPeriod;
 
             var options = new AmazonS3Options
             {
@@ -1192,15 +1136,8 @@ namespace Serilog
                 outputTemplate = DefaultOutputTemplate;
             }
 
-            if (encoding is null)
-            {
-                encoding = DefaultEncoding;
-            }
-
-            if (batchingPeriod is null)
-            {
-                batchingPeriod = DefaultBatchingPeriod;
-            }
+            encoding ??= DefaultEncoding;
+            batchingPeriod ??= DefaultBatchingPeriod;
 
             var options = new AmazonS3Options
             {
@@ -1309,15 +1246,8 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(formatter));
             }
 
-            if (encoding is null)
-            {
-                encoding = DefaultEncoding;
-            }
-
-            if (batchingPeriod is null)
-            {
-                batchingPeriod = DefaultBatchingPeriod;
-            }
+            encoding ??= DefaultEncoding;
+            batchingPeriod ??= DefaultBatchingPeriod;
 
             var options = new AmazonS3Options
             {
