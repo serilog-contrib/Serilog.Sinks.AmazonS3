@@ -16,7 +16,7 @@
     <RepositoryUrl>https://github.com/SeppPenner/Serilog.Sinks.AmazonS3</RepositoryUrl>
     <PackageIcon>Icon.png</PackageIcon>
     <RepositoryType>Github</RepositoryType>
-    <PackageReleaseNotes>Version 1.1.1.0 (2021-02-21): Fixed a null reference exception with the formatter property.</PackageReleaseNotes>
+    <PackageReleaseNotes>Version 1.1.2.0 (2021-02-27): Updated nuget packages, added deletion of local files.</PackageReleaseNotes>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
