@@ -16,7 +16,7 @@
     <RepositoryUrl>https://github.com/SeppPenner/Serilog.Sinks.AmazonS3</RepositoryUrl>
     <PackageIcon>Icon.png</PackageIcon>
     <RepositoryType>Github</RepositoryType>
-    <PackageReleaseNotes>Version 1.1.2.0 (2021-02-27): Updated nuget packages, added deletion of local files.</PackageReleaseNotes>
+    <PackageReleaseNotes>Version 1.1.3.0 (2021-03-31): Updated nuget packages, fixed a bug where the Amazon S3 client wasn't injected correctly (Thanks to [longfin](https://github.com/longfin)).</PackageReleaseNotes>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
