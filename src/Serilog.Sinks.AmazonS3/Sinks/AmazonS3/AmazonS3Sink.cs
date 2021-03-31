@@ -40,6 +40,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <param name="amazonS3Options">The Amazon S3 options.</param>
         public AmazonS3Sink(AmazonS3Options amazonS3Options)
         {
+            this.amazonS3Options.AmazonS3Client = amazonS3Options.AmazonS3Client;
             this.amazonS3Options.Path = amazonS3Options.Path;
             this.amazonS3Options.BucketName = amazonS3Options.BucketName;
             this.amazonS3Options.Endpoint = amazonS3Options.Endpoint;
