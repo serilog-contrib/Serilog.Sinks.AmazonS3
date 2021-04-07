@@ -61,7 +61,7 @@ namespace Serilog.Sinks.AmazonS3
             this.amazonS3Options.Encoding = amazonS3Options.Encoding;
             this.amazonS3Options.FailureCallback = amazonS3Options.FailureCallback;
             this.amazonS3Options.BucketPath = amazonS3Options.BucketPath;
-            this.amazonS3Options.ServiceURL = amazonS3Options.ServiceURL;
+            this.amazonS3Options.ServiceUrl = amazonS3Options.ServiceUrl;
         }
 
         /// <summary>Emit a batch of log events, running asynchronously.</summary>
