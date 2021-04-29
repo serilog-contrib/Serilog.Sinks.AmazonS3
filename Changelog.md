@@ -1,6 +1,7 @@
 Change history
 --------------
 
+* **Version 1.1.5.0 (2021-04-29)** : Updated nuget packages.
 * **Version 1.1.4.0 (2021-03-31)** : Updated nuget packages, fixed a bug where the Service url wasn't injected correctly (Thanks to [aherrmann13](https://github.com/aherrmann13)).
 * **Version 1.1.3.0 (2021-03-31)** : Updated nuget packages, fixed a bug where the Amazon S3 client wasn't injected correctly (Thanks to [longfin](https://github.com/longfin)).
 * **Version 1.1.2.0 (2021-02-27)** : Updated nuget packages, added deletion of local files.
