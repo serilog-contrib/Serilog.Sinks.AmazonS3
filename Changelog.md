@@ -1,6 +1,7 @@
 Change history
 --------------
 
+* **Version 1.1.8.0 (2021-07-25)** : Updated nuget packages, enabled source linking for debugging.
 * **Version 1.1.7.0 (2021-06-04)** : Updated nuget packages.
 * **Version 1.1.6.0 (2021-05-15)** : Updated nuget packages.
 * **Version 1.1.5.0 (2021-04-29)** : Updated nuget packages.
