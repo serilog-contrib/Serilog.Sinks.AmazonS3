@@ -139,5 +139,29 @@ namespace Serilog.Sinks.AmazonS3.Tests
 
             Log.CloseAndFlush();
         }
+
+        /// <summary>
+        ///     This method is used to test the formatting functionality.
+        /// </summary>
+        [TestMethod]
+        public void FormattingTest()
+        {
+            var logger = new LoggerConfiguration().WriteTo.AmazonS3(
+                "log.txt",
+                this.awsBucketName,
+                RegionEndpoint.EUWest2,
+                this.awsAccessKeyId,
+                this.awsSecretAccessKey,
+                LogEventLevel.Verbose,
+                "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}").CreateLogger();
+
+            for (var x = 0; x < 200; x++)
+            {
+                var ex = new Exception("Test");
+                logger.Error(ex.ToString());
+            }
+
+            Log.CloseAndFlush();
+        }
     }
 }
