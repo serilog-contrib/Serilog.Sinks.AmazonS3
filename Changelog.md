@@ -1,6 +1,7 @@
 Change history
 --------------
 
+* **Version 1.1.9.0 (2021-08-09)** : Removed support for soon deprecated NetCore 2.1.
 * **Version 1.1.8.0 (2021-07-25)** : Updated nuget packages, enabled source linking for debugging.
 * **Version 1.1.7.0 (2021-06-04)** : Updated nuget packages.
 * **Version 1.1.6.0 (2021-05-15)** : Updated nuget packages.
