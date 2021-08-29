@@ -87,7 +87,6 @@ namespace Serilog.Sinks.AmazonS3
             try
             {
                 var result = await this.UploadFileToS3(fileInformation.FileName);
-                SelfLog.WriteLine($"Uploaded data to Amazon S3 with result: {JsonConvert.SerializeObject(result)}.");
                 File.Delete(fileInformation.FileName);
             }
             catch (Exception ex)
