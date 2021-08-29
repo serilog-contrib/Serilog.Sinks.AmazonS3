@@ -16,7 +16,7 @@
     <RepositoryUrl>https://github.com/SeppPenner/Serilog.Sinks.AmazonS3</RepositoryUrl>
     <PackageIcon>Icon.png</PackageIcon>
     <RepositoryType>Github</RepositoryType>
-    <PackageReleaseNotes>Version 1.1.9.0 (2021-08-09): Removed support for soon deprecated NetCore 2.1.</PackageReleaseNotes>
+    <PackageReleaseNotes>Version 1.1.10.0 (2021-08-29): Removed logging of S3 responses (Thanks to @KindOfANiceGuy), updated nuget packages.</PackageReleaseNotes>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <LangVersion>latest</LangVersion>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -26,8 +26,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.7.1.21" />
-    <PackageReference Include="GitVersion.MsBuild" Version="5.6.11">
+    <PackageReference Include="AWSSDK.S3" Version="3.7.1.28" />
+    <PackageReference Include="GitVersion.MsBuild" Version="5.7.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
