@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AmazonS3Options.cs" company="Hämmer Electronics">
+// <copyright file="AmazonS3Options.cs" company="SeppPenner and the Serilog contributors">
 // The project is licensed under the MIT license.
 // </copyright>
 // <summary>

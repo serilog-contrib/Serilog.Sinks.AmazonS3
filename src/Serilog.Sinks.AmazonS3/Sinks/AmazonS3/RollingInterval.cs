@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RollingInterval.cs" company="Hämmer Electronics">
+// <copyright file="RollingInterval.cs" company="SeppPenner and the Serilog contributors">
 // The project is double licensed under the MIT license and the Apache License, Version 2.0.
 // This code is a partly modified source code of the original Serilog code.
 // The original license is:
