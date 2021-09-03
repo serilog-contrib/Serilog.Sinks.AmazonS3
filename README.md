@@ -12,8 +12,8 @@ so thanks to all the [contributors](https://github.com/serilog/serilog-sinks-fil
 [![GitHub forks](https://img.shields.io/github/forks/SeppPenner/Serilog.Sinks.AmazonS3.svg)](https://github.com/SeppPenner/Serilog.Sinks.AmazonS3/network)
 [![GitHub stars](https://img.shields.io/github/stars/SeppPenner/Serilog.Sinks.AmazonS3.svg)](https://github.com/SeppPenner/Serilog.Sinks.AmazonS3/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://raw.githubusercontent.com/SeppPenner/Serilog.Sinks.AmazonS3/master/License.txt)
-[![Nuget](https://img.shields.io/badge/Serilog.Sinks.AmazonS3-Nuget-brightgreen.svg)](https://www.nuget.org/packages/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3/)
-[![NuGet Downloads](https://img.shields.io/nuget/dt/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3.svg)](https://www.nuget.org/packages/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3/)
+[![Nuget](https://img.shields.io/badge/Serilog.Sinks.AmazonS3-Nuget-brightgreen.svg)](https://www.nuget.org/packages/Serilog.Sinks.AmazonS3/)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/Serilog.Sinks.AmazonS3.svg)](https://www.nuget.org/packages/Serilog.Sinks.AmazonS3/)
 [![Known Vulnerabilities](https://snyk.io/test/github/SeppPenner/Serilog.Sinks.AmazonS3/badge.svg)](https://snyk.io/test/github/SeppPenner/Serilog.Sinks.AmazonS3)
 [![Gitter](https://badges.gitter.im/Serilog-Sinks-AmazonS3/community.svg)](https://gitter.im/Serilog-Sinks-AmazonS3/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
@@ -37,7 +37,7 @@ Check out the how to use file [here](https://github.com/SeppPenner/Serilog.Sinks
 ## Install
 
 ```bash
-dotnet add package HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3
+dotnet add package Serilog.Sinks.AmazonS3
 ```
 
 Change history

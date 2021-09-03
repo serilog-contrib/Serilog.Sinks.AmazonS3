@@ -81,7 +81,7 @@ for (var x = 0; x < 200; x++)
 }
 ```
 
-The project can be found on [nuget](https://www.nuget.org/packages/HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3/).
+The project can be found on [nuget](https://www.nuget.org/packages/Serilog.Sinks.AmazonS3/).
 
 ## Configuration options
 
