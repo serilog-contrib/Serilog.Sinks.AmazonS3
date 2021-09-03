@@ -1,6 +1,7 @@
 Change history
 --------------
 
+* **Version 1.1.11.0 (2021-09-03)** : Updated license to fit the new owning repository, updated readme and so on to fit new package name.
 * **Version 1.1.10.0 (2021-08-29)** : Removed logging of S3 responses (Thanks to @KindOfANiceGuy), updated nuget packages.
 * **Version 1.1.9.0 (2021-08-09)** : Removed support for soon deprecated NetCore 2.1.
 * **Version 1.1.8.0 (2021-07-25)** : Updated nuget packages, enabled source linking for debugging.
