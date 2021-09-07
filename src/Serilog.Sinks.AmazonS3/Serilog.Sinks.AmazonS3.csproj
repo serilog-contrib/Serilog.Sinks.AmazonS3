@@ -7,7 +7,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageId>Serilog.Sinks.AmazonS3</PackageId>
-    <Authors>SeppPenner</Authors>
+    <Authors>SeppPenner and the Serilog contributors</Authors>
     <Company>SeppPenner and the Serilog contributors</Company>
     <Copyright>Copyright © SeppPenner and the Serilog contributors</Copyright>
     <Description>Serilog.Sinks.AmazonS3 is a library to save logging information from https://github.com/serilog/serilog to https://aws.amazon.com/s3/. The idea there was to upload log files to https://aws.amazon.com/s3/ to later evaluate them with https://aws.amazon.com/emr/ services. The assembly was written and tested in .Net Framework 4.8 and .Net Standard 2.0. This project makes use of the https://github.com/serilog/serilog-sinks-file's code in a major part, so thanks to all the https://github.com/serilog/serilog-sinks-file/graphs/contributors of this project :thumbsup:.</Description>
