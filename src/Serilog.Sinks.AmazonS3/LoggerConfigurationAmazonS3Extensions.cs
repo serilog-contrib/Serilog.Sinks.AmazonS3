@@ -639,6 +639,11 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(serviceUrl));
             }
 
+            if (!S3ConfigurationValidator.ValidateServiceUrl(serviceUrl))
+            {
+                throw new ArgumentException(ErrorMessageConstants.ServiceUrlInvalidFormat, nameof(serviceUrl));
+            }
+
             if (string.IsNullOrWhiteSpace(awsAccessKeyId))
             {
                 throw new ArgumentNullException(nameof(awsAccessKeyId));
@@ -763,6 +768,11 @@ namespace Serilog
             if (string.IsNullOrWhiteSpace(serviceUrl))
             {
                 throw new ArgumentNullException(nameof(serviceUrl));
+            }
+
+            if (!S3ConfigurationValidator.ValidateServiceUrl(serviceUrl))
+            {
+                throw new ArgumentException(ErrorMessageConstants.ServiceUrlInvalidFormat, nameof(serviceUrl));
             }
 
             if (string.IsNullOrWhiteSpace(awsAccessKeyId))
@@ -899,6 +909,11 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(serviceUrl));
             }
 
+            if (!S3ConfigurationValidator.ValidateServiceUrl(serviceUrl))
+            {
+                throw new ArgumentException(ErrorMessageConstants.ServiceUrlInvalidFormat, nameof(serviceUrl));
+            }
+
             if (string.IsNullOrWhiteSpace(outputTemplate))
             {
                 outputTemplate = DefaultOutputTemplate;
@@ -1007,6 +1022,11 @@ namespace Serilog
             if (string.IsNullOrWhiteSpace(serviceUrl))
             {
                 throw new ArgumentNullException(nameof(serviceUrl));
+            }
+
+            if(!S3ConfigurationValidator.ValidateServiceUrl(serviceUrl))
+            {
+                throw new ArgumentException(ErrorMessageConstants.ServiceUrlInvalidFormat, nameof(serviceUrl));
             }
 
             if (formatter is null)
