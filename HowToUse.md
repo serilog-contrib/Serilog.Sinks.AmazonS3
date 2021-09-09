@@ -57,6 +57,26 @@ for (var x = 0; x < 200; x++)
 }
 ```
 
+## Configuring from appsettings.json files
+```json
+"Serilog": {
+    "MinimumLevel": {
+      "Default": "Information"
+    },
+    "WriteTo": [
+      {
+        "Name": "AmazonS3",
+        "Args": {
+          "path": "log.txt",
+          "bucketName": "mybucket-aws",
+          "rollingInterval": "Day",
+          "serviceUrl": "https://s3.eu-west-2.amazonaws.com"
+        }
+      }
+    ]
+  }
+```
+
 For more information regarding this use case, see [Issue number 10](https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/issues/10) and [Serilog formatting JSON](https://github.com/serilog/serilog/wiki/Formatting-Output#formatting-json).
 
 
