@@ -26,10 +26,12 @@ so thanks to all the [contributors](https://github.com/serilog/serilog-sinks-fil
 * NetStandard 2.0
 * NetStandard 2.1
 * NetCore 3.1
+* .NET 5
 
 ## Net Core and Net Framework latest and LTS versions
 * https://dotnet.microsoft.com/download/dotnet-framework
 * https://dotnet.microsoft.com/download/dotnet-core
+* https://dotnet.microsoft.com/download/dotnet
 
 ## Basic usage
 Check out the how to use file [here](https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/blob/master/HowToUse.md).
