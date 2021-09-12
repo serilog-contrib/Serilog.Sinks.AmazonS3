@@ -18,8 +18,6 @@ namespace Serilog.Sinks.AmazonS3
     using Amazon.S3;
     using Amazon.S3.Model;
 
-    using Newtonsoft.Json;
-
     using Serilog.Debugging;
     using Serilog.Events;
     using Serilog.Formatting.Display;
@@ -86,7 +84,7 @@ namespace Serilog.Sinks.AmazonS3
 
             try
             {
-                var result = await this.UploadFileToS3(fileInformation.FileName);
+                _ = await this.UploadFileToS3(fileInformation.FileName);
                 File.Delete(fileInformation.FileName);
             }
             catch (Exception ex)
@@ -275,8 +273,8 @@ namespace Serilog.Sinks.AmazonS3
 
             try
             {
-                // S3 does not support updates, files are automatically rewritten so we will have to upload the entire file
-                // Open the file for shared reading and writing
+                // S3 does not support updates, files are automatically rewritten. So we will have to upload the entire file.
+                // Open the file for shared reading and writing.
                 using var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
                 var key = string.IsNullOrWhiteSpace(this.amazonS3Options.BucketPath)

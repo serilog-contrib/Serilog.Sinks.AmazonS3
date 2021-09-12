@@ -639,7 +639,7 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(serviceUrl));
             }
 
-            if (!S3ConfigurationValidator.ValidateServiceUrl(serviceUrl))
+            if (!ConfigurationValidator.ValidateServiceUrl(serviceUrl))
             {
                 throw new ArgumentException(ErrorMessageConstants.ServiceUrlInvalidFormat, nameof(serviceUrl));
             }
@@ -770,7 +770,7 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(serviceUrl));
             }
 
-            if (!S3ConfigurationValidator.ValidateServiceUrl(serviceUrl))
+            if (!ConfigurationValidator.ValidateServiceUrl(serviceUrl))
             {
                 throw new ArgumentException(ErrorMessageConstants.ServiceUrlInvalidFormat, nameof(serviceUrl));
             }
@@ -909,7 +909,7 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(serviceUrl));
             }
 
-            if (!S3ConfigurationValidator.ValidateServiceUrl(serviceUrl))
+            if (!ConfigurationValidator.ValidateServiceUrl(serviceUrl))
             {
                 throw new ArgumentException(ErrorMessageConstants.ServiceUrlInvalidFormat, nameof(serviceUrl));
             }
@@ -1024,7 +1024,7 @@ namespace Serilog
                 throw new ArgumentNullException(nameof(serviceUrl));
             }
 
-            if(!S3ConfigurationValidator.ValidateServiceUrl(serviceUrl))
+            if(!ConfigurationValidator.ValidateServiceUrl(serviceUrl))
             {
                 throw new ArgumentException(ErrorMessageConstants.ServiceUrlInvalidFormat, nameof(serviceUrl));
             }
