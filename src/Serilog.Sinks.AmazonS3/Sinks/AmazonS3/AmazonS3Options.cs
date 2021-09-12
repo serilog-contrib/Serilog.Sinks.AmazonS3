@@ -75,7 +75,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <summary>
         /// Gets or sets the Amazon S3 service url.
         /// </summary>
-        public string ServiceUrl { get; set; } = "s3.amazonaws.com";
+        public string ServiceUrl { get; set; } = "https://s3.amazonaws.com";
 
         /// <summary>
         /// Gets or sets the path roller.
