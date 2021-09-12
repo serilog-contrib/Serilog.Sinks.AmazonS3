@@ -26,7 +26,7 @@ so thanks to all the [contributors](https://github.com/serilog/serilog-sinks-fil
 * NetStandard 2.0
 * NetStandard 2.1
 * NetCore 3.1
-* .NET 5
+* Net 5.0
 
 ## Net Core and Net Framework latest and LTS versions
 * https://dotnet.microsoft.com/download/dotnet-framework
