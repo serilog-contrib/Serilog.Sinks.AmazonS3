@@ -7,7 +7,6 @@ The assembly was written and tested in .Net 5.0.
 This project makes use of the [Serilog.Sinks.File](https://github.com/serilog/serilog-sinks-file)'s code in a major part,
 so thanks to all the [contributors](https://github.com/serilog/serilog-sinks-file/graphs/contributors) of this project :thumbsup:.
 
-[![Build status](https://ci.appveyor.com/api/projects/status/kefc5a2lyvet88yx?svg=true)](https://ci.appveyor.com/project/SeppPenner/serilog-sinks-amazons3)
 [![GitHub issues](https://img.shields.io/github/issues/serilog-contrib/Serilog.Sinks.AmazonS3.svg)](https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/issues)
 [![GitHub forks](https://img.shields.io/github/forks/serilog-contrib/Serilog.Sinks.AmazonS3.svg)](https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/network)
 [![GitHub stars](https://img.shields.io/github/stars/serilog-contrib/Serilog.Sinks.AmazonS3.svg)](https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/stargazers)
