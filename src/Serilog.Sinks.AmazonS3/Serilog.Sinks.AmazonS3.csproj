@@ -16,7 +16,7 @@
     <RepositoryUrl>https://github.com/SeppPenner/Serilog.Sinks.AmazonS3</RepositoryUrl>
     <PackageIcon>Icon.png</PackageIcon>
     <RepositoryType>Github</RepositoryType>
-    <PackageReleaseNotes>Version 1.2.0.0 (2021-09-12): Added example of loading logger config from appsettings (Thanks to @stylesm), added validation for the serviceUrl property (Thanks to @stylesm), updated icon, smaller adjustements due to move to the serilog-contrib organization, updated NuGet packages.</PackageReleaseNotes>
+    <PackageReleaseNotes>Version 1.2.1.0 (2021-11-04): NuGet packages updated.</PackageReleaseNotes>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <LangVersion>latest</LangVersion>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -26,7 +26,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.7.2.4" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.3.24" />
     <PackageReference Include="GitVersion.MsBuild" Version="5.7.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
