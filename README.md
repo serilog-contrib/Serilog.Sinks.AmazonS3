@@ -1,6 +1,6 @@
 Serilog.Sinks.AmazonS3
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 ====================================
 
@@ -64,6 +64,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/qrczak0"><img src="https://avatars.githubusercontent.com/u/45206900?v=4?s=100" width="100px;" alt=""/><br /><sub><b>qrczak0</b></sub></a><br /><a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=qrczak0" title="Code">💻</a> <a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=qrczak0" title="Documentation">📖</a></td>
     <td align="center"><a href="http://longfin.github.com"><img src="https://avatars.githubusercontent.com/u/128436?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Swen Mun</b></sub></a><br /><a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=longfin" title="Code">💻</a> <a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=longfin" title="Documentation">📖</a></td>
     <td align="center"><a href="https://www.linkedin.com/in/barrymooring/"><img src="https://avatars.githubusercontent.com/u/1089628?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Barry Mooring</b></sub></a><br /><a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=codingbadger" title="Code">💻</a> <a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=codingbadger" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/samburville"><img src="https://avatars.githubusercontent.com/u/7041731?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sam Burville</b></sub></a><br /><a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=samburville" title="Code">💻</a> <a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=samburville" title="Documentation">📖</a></td>
   </tr>
 </table>
 
