@@ -1,7 +1,4 @@
 Serilog.Sinks.AmazonS3
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 ====================================
 
 Serilog.Sinks.AmazonS3 is a library to save logging information from [Serilog](https://github.com/serilog/serilog) to [Amazon S3](https://aws.amazon.com/s3/).
@@ -17,6 +14,9 @@ so thanks to all the [contributors](https://github.com/serilog/serilog-sinks-fil
 [![NuGet Downloads](https://img.shields.io/nuget/dt/Serilog.Sinks.AmazonS3.svg)](https://www.nuget.org/packages/Serilog.Sinks.AmazonS3/)
 [![Known Vulnerabilities](https://snyk.io/test/github/serilog-contrib/Serilog.Sinks.AmazonS3/badge.svg)](https://snyk.io/test/github/serilog-contrib/Serilog.Sinks.AmazonS3)
 [![Gitter](https://badges.gitter.im/Serilog-Sinks-AmazonS3/community.svg)](https://gitter.im/Serilog-Sinks-AmazonS3/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Available for
 * NetFramework 4.6
