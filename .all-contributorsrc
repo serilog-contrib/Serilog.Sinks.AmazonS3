@@ -44,6 +44,16 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "longfin",
+      "name": "Swen Mun",
+      "avatar_url": "https://avatars.githubusercontent.com/u/128436?v=4",
+      "profile": "http://longfin.github.com",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
