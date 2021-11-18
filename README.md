@@ -1,6 +1,6 @@
 Serilog.Sinks.AmazonS3
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 ====================================
 
@@ -69,6 +69,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/stylesm"><img src="https://avatars.githubusercontent.com/u/5602910?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Matt Styles</b></sub></a><br /><a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=stylesm" title="Code">💻</a> <a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=stylesm" title="Documentation">📖</a></td>
     <td align="center"><a href="http://vlecerf.com"><img src="https://avatars.githubusercontent.com/u/7376668?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Valentin LECERF</b></sub></a><br /><a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=ioxFR" title="Code">💻</a> <a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=ioxFR" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://franzhuber23.blogspot.de/"><img src="https://avatars.githubusercontent.com/u/9639361?v=4?s=100" width="100px;" alt=""/><br /><sub><b>HansM</b></sub></a><br /><a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=SeppPenner" title="Code">💻</a> <a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=SeppPenner" title="Documentation">📖</a> <a href="#example-SeppPenner" title="Examples">💡</a> <a href="#maintenance-SeppPenner" title="Maintenance">🚧</a> <a href="#projectManagement-SeppPenner" title="Project Management">📆</a> <a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=SeppPenner" title="Tests">⚠️</a></td>
   </tr>
 </table>
 
