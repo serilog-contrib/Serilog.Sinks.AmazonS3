@@ -54,6 +54,16 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "codingbadger",
+      "name": "Barry Mooring",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1089628?v=4",
+      "profile": "https://www.linkedin.com/in/barrymooring/",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
