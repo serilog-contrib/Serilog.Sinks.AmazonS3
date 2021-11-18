@@ -74,6 +74,16 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "stylesm",
+      "name": "Matt Styles",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5602910?v=4",
+      "profile": "https://github.com/stylesm",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
