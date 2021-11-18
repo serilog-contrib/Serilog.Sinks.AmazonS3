@@ -64,6 +64,16 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "samburville",
+      "name": "Sam Burville",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7041731?v=4",
+      "profile": "https://github.com/samburville",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
