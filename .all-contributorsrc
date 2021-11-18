@@ -84,6 +84,16 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "ioxFR",
+      "name": "Valentin LECERF",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7376668?v=4",
+      "profile": "http://vlecerf.com",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
