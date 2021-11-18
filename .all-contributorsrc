@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "Galouw",
+      "name": "Galouw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6368030?v=4",
+      "profile": "https://github.com/Galouw",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "Serilog.Sinks.AmazonS3",
+  "projectOwner": "serilog-contrib",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

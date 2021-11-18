@@ -1,4 +1,7 @@
 Serilog.Sinks.AmazonS3
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 ====================================
 
 Serilog.Sinks.AmazonS3 is a library to save logging information from [Serilog](https://github.com/serilog/serilog) to [Amazon S3](https://aws.amazon.com/s3/).
@@ -45,3 +48,23 @@ Change history
 --------------
 
 See the [Changelog](https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/blob/master/Changelog.md).
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/Galouw"><img src="https://avatars.githubusercontent.com/u/6368030?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Galouw</b></sub></a><br /><a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=Galouw" title="Code">💻</a> <a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=Galouw" title="Documentation">📖</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
