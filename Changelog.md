@@ -1,6 +1,7 @@
 Change history
 --------------
 
+* **Version 1.2.3.0 (2022-01-12)** : NuGet packages updated.
 * **Version 1.2.2.0 (2021-11-09)** : NuGet packages updated, added support for Net6.0.
 * **Version 1.2.1.0 (2021-11-04)** : NuGet packages updated.
 * **Version 1.2.0.0 (2021-09-12)** : Added example of loading logger config from appsettings (Thanks to @stylesm), added validation for the serviceUrl property (Thanks to @stylesm), updated icon, smaller adjustements due to move to the serilog-contrib organization, updated NuGet packages.
