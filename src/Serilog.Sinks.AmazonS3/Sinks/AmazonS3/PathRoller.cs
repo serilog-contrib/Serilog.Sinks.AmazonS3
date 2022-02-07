@@ -159,6 +159,7 @@ namespace Serilog.Sinks.AmazonS3
 
                 int? inc = null;
                 var incGroup = match.Groups[SequenceNumberMatchGroup];
+
                 if (incGroup.Captures.Count != 0)
                 {
                     var incPart = incGroup.Captures[0].Value.Substring(1);

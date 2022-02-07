@@ -19,11 +19,11 @@ namespace Serilog.Sinks.AmazonS3
         /// <summary>
         /// Gets or sets the output stream writer.
         /// </summary>
-        public StreamWriter OutputWriter { get; set; }
+        public StreamWriter? OutputWriter { get; set; }
 
         /// <summary>
         /// Gets or sets the file name.
         /// </summary>
-        public string FileName { get; set; }
+        public string FileName { get; set; } = string.Empty;
     }
 }

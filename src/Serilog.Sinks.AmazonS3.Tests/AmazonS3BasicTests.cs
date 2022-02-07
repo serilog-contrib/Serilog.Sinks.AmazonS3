@@ -27,17 +27,17 @@ namespace Serilog.Sinks.AmazonS3.Tests
         /// <summary>
         /// The Amazon S3 access key id.
         /// </summary>
-        private readonly string awsAccessKeyId = Environment.GetEnvironmentVariable("AwsAccessKeyId");
+        private readonly string awsAccessKeyId = Environment.GetEnvironmentVariable("AwsAccessKeyId") ?? string.Empty;
 
         /// <summary>
         /// The Amazon S3 secret access key.
         /// </summary>
-        private readonly string awsSecretAccessKey = Environment.GetEnvironmentVariable("AwsSecretAccessKey");
+        private readonly string awsSecretAccessKey = Environment.GetEnvironmentVariable("AwsSecretAccessKey") ?? string.Empty;
 
         /// <summary>
         /// The Amazon S3 bucket name.
         /// </summary>
-        private readonly string awsBucketName = Environment.GetEnvironmentVariable("AwsBucketName");
+        private readonly string awsBucketName = Environment.GetEnvironmentVariable("AwsBucketName") ?? string.Empty;
 
         /// <summary>
         /// This method is used to test a basic file upload to Amazon S3 with no credentials (IAM).

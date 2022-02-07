@@ -25,52 +25,52 @@ namespace Serilog.Sinks.AmazonS3
         /// <summary>
         /// Gets or sets the Amazon S3 client.
         /// </summary>
-        public AmazonS3Client AmazonS3Client { get; set; }
+        public AmazonS3Client? AmazonS3Client { get; set; }
 
         /// <summary>
         /// Gets or sets the AWS access key identifier.
         /// </summary>
-        public string AwsAccessKeyId { get; set; }
+        public string AwsAccessKeyId { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the AWS secret access key.
         /// </summary>
-        public string AwsSecretAccessKey { get; set; }
+        public string AwsSecretAccessKey { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the Amazon S3 bucket name.
         /// </summary>
-        public string BucketName { get; set; }
+        public string BucketName { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the path where local files are stored.
         /// </summary>
-        public string BucketPath { get; set; }
+        public string? BucketPath { get; set; }
 
         /// <summary>
         /// Gets or sets the encoding.
         /// </summary>
-        public Encoding Encoding { get; set; }
+        public Encoding Encoding { get; set; } = Encoding.UTF8;
 
         /// <summary>
         /// Gets or sets the Amazon S3 key endpoint.
         /// </summary>
-        public RegionEndpoint Endpoint { get; set; }
+        public RegionEndpoint Endpoint { get; set; } = RegionEndpoint.USWest1;
 
         /// <summary>
         /// Gets or sets the local path where the files are stored.
         /// </summary>
-        public string Path { get; set; }
+        public string Path { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the text formatter.
         /// </summary>
-        public ITextFormatter Formatter { get; set; }
+        public ITextFormatter? Formatter { get; set; }
 
         /// <summary>
         /// Gets or sets the failure callback.
         /// </summary>
-        public Action<Exception> FailureCallback { get; set; }
+        public Action<Exception>? FailureCallback { get; set; }
 
         /// <summary>
         /// Gets or sets the Amazon S3 service url.
@@ -80,7 +80,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <summary>
         /// Gets or sets the path roller.
         /// </summary>
-        public PathRoller PathRoller { get; set; }
+        public PathRoller? PathRoller { get; set; }
 
         /// <summary>
         /// Gets or sets the next checkpoint.
@@ -100,11 +100,11 @@ namespace Serilog.Sinks.AmazonS3
         /// <summary>
         /// Gets or sets the output template.
         /// </summary>
-        public string OutputTemplate { get; set; }
+        public string? OutputTemplate { get; set; }
 
         /// <summary>
         /// Gets or sets the format provider.
         /// </summary>
-        public IFormatProvider FormatProvider { get; set; }
+        public IFormatProvider? FormatProvider { get; set; }
     }
 }

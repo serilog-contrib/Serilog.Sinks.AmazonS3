@@ -31,7 +31,7 @@ namespace Serilog.Sinks.AmazonS3
         /// <summary>
         /// The Amazon S3 options.
         /// </summary>
-        private readonly AmazonS3Options amazonS3Options = new AmazonS3Options();
+        private readonly AmazonS3Options amazonS3Options = new();
 
         /// <summary>Initializes a new instance of the <see cref="AmazonS3Sink" /> class. </summary>
         /// <exception cref="ArgumentNullException">A given value is null.</exception>
@@ -67,16 +67,16 @@ namespace Serilog.Sinks.AmazonS3
         /// <returns>A <see cref="Task"/> returning any asynchronous operation.</returns>
         public async Task EmitBatchAsync(IEnumerable<LogEvent> batch)
         {
-            if (batch is null)
-            {
-                throw new ArgumentNullException(nameof(batch));
-            }
-
             var fileInformation = this.OpenFile();
+
+            if (fileInformation.OutputWriter is null)
+            {
+                throw new InvalidOperationException($"The output writer was not properly set for {fileInformation.FileName}");
+            }
 
             foreach (var logEvent in batch)
             {
-                this.amazonS3Options.Formatter.Format(logEvent, fileInformation.OutputWriter);
+                this.amazonS3Options.Formatter?.Format(logEvent, fileInformation.OutputWriter);
             }
 
             await fileInformation.OutputWriter.FlushAsync();
@@ -141,12 +141,10 @@ namespace Serilog.Sinks.AmazonS3
                 return this.GetFileName(now);
             }
 
-            // ReSharper disable once InvertIf
             if (nextSequence || now >= this.amazonS3Options.NextCheckpoint.Value)
             {
                 int? minSequence = null;
 
-                // ReSharper disable once InvertIf
                 if (nextSequence)
                 {
                     if (this.amazonS3Options.CurrentFileSequence is null)
@@ -162,7 +160,7 @@ namespace Serilog.Sinks.AmazonS3
                 return this.GetFileName(now, minSequence);
             }
 
-            return null;
+            return string.Empty;
         }
 
         /// <summary>
@@ -173,16 +171,22 @@ namespace Serilog.Sinks.AmazonS3
         /// <returns>The file name as <see cref="string"/>.</returns>
         private string GetFileName(DateTime now, int? minSequence = null)
         {
+            if (this.amazonS3Options.PathRoller is null)
+            {
+                throw new InvalidOperationException("The path roller wasn't properly set.");
+            }
+
             var currentCheckpoint = this.amazonS3Options.PathRoller.GetCurrentCheckpoint(now);
             this.amazonS3Options.NextCheckpoint = this.amazonS3Options.PathRoller.GetNextCheckpoint(now);
 
-            var existingFiles = Enumerable.Empty<string>();
+            var existingFiles = new List<string>();
 
             try
             {
                 if (Directory.Exists(this.amazonS3Options.PathRoller.LogFileDirectory))
                 {
-                    existingFiles = Directory.GetFiles(this.amazonS3Options.PathRoller.LogFileDirectory, this.amazonS3Options.PathRoller.DirectorySearchPattern).Select(Path.GetFileName);
+                    var files = Directory.GetFiles(this.amazonS3Options.PathRoller.LogFileDirectory, this.amazonS3Options.PathRoller.DirectorySearchPattern).Select(Path.GetFileName).ToList();
+                    existingFiles = files ?? new List<string>();
                 }
             }
             catch (DirectoryNotFoundException)
@@ -198,7 +202,7 @@ namespace Serilog.Sinks.AmazonS3
 
             var sequence = latestForThisCheckpoint?.SequenceNumber;
 
-            if (minSequence != null)
+            if (minSequence is not null)
             {
                 if (sequence is null || sequence.Value < minSequence.Value)
                 {
@@ -229,14 +233,12 @@ namespace Serilog.Sinks.AmazonS3
         /// <returns>
         /// An asynchronous result that yields a PutObjectResponse. 
         /// </returns>
-        // ReSharper disable once UnusedMethodReturnValue.Local
-        private async Task<PutObjectResponse> UploadFileToS3(string fileName)
+        private async Task<PutObjectResponse?> UploadFileToS3(string fileName)
         {
             var client = this.amazonS3Options.AmazonS3Client;
 
             if (client is null)
             {
-                // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                 if (this.amazonS3Options.Endpoint != null)
                 {
                     client = new AmazonS3Client(this.amazonS3Options.Endpoint);
@@ -253,7 +255,6 @@ namespace Serilog.Sinks.AmazonS3
                 // In the case that awsAccessKeyId and awsSecretAccessKey is passed, we use it. Otherwise authorization is given by roles in AWS directly.
                 if (!string.IsNullOrEmpty(this.amazonS3Options.AwsAccessKeyId) && !string.IsNullOrEmpty(this.amazonS3Options.AwsSecretAccessKey))
                 {
-                    // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                     if (this.amazonS3Options.Endpoint != null)
                     {
                         client = new AmazonS3Client(this.amazonS3Options.AwsAccessKeyId, this.amazonS3Options.AwsSecretAccessKey, this.amazonS3Options.Endpoint);
@@ -275,7 +276,7 @@ namespace Serilog.Sinks.AmazonS3
             {
                 // S3 does not support updates, files are automatically rewritten. So we will have to upload the entire file.
                 // Open the file for shared reading and writing.
-                using var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                using var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
 
                 var key = string.IsNullOrWhiteSpace(this.amazonS3Options.BucketPath)
                               ? Path.GetFileName(fileName).Replace("\\", "/")
@@ -284,7 +285,7 @@ namespace Serilog.Sinks.AmazonS3
 
                 if (fs.Length is 0)
                 {
-                    return null;
+                    throw new InvalidOperationException("The file size is 0.");
                 }
 
                 var putRequest = new PutObjectRequest
