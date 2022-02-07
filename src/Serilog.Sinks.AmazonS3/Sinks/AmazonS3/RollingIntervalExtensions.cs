@@ -29,7 +29,6 @@
 namespace Serilog.Sinks.AmazonS3
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// This class contains extension methods for the <see cref="RollingInterval"/> enumeration.
@@ -41,7 +40,6 @@ namespace Serilog.Sinks.AmazonS3
         /// </summary>
         /// <param name="interval">The interval.</param>
         /// <returns>The format <see cref="string"/>.</returns>
-        [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1122:UseStringEmptyForEmptyStrings", Justification = "Reviewed. Suppression is OK here.")]
         public static string GetFormat(this RollingInterval interval)
         {
             switch (interval)
