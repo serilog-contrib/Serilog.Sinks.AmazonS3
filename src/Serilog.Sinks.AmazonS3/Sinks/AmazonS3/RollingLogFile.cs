@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RollingLogFile.cs" company="SeppPenner and the Serilog contributors">
 // The project is double licensed under the MIT license and the Apache License, Version 2.0.
 // This code is a partly modified source code of the original Serilog code.
@@ -26,41 +26,38 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Serilog.Sinks.AmazonS3
+namespace Serilog.Sinks.AmazonS3;
+
+/// <summary>
+/// The rolling log file class to handle rolling log files.
+/// </summary>
+public class RollingLogFile
 {
-    using System;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RollingLogFile"/> class.
+    /// </summary>
+    /// <param name="fileName">The file name.</param>
+    /// <param name="dateTime">The date time.</param>
+    /// <param name="sequenceNumber">The sequence number.</param>
+    public RollingLogFile(string fileName, DateTime? dateTime, int? sequenceNumber)
+    {
+        this.FileName = fileName;
+        this.DateTime = dateTime;
+        this.SequenceNumber = sequenceNumber;
+    }
 
     /// <summary>
-    /// The rolling log file class to handle rolling log files.
+    /// Gets the file name.
     /// </summary>
-    public class RollingLogFile
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RollingLogFile"/> class.
-        /// </summary>
-        /// <param name="fileName">The file name.</param>
-        /// <param name="dateTime">The date time.</param>
-        /// <param name="sequenceNumber">The sequence number.</param>
-        public RollingLogFile(string fileName, DateTime? dateTime, int? sequenceNumber)
-        {
-            this.FileName = fileName;
-            this.DateTime = dateTime;
-            this.SequenceNumber = sequenceNumber;
-        }
+    public string FileName { get; }
 
-        /// <summary>
-        /// Gets the file name.
-        /// </summary>
-        public string FileName { get; }
+    /// <summary>
+    /// Gets the date time.
+    /// </summary>
+    public DateTime? DateTime { get; }
 
-        /// <summary>
-        /// Gets the date time.
-        /// </summary>
-        public DateTime? DateTime { get; }
-
-        /// <summary>
-        /// Gets the sequence number.
-        /// </summary>
-        public int? SequenceNumber { get; }
-    }
+    /// <summary>
+    /// Gets the sequence number.
+    /// </summary>
+    public int? SequenceNumber { get; }
 }

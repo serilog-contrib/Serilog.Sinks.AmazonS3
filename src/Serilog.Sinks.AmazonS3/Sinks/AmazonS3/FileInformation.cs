@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FileInformation.cs" company="SeppPenner and the Serilog contributors">
 // The project is licensed under the MIT license.
 // </copyright>
@@ -7,23 +7,20 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Serilog.Sinks.AmazonS3
+namespace Serilog.Sinks.AmazonS3;
+
+/// <summary>
+/// The file information.
+/// </summary>
+public class FileInformation
 {
-    using System.IO;
+    /// <summary>
+    /// Gets or sets the output stream writer.
+    /// </summary>
+    public StreamWriter? OutputWriter { get; set; }
 
     /// <summary>
-    /// The file information.
+    /// Gets or sets the file name.
     /// </summary>
-    public class FileInformation
-    {
-        /// <summary>
-        /// Gets or sets the output stream writer.
-        /// </summary>
-        public StreamWriter? OutputWriter { get; set; }
-
-        /// <summary>
-        /// Gets or sets the file name.
-        /// </summary>
-        public string FileName { get; set; } = string.Empty;
-    }
+    public string FileName { get; set; } = string.Empty;
 }

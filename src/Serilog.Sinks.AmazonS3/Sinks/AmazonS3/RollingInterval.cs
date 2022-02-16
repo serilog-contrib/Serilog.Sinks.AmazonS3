@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RollingInterval.cs" company="SeppPenner and the Serilog contributors">
 // The project is double licensed under the MIT license and the Apache License, Version 2.0.
 // This code is a partly modified source code of the original Serilog code.
@@ -26,41 +26,40 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Serilog.Sinks.AmazonS3
+namespace Serilog.Sinks.AmazonS3;
+
+/// <summary>
+/// Specifies the frequency at which the log file should roll.
+/// </summary>
+public enum RollingInterval
 {
     /// <summary>
-    /// Specifies the frequency at which the log file should roll.
+    /// The log file will never roll; no time period information will be appended to the log file name.
     /// </summary>
-    public enum RollingInterval
-    {
-        /// <summary>
-        /// The log file will never roll; no time period information will be appended to the log file name.
-        /// </summary>
-        Infinite,
+    Infinite,
 
-        /// <summary>
-        /// Roll every year. File names will have a four-digit year appended in the pattern <code>yyyy</code>.
-        /// </summary>
-        Year,
+    /// <summary>
+    /// Roll every year. File names will have a four-digit year appended in the pattern <code>yyyy</code>.
+    /// </summary>
+    Year,
 
-        /// <summary>
-        /// Roll every calendar month. File names will have <code>yyyyMM</code> appended.
-        /// </summary>
-        Month,
+    /// <summary>
+    /// Roll every calendar month. File names will have <code>yyyyMM</code> appended.
+    /// </summary>
+    Month,
 
-        /// <summary>
-        /// Roll every day. File names will have <code>yyyyMMdd</code> appended.
-        /// </summary>
-        Day,
+    /// <summary>
+    /// Roll every day. File names will have <code>yyyyMMdd</code> appended.
+    /// </summary>
+    Day,
 
-        /// <summary>
-        /// Roll every hour. File names will have <code>yyyyMMddHH</code> appended.
-        /// </summary>
-        Hour,
+    /// <summary>
+    /// Roll every hour. File names will have <code>yyyyMMddHH</code> appended.
+    /// </summary>
+    Hour,
 
-        /// <summary>
-        /// Roll every minute. File names will have <code>yyyyMMddHHmm</code> appended.
-        /// </summary>
-        Minute
-    }
+    /// <summary>
+    /// Roll every minute. File names will have <code>yyyyMMddHHmm</code> appended.
+    /// </summary>
+    Minute
 }
