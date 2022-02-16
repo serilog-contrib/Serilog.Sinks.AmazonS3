@@ -1,4 +1,4 @@
-cd .\src\Serilog.Sinks.AmazonS3
+cd .\src
 
 @ECHO off
 cls
