@@ -23,6 +23,6 @@ FOR /d /r . %%d in (bin,obj) DO (
 @del *.pdb
 @ECHO.Build successful.
 
-dotnet nuget push Serilog.Sinks.AmazonS3.*.nupkg -s "nuget.org" --skip-duplicate -k "%NUGET_API_KEY%"
+dotnet nuget push *.nupkg -s "nuget.org" --skip-duplicate -k "%NUGET_API_KEY%"
 @ECHO.Upload success. Press any key to exit.
 PAUSE
