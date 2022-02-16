@@ -74,8 +74,6 @@ namespace Serilog.Sinks.AmazonS3.Tests
         /// <summary>
         /// This method is used to test a basic file upload to Amazon S3.
         /// </summary>
-        // ReSharper disable ArgumentsStyleLiteral
-        // ReSharper disable ArgumentsStyleNamedExpression
         [TestMethod]
         public void BasicFileUploadTest()
         {

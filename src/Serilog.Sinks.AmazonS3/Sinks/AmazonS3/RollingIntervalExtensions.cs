@@ -103,7 +103,6 @@ namespace Serilog.Sinks.AmazonS3
                 return null;
             }
 
-            // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
             switch (interval)
             {
                 case RollingInterval.Year:
