@@ -28,8 +28,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.7.7.21" />
-    <PackageReference Include="GitVersion.MsBuild" Version="5.8.2">
+    <PackageReference Include="AWSSDK.S3" Version="3.7.8.5" />
+    <PackageReference Include="GitVersion.MsBuild" Version="5.8.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
