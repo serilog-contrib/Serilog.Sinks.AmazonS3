@@ -39,6 +39,9 @@ Check out the how to use file [here](https://github.com/serilog-contrib/Serilog.
 dotnet add package Serilog.Sinks.AmazonS3
 ```
 
+## Special notice for read-only file systems (e.g. AWS Lambda)
+AWS Lambda exposes the `tmp` folder for writing, so prepending `/tmp/` to the path parameter of the AmazonS3 extension method allowed this sink to work with AWS Lambda.
+
 Change history
 --------------
 
