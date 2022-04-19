@@ -41,6 +41,10 @@ dotnet add package Serilog.Sinks.AmazonS3
 
 ## Special notice for read-only file systems (e.g. AWS Lambda)
 AWS Lambda exposes the `tmp` folder for writing, so prepending `/tmp/` to the path parameter of the AmazonS3 extension method allowed this sink to work with AWS Lambda.
+Otherwise a similar exception is thrown:
+```log
+Exception while emitting periodic batch from Serilog.Sinks.PeriodicBatching.PeriodicBatchingSink: System.IO.IOException: Read-only file system
+```
 
 Change history
 --------------
