@@ -33,7 +33,7 @@ public class AmazonS3Sink : IBatchedLogEventSink
 
         if (amazonS3Options.Formatter is null)
         {
-            var textFormatter = new MessageTemplateTextFormatter(amazonS3Options.OutputTemplate, amazonS3Options.FormatProvider);
+            var textFormatter = new MessageTemplateTextFormatter(amazonS3Options.OutputTemplate!, amazonS3Options.FormatProvider);
             this.amazonS3Options.Formatter = textFormatter;
         }
         else
