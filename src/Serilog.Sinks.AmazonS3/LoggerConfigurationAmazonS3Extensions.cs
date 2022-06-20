@@ -654,7 +654,8 @@ public static class LoggerConfigurationAmazonS3Extensions
             RollingInterval = rollingInterval,
             Encoding = encoding,
             FailureCallback = failureCallback,
-            BucketPath = bucketPath
+            BucketPath = bucketPath,
+            Endpoint = null
         };
 
         var amazonS3Sink = new AmazonS3Sink(options);
@@ -784,7 +785,8 @@ public static class LoggerConfigurationAmazonS3Extensions
             RollingInterval = rollingInterval,
             Encoding = encoding,
             FailureCallback = failureCallback,
-            BucketPath = bucketPath
+            BucketPath = bucketPath,
+            Endpoint = null
         };
 
         var amazonS3Sink = new AmazonS3Sink(options);
@@ -912,7 +914,8 @@ public static class LoggerConfigurationAmazonS3Extensions
             RollingInterval = rollingInterval,
             Encoding = encoding,
             FailureCallback = failureCallback,
-            BucketPath = bucketPath
+            BucketPath = bucketPath,
+            Endpoint = null
         };
 
         var amazonS3Sink = new AmazonS3Sink(options);
@@ -1026,7 +1029,8 @@ public static class LoggerConfigurationAmazonS3Extensions
             RollingInterval = rollingInterval,
             Encoding = encoding,
             FailureCallback = failureCallback,
-            BucketPath = bucketPath
+            BucketPath = bucketPath,
+            Endpoint = null
         };
 
         var amazonS3Sink = new AmazonS3Sink(options);
