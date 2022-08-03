@@ -47,7 +47,7 @@ public class AmazonS3Options
     /// <summary>
     /// Gets or sets the Amazon S3 key endpoint.
     /// </summary>
-    public RegionEndpoint Endpoint { get; set; } = RegionEndpoint.USWest1;
+    public RegionEndpoint? Endpoint { get; set; }
 
     /// <summary>
     /// Gets or sets the local path where the files are stored.
