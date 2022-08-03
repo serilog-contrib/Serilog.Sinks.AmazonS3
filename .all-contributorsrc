@@ -131,6 +131,16 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "kosovrzn",
+      "name": "Sergey Kosov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13337834?v=4",
+      "profile": "https://github.com/kosovrzn",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
