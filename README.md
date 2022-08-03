@@ -15,7 +15,7 @@ so thanks to all the [contributors](https://github.com/serilog/serilog-sinks-fil
 [![Known Vulnerabilities](https://snyk.io/test/github/serilog-contrib/Serilog.Sinks.AmazonS3/badge.svg)](https://snyk.io/test/github/serilog-contrib/Serilog.Sinks.AmazonS3)
 [![Gitter](https://badges.gitter.im/Serilog-Sinks-AmazonS3/community.svg)](https://gitter.im/Serilog-Sinks-AmazonS3/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-12-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Available for
@@ -74,6 +74,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://franzhuber23.blogspot.de/"><img src="https://avatars.githubusercontent.com/u/9639361?v=4?s=100" width="100px;" alt=""/><br /><sub><b>HansM</b></sub></a><br /><a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=SeppPenner" title="Code">💻</a> <a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=SeppPenner" title="Documentation">📖</a> <a href="#example-SeppPenner" title="Examples">💡</a> <a href="#maintenance-SeppPenner" title="Maintenance">🚧</a> <a href="#projectManagement-SeppPenner" title="Project Management">📆</a> <a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=SeppPenner" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://github.com/serilog-contrib"><img src="https://avatars.githubusercontent.com/u/78050538?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Serilog Contrib</b></sub></a><br /><a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=serilog-contrib" title="Code">💻</a> <a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=serilog-contrib" title="Documentation">📖</a> <a href="#example-serilog-contrib" title="Examples">💡</a> <a href="#maintenance-serilog-contrib" title="Maintenance">🚧</a> <a href="#projectManagement-serilog-contrib" title="Project Management">📆</a> <a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=serilog-contrib" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://github.com/seruminar"><img src="https://avatars.githubusercontent.com/u/35008875?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yuriy Sountsov</b></sub></a><br /><a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=seruminar" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/kosovrzn"><img src="https://avatars.githubusercontent.com/u/13337834?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sergey Kosov</b></sub></a><br /><a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=kosovrzn" title="Code">💻</a> <a href="https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/commits?author=kosovrzn" title="Tests">⚠️</a></td>
   </tr>
 </table>
 
