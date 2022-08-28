@@ -1,6 +1,7 @@
 Change history
 --------------
 
+* **Version 1.2.8.0 (2022-08-28)** : Updated NuGet packages.
 * **Version 1.2.7.0 (2022-08-03)** : Updated NuGet packages, fixed issue with service url (Thanks to @kosovrzn).
 * **Version 1.2.6.0 (2022-06-01)** : Updated NuGet packages.
 * **Version 1.2.5.0 (2022-04-04)** : Updated NuGet packages.
