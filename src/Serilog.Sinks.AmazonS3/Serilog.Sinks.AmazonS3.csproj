@@ -16,7 +16,7 @@
     <RepositoryUrl>https://github.com/SeppPenner/Serilog.Sinks.AmazonS3</RepositoryUrl>
     <PackageIcon>Icon.png</PackageIcon>
     <RepositoryType>Github</RepositoryType>
-    <PackageReleaseNotes>Version 1.2.8.0 (2022-08-28): Updated NuGet packages.</PackageReleaseNotes>
+    <PackageReleaseNotes>Version 1.2.9.0 (2022-10-30): Updated nuget packages..</PackageReleaseNotes>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <LangVersion>latest</LangVersion>
 	<Nullable>enable</Nullable>
