@@ -1,6 +1,7 @@
 Change history
 --------------
 
+* **Version 1.3.0.0 (2022-11-20)** : Updated nuget packages, removed support for Net5.0, added support for Net7.0.
 * **Version 1.2.9.0 (2022-10-30)** : Updated nuget packages.
 * **Version 1.2.8.0 (2022-08-28)** : Updated NuGet packages.
 * **Version 1.2.7.0 (2022-08-03)** : Updated NuGet packages, fixed issue with service url (Thanks to @kosovrzn).
