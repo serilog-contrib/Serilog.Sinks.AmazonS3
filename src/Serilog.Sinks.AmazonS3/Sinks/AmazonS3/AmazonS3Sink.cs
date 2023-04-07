@@ -25,11 +25,13 @@ public class AmazonS3Sink : IBatchedLogEventSink
     public AmazonS3Sink(AmazonS3Options amazonS3Options)
     {
         this.amazonS3Options.AmazonS3Client = amazonS3Options.AmazonS3Client;
-        this.amazonS3Options.Path = amazonS3Options.Path;
-        this.amazonS3Options.BucketName = amazonS3Options.BucketName;
-        this.amazonS3Options.Endpoint = amazonS3Options.Endpoint;
         this.amazonS3Options.AwsAccessKeyId = amazonS3Options.AwsAccessKeyId;
         this.amazonS3Options.AwsSecretAccessKey = amazonS3Options.AwsSecretAccessKey;
+        this.amazonS3Options.BucketName = amazonS3Options.BucketName;
+        this.amazonS3Options.BucketPath = amazonS3Options.BucketPath;
+        this.amazonS3Options.Encoding = amazonS3Options.Encoding;
+        this.amazonS3Options.Endpoint = amazonS3Options.Endpoint;
+        this.amazonS3Options.Path = amazonS3Options.Path;
 
         if (amazonS3Options.Formatter is null)
         {
@@ -41,11 +43,12 @@ public class AmazonS3Sink : IBatchedLogEventSink
             this.amazonS3Options.Formatter = amazonS3Options.Formatter;
         }
 
-        this.amazonS3Options.PathRoller = new PathRoller(amazonS3Options.Path, amazonS3Options.RollingInterval);
-        this.amazonS3Options.Encoding = amazonS3Options.Encoding;
         this.amazonS3Options.FailureCallback = amazonS3Options.FailureCallback;
-        this.amazonS3Options.BucketPath = amazonS3Options.BucketPath;
         this.amazonS3Options.ServiceUrl = amazonS3Options.ServiceUrl;
+        this.amazonS3Options.PathRoller = new PathRoller(amazonS3Options.Path, amazonS3Options.RollingInterval);
+        this.amazonS3Options.RollingInterval = amazonS3Options.RollingInterval;
+        this.amazonS3Options.OutputTemplate = amazonS3Options.OutputTemplate;
+        this.amazonS3Options.FormatProvider = amazonS3Options.FormatProvider;
     }
 
     /// <summary>Emit a batch of log events, running asynchronously.</summary>
