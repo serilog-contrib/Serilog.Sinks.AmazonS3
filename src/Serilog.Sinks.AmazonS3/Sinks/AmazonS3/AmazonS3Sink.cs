@@ -3,14 +3,14 @@
 // The project is licensed under the MIT license.
 // </copyright>
 // <summary>
-// This class is the main class and contains all options for the AmazonS3 sink.
+// This class is the main class and contains all logic for the AmazonS3 sink.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Serilog.Sinks.AmazonS3;
 
 /// <summary>
-/// This class is the main class and contains all options for the AmazonS3 sink.
+/// This class is the main class and contains all logic for the AmazonS3 sink.
 /// </summary>
 public class AmazonS3Sink : IBatchedLogEventSink
 {
