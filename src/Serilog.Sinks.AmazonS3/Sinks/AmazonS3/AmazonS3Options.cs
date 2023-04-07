@@ -70,21 +70,6 @@ public class AmazonS3Options
     public string ServiceUrl { get; set; } = "https://s3.amazonaws.com";
 
     /// <summary>
-    /// Gets or sets the path roller.
-    /// </summary>
-    public PathRoller? PathRoller { get; set; }
-
-    /// <summary>
-    /// Gets or sets the next checkpoint.
-    /// </summary>
-    public DateTime? NextCheckpoint { get; set; }
-
-    /// <summary>
-    /// Gets or sets the current file sequence number.
-    /// </summary>
-    public int? CurrentFileSequence { get; set; }
-
-    /// <summary>
     /// Gets or sets the rolling interval.
     /// </summary>
     public RollingInterval RollingInterval { get; set; }
@@ -98,4 +83,19 @@ public class AmazonS3Options
     /// Gets or sets the format provider.
     /// </summary>
     public IFormatProvider? FormatProvider { get; set; }
+
+    /// <summary>
+    /// Gets or sets the path roller. Internally used only, not to be set by the options.
+    /// </summary>
+    public PathRoller? PathRoller { get; set; }
+
+    /// <summary>
+    /// Gets or sets the next checkpoint. Internally used only, not to be set by the options.
+    /// </summary>
+    public DateTime? NextCheckpoint { get; set; }
+
+    /// <summary>
+    /// Gets or sets the current file sequence number. Internally used only, not to be set by the options.
+    /// </summary>
+    public int? CurrentFileSequence { get; set; }
 }

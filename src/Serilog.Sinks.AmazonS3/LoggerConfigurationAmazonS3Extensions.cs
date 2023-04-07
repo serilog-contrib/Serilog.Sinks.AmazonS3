@@ -218,23 +218,23 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="queueSizeLimit">The queue size limit.</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
-            this LoggerSinkConfiguration sinkConfiguration,
-            string path,
-            string bucketName,
-            RegionEndpoint endpoint,
-            string awsAccessKeyId,
-            string awsSecretAccessKey,
-            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
-            LoggingLevelSwitch? levelSwitch = null,
-            ITextFormatter? formatter = null,
-            RollingInterval rollingInterval = RollingInterval.Day,
-            Encoding? encoding = null,
-            Action<Exception>? failureCallback = null,
-            string? bucketPath = null,
-            int? batchSizeLimit = DefaultBatchSizeLimit,
-            TimeSpan? batchingPeriod = null,
-            bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
-            int? queueSizeLimit = DefaultQueueSizeLimit)
+        this LoggerSinkConfiguration sinkConfiguration,
+        string path,
+        string bucketName,
+        RegionEndpoint endpoint,
+        string awsAccessKeyId,
+        string awsSecretAccessKey,
+        LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
+        LoggingLevelSwitch? levelSwitch = null,
+        ITextFormatter? formatter = null,
+        RollingInterval rollingInterval = RollingInterval.Day,
+        Encoding? encoding = null,
+        Action<Exception>? failureCallback = null,
+        string? bucketPath = null,
+        int? batchSizeLimit = DefaultBatchSizeLimit,
+        TimeSpan? batchingPeriod = null,
+        bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
+        int? queueSizeLimit = DefaultQueueSizeLimit)
     {
         if (sinkConfiguration is null)
         {
@@ -713,23 +713,23 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="queueSizeLimit">The queue size limit.</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
-            this LoggerSinkConfiguration sinkConfiguration,
-            string path,
-            string bucketName,
-            string serviceUrl,
-            string awsAccessKeyId,
-            string awsSecretAccessKey,
-            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
-            LoggingLevelSwitch? levelSwitch = null,
-            ITextFormatter? formatter = null,
-            RollingInterval rollingInterval = RollingInterval.Day,
-            Encoding? encoding = null,
-            Action<Exception>? failureCallback = null,
-            string? bucketPath = null,
-            int? batchSizeLimit = DefaultBatchSizeLimit,
-            TimeSpan? batchingPeriod = null,
-            bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
-            int? queueSizeLimit = DefaultQueueSizeLimit)
+        this LoggerSinkConfiguration sinkConfiguration,
+        string path,
+        string bucketName,
+        string serviceUrl,
+        string awsAccessKeyId,
+        string awsSecretAccessKey,
+        LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
+        LoggingLevelSwitch? levelSwitch = null,
+        ITextFormatter? formatter = null,
+        RollingInterval rollingInterval = RollingInterval.Day,
+        Encoding? encoding = null,
+        Action<Exception>? failureCallback = null,
+        string? bucketPath = null,
+        int? batchSizeLimit = DefaultBatchSizeLimit,
+        TimeSpan? batchingPeriod = null,
+        bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
+        int? queueSizeLimit = DefaultQueueSizeLimit)
     {
         if (sinkConfiguration is null)
         {
