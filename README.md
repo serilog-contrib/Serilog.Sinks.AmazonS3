@@ -25,7 +25,6 @@ so thanks to all the [contributors](https://github.com/serilog/serilog-sinks-fil
 * Net 7.0
 
 ## Net Core and Net Framework latest and LTS versions
-* https://dotnet.microsoft.com/download/dotnet-framework
 * https://dotnet.microsoft.com/download/dotnet-core
 * https://dotnet.microsoft.com/download/dotnet
 
