@@ -56,7 +56,9 @@ public class AmazonS3BasicTests
         for (var x = 0; x < 200; x++)
         {
             var ex = new Exception("Test");
+#pragma warning disable Serilog004 // Constant MessageTemplate verifier
             logger.Error(ex.ToString());
+#pragma warning restore Serilog004 // Constant MessageTemplate verifier
         }
 
         Log.CloseAndFlush();
@@ -90,7 +92,9 @@ public class AmazonS3BasicTests
         for (var x = 0; x < 200; x++)
         {
             var ex = new Exception("Test");
+#pragma warning disable Serilog004 // Constant MessageTemplate verifier
             logger.Error(ex.ToString());
+#pragma warning restore Serilog004 // Constant MessageTemplate verifier
         }
 
         Log.CloseAndFlush();
@@ -123,7 +127,9 @@ public class AmazonS3BasicTests
         for (var x = 0; x < 200; x++)
         {
             var ex = new Exception("Test");
+#pragma warning disable Serilog004 // Constant MessageTemplate verifier
             logger.Error(ex.ToString());
+#pragma warning restore Serilog004 // Constant MessageTemplate verifier
         }
 
         Log.CloseAndFlush();
@@ -147,7 +153,9 @@ public class AmazonS3BasicTests
         for (var x = 0; x < 200; x++)
         {
             var ex = new Exception("Test");
+#pragma warning disable Serilog004 // Constant MessageTemplate verifier
             logger.Error(ex.ToString());
+#pragma warning restore Serilog004 // Constant MessageTemplate verifier
         }
 
         Log.CloseAndFlush();
