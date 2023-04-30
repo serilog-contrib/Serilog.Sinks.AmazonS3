@@ -89,6 +89,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
+    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -108,7 +109,8 @@ public static class LoggerConfigurationAmazonS3Extensions
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
         bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
-        int? queueSizeLimit = DefaultQueueSizeLimit)
+        int? queueSizeLimit = DefaultQueueSizeLimit,
+        bool? disablePayloadSigning = false)
     {
         if (sinkConfiguration is null)
         {
@@ -160,7 +162,8 @@ public static class LoggerConfigurationAmazonS3Extensions
             RollingInterval = rollingInterval,
             Encoding = encoding,
             FailureCallback = failureCallback,
-            BucketPath = bucketPath
+            BucketPath = bucketPath,
+            DisablePayloadSigning = disablePayloadSigning
         };
 
         var amazonS3Sink = new AmazonS3Sink(options);
@@ -216,6 +219,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
+    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -234,7 +238,8 @@ public static class LoggerConfigurationAmazonS3Extensions
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
         bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
-        int? queueSizeLimit = DefaultQueueSizeLimit)
+        int? queueSizeLimit = DefaultQueueSizeLimit,
+        bool? disablePayloadSigning = false)
     {
         if (sinkConfiguration is null)
         {
@@ -285,7 +290,8 @@ public static class LoggerConfigurationAmazonS3Extensions
             RollingInterval = rollingInterval,
             Encoding = encoding,
             FailureCallback = failureCallback,
-            BucketPath = bucketPath
+            BucketPath = bucketPath,
+            DisablePayloadSigning = disablePayloadSigning
         };
 
         var amazonS3Sink = new AmazonS3Sink(options);
@@ -351,6 +357,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
+    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -368,7 +375,8 @@ public static class LoggerConfigurationAmazonS3Extensions
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
         bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
-        int? queueSizeLimit = DefaultQueueSizeLimit)
+        int? queueSizeLimit = DefaultQueueSizeLimit,
+        bool? disablePayloadSigning = false)
     {
         if (sinkConfiguration is null)
         {
@@ -408,7 +416,8 @@ public static class LoggerConfigurationAmazonS3Extensions
             RollingInterval = rollingInterval,
             Encoding = encoding,
             FailureCallback = failureCallback,
-            BucketPath = bucketPath
+            BucketPath = bucketPath,
+            DisablePayloadSigning = disablePayloadSigning,
         };
 
         var amazonS3Sink = new AmazonS3Sink(options);
@@ -462,6 +471,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
+    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -478,7 +488,8 @@ public static class LoggerConfigurationAmazonS3Extensions
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
         bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
-        int? queueSizeLimit = DefaultQueueSizeLimit)
+        int? queueSizeLimit = DefaultQueueSizeLimit,
+        bool? disablePayloadSigning = false)
     {
         if (sinkConfiguration is null)
         {
@@ -517,8 +528,9 @@ public static class LoggerConfigurationAmazonS3Extensions
             RollingInterval = rollingInterval,
             Encoding = encoding,
             FailureCallback = failureCallback,
-            BucketPath = bucketPath
-        };
+            BucketPath = bucketPath,
+			DisablePayloadSigning = disablePayloadSigning
+		};
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -578,6 +590,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
+    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -597,7 +610,8 @@ public static class LoggerConfigurationAmazonS3Extensions
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
         bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
-        int? queueSizeLimit = DefaultQueueSizeLimit)
+        int? queueSizeLimit = DefaultQueueSizeLimit,
+        bool? disablePayloadSigning = false)
     {
         if (sinkConfiguration is null)
         {
@@ -655,7 +669,8 @@ public static class LoggerConfigurationAmazonS3Extensions
             Encoding = encoding,
             FailureCallback = failureCallback,
             BucketPath = bucketPath,
-            Endpoint = null
+            Endpoint = null,
+            DisablePayloadSigning = disablePayloadSigning
         };
 
         var amazonS3Sink = new AmazonS3Sink(options);
@@ -711,6 +726,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
+    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -729,7 +745,8 @@ public static class LoggerConfigurationAmazonS3Extensions
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
         bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
-        int? queueSizeLimit = DefaultQueueSizeLimit)
+        int? queueSizeLimit = DefaultQueueSizeLimit,
+        bool? disablePayloadSigning = false)
     {
         if (sinkConfiguration is null)
         {
@@ -786,7 +803,8 @@ public static class LoggerConfigurationAmazonS3Extensions
             Encoding = encoding,
             FailureCallback = failureCallback,
             BucketPath = bucketPath,
-            Endpoint = null
+            Endpoint = null,
+            DisablePayloadSigning = disablePayloadSigning
         };
 
         var amazonS3Sink = new AmazonS3Sink(options);
@@ -852,6 +870,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
+    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -869,7 +888,8 @@ public static class LoggerConfigurationAmazonS3Extensions
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
         bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
-        int? queueSizeLimit = DefaultQueueSizeLimit)
+        int? queueSizeLimit = DefaultQueueSizeLimit,
+        bool? disablePayloadSigning = false)
     {
         if (sinkConfiguration is null)
         {
@@ -915,7 +935,8 @@ public static class LoggerConfigurationAmazonS3Extensions
             Encoding = encoding,
             FailureCallback = failureCallback,
             BucketPath = bucketPath,
-            Endpoint = null
+            Endpoint = null,
+            DisablePayloadSigning = disablePayloadSigning
         };
 
         var amazonS3Sink = new AmazonS3Sink(options);
@@ -969,6 +990,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
+    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -985,7 +1007,8 @@ public static class LoggerConfigurationAmazonS3Extensions
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
         bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
-        int? queueSizeLimit = DefaultQueueSizeLimit)
+        int? queueSizeLimit = DefaultQueueSizeLimit,
+        bool? disablePayloadSigning = false)
     {
         if (sinkConfiguration is null)
         {
@@ -1030,7 +1053,8 @@ public static class LoggerConfigurationAmazonS3Extensions
             Encoding = encoding,
             FailureCallback = failureCallback,
             BucketPath = bucketPath,
-            Endpoint = null
+            Endpoint = null,
+            DisablePayloadSigning = disablePayloadSigning
         };
 
         var amazonS3Sink = new AmazonS3Sink(options);
@@ -1096,6 +1120,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
+    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -1113,7 +1138,8 @@ public static class LoggerConfigurationAmazonS3Extensions
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
         bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
-        int? queueSizeLimit = DefaultQueueSizeLimit)
+        int? queueSizeLimit = DefaultQueueSizeLimit,
+        bool? disablePayloadSigning = false)
     {
         if (sinkConfiguration is null)
         {
@@ -1153,7 +1179,8 @@ public static class LoggerConfigurationAmazonS3Extensions
             RollingInterval = rollingInterval,
             Encoding = encoding,
             FailureCallback = failureCallback,
-            BucketPath = bucketPath
+            BucketPath = bucketPath,
+            DisablePayloadSigning = disablePayloadSigning
         };
 
         var amazonS3Sink = new AmazonS3Sink(options);
@@ -1207,6 +1234,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
+    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -1223,7 +1251,8 @@ public static class LoggerConfigurationAmazonS3Extensions
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
         bool? eagerlyEmitFirstEvent = DefaultEagerlyEmitFirstEvent,
-        int? queueSizeLimit = DefaultQueueSizeLimit)
+        int? queueSizeLimit = DefaultQueueSizeLimit,
+        bool? disablePayloadSigning = false)
     {
         if (sinkConfiguration is null)
         {
@@ -1262,7 +1291,8 @@ public static class LoggerConfigurationAmazonS3Extensions
             RollingInterval = rollingInterval,
             Encoding = encoding,
             FailureCallback = failureCallback,
-            BucketPath = bucketPath
+            BucketPath = bucketPath,
+            DisablePayloadSigning = disablePayloadSigning
         };
 
         var amazonS3Sink = new AmazonS3Sink(options);

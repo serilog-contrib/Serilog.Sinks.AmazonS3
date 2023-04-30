@@ -49,6 +49,7 @@ public class AmazonS3Sink : IBatchedLogEventSink
         this.amazonS3Options.RollingInterval = amazonS3Options.RollingInterval;
         this.amazonS3Options.OutputTemplate = amazonS3Options.OutputTemplate;
         this.amazonS3Options.FormatProvider = amazonS3Options.FormatProvider;
+        this.amazonS3Options.DisablePayloadSigning = amazonS3Options.DisablePayloadSigning;
     }
 
     /// <summary>Emit a batch of log events, running asynchronously.</summary>
@@ -282,7 +283,8 @@ public class AmazonS3Sink : IBatchedLogEventSink
             {
                 BucketName = this.amazonS3Options.BucketName,
                 Key = key,
-                InputStream = fs
+                InputStream = fs,
+                DisablePayloadSigning = this.amazonS3Options.DisablePayloadSigning
             };
 
             return await client.PutObjectAsync(putRequest);

@@ -61,7 +61,8 @@ public class AmazonS3BasicTests
                 batchSizeLimit: null,
                 batchingPeriod: null,
                 eagerlyEmitFirstEvent: null,
-                queueSizeLimit: null)
+                queueSizeLimit: null,
+                disablePayloadSigning: null)
             .CreateLogger();
 
         for (var x = 0; x < 200; x++)
@@ -99,7 +100,8 @@ public class AmazonS3BasicTests
                 batchSizeLimit: null,
                 batchingPeriod: null,
                 eagerlyEmitFirstEvent: null,
-                queueSizeLimit: null)
+                queueSizeLimit: null,
+                disablePayloadSigning: null)
             .CreateLogger();
 
         for (var x = 0; x < 200; x++)
@@ -136,7 +138,8 @@ public class AmazonS3BasicTests
                 batchSizeLimit: null,
                 batchingPeriod: null,
                 eagerlyEmitFirstEvent: null,
-                queueSizeLimit: null)
+                queueSizeLimit: null,
+                disablePayloadSigning: null)
             .CreateLogger();
 
         for (var x = 0; x < 200; x++)
