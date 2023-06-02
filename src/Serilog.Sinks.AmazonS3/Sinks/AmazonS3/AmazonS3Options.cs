@@ -98,4 +98,9 @@ public class AmazonS3Options
     /// Gets or sets the current file sequence number. Internally used only, not to be set by the options.
     /// </summary>
     public int? CurrentFileSequence { get; set; }
+
+    /// <summary>
+    /// Gets or sets the S3 PutObjectRequest Property DisablePayloadSigning
+    /// </summary>
+    public bool? DisablePayloadSigning { get; set; } = false;
 }

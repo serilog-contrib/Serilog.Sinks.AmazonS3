@@ -70,7 +70,8 @@ for (var x = 0; x < 200; x++)
           "path": "log.txt",
           "bucketName": "mybucket-aws",
           "rollingInterval": "Day",
-          "serviceUrl": "https://s3.eu-west-2.amazonaws.com"
+          "serviceUrl": "https://s3.eu-west-2.amazonaws.com",
+          "disablePayloadSigning": "false"
         }
       }
     ]
@@ -127,6 +128,7 @@ The project can be found on [nuget](https://www.nuget.org/packages/Serilog.Sinks
 |batchingPeriod|The time to wait between checking for unemitted events. If there are any unemitted events, they will then be uploaded to S3 in a batch of maximum size `batchSizeLimit`.<br>Check: https://github.com/serilog/serilog-sinks-periodicbatching|`batchingPeriod = TimeSpan.FromSeconds(5)`|`TimeSpan.FromSeconds(2)`|
 |eagerlyEmitFirstEvent|A value indicating whether the first event should be emitted immediately or not.|`eagerlyEmitFirstEvent = false`|`true`|
 |queueSizeLimit|The queue size limit meaning the limit until the last not emitted events are discarded (Standard mechanims to stop queue overflows).|`queueSizeLimit = 2000`|`10000`|
+|disablePayloadSigning|Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request. This option is provided if you are using other cloud storage e.g. Cloudflare R2 and they support AWS S3 APIs but currently lack support for the Streaming SigV4 implementation used by AWSSDK.S3.|`disablePayloadSigning = true`| Default is `false`. Even a null value will also result in `false` setting |
 
 Hint: Only `outputTemplate` and `formatProvider` together or the `formatter` can be used.
 
