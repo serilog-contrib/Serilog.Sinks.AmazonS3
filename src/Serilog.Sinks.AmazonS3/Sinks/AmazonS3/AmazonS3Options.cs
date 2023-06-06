@@ -100,7 +100,7 @@ public class AmazonS3Options
     public int? CurrentFileSequence { get; set; }
 
     /// <summary>
-    /// Gets or sets the S3 PutObjectRequest Property DisablePayloadSigning
+    /// Gets or sets a value indicating whether the Amazon S3 SigV4 payload signing should be disabled or not (Needed for e.g. for the Cloudflare R2 API).
     /// </summary>
     public bool? DisablePayloadSigning { get; set; } = false;
 }

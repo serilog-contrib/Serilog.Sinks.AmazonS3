@@ -89,7 +89,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
-    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
+    /// <param name="disablePayloadSigning">A value indicating whether the Amazon S3 SigV4 payload signing should be disabled or not (Needed for e.g. for the Cloudflare R2 API).</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -219,7 +219,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
-    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
+    /// <param name="disablePayloadSigning">A value indicating whether the Amazon S3 SigV4 payload signing should be disabled or not (Needed for e.g. for the Cloudflare R2 API).</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -357,7 +357,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
-    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
+    /// <param name="disablePayloadSigning">A value indicating whether the Amazon S3 SigV4 payload signing should be disabled or not (Needed for e.g. for the Cloudflare R2 API).</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -417,7 +417,7 @@ public static class LoggerConfigurationAmazonS3Extensions
             Encoding = encoding,
             FailureCallback = failureCallback,
             BucketPath = bucketPath,
-            DisablePayloadSigning = disablePayloadSigning,
+            DisablePayloadSigning = disablePayloadSigning
         };
 
         var amazonS3Sink = new AmazonS3Sink(options);
@@ -471,7 +471,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
-    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
+    /// <param name="disablePayloadSigning">A value indicating whether the Amazon S3 SigV4 payload signing should be disabled or not (Needed for e.g. for the Cloudflare R2 API).</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -590,7 +590,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
-    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
+    /// <param name="disablePayloadSigning">A value indicating whether the Amazon S3 SigV4 payload signing should be disabled or not (Needed for e.g. for the Cloudflare R2 API).</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -726,7 +726,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
-    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
+    /// <param name="disablePayloadSigning">A value indicating whether the Amazon S3 SigV4 payload signing should be disabled or not (Needed for e.g. for the Cloudflare R2 API).</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -870,7 +870,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
-    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
+    /// <param name="disablePayloadSigning">A value indicating whether the Amazon S3 SigV4 payload signing should be disabled or not (Needed for e.g. for the Cloudflare R2 API).</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -990,7 +990,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
-    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
+    /// <param name="disablePayloadSigning">A value indicating whether the Amazon S3 SigV4 payload signing should be disabled or not (Needed for e.g. for the Cloudflare R2 API).</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -1120,7 +1120,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
-    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
+    /// <param name="disablePayloadSigning">A value indicating whether the Amazon S3 SigV4 payload signing should be disabled or not (Needed for e.g. for the Cloudflare R2 API).</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
@@ -1234,7 +1234,7 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// <param name="batchingPeriod">The batching period.</param>
     /// <param name="eagerlyEmitFirstEvent">A value indicating whether the first event should be emitted immediately or not.</param>
     /// <param name="queueSizeLimit">The queue size limit.</param>
-    /// <param name="disablePayloadSigning">Setting DisablePayloadSigning to true disables the Amazon S3 SigV4 payload signing data integrity check on upload request.</param>
+    /// <param name="disablePayloadSigning">A value indicating whether the Amazon S3 SigV4 payload signing should be disabled or not (Needed for e.g. for the Cloudflare R2 API).</param>
     /// <returns>The configuration object allowing method chaining.</returns>
     public static LoggerConfiguration AmazonS3(
         this LoggerSinkConfiguration sinkConfiguration,
