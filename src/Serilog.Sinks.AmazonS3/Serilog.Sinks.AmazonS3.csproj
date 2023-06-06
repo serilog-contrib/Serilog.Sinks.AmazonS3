@@ -1,69 +1,71 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net7.0</TargetFrameworks>
-    <AssemblyName>Serilog.Sinks.AmazonS3</AssemblyName>
-    <RootNamespace>Serilog</RootNamespace>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageId>Serilog.Sinks.AmazonS3</PackageId>
-    <Authors>SeppPenner and the Serilog contributors</Authors>
-    <Company>SeppPenner and the Serilog contributors</Company>
-    <Copyright>Copyright © SeppPenner and the Serilog contributors</Copyright>
-    <Description>Serilog.Sinks.AmazonS3 is a library to save logging information from https://github.com/serilog/serilog to https://aws.amazon.com/s3/. The idea there was to upload log files to https://aws.amazon.com/s3/ to later evaluate them with https://aws.amazon.com/emr/ services. This project makes use of the https://github.com/serilog/serilog-sinks-file's code in a major part, so thanks to all the https://github.com/serilog/serilog-sinks-file/graphs/contributors of this project :thumbsup:.</Description>
-    <PackageTags>c# csharp serilog amazon s3 amazons3 sink logging log</PackageTags>
-    <PackageProjectUrl>https://www.nuget.org/packages/Serilog.Sinks.AmazonS3/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/SeppPenner/Serilog.Sinks.AmazonS3</RepositoryUrl>
-    <PackageIcon>Icon.png</PackageIcon>
-    <RepositoryType>Github</RepositoryType>
-    <PackageReleaseNotes>Version 1.4.0.0 (2023-04-07): Updated nuget packages, removed support for NetCore3.1, hopefully fixes rolling interval bug from https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/issues/52.</PackageReleaseNotes>
-    <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <LangVersion>latest</LangVersion>
-	<Nullable>enable</Nullable>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net7.0</TargetFrameworks>
+        <AssemblyName>Serilog.Sinks.AmazonS3</AssemblyName>
+        <RootNamespace>Serilog</RootNamespace>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageId>Serilog.Sinks.AmazonS3</PackageId>
+        <Authors>SeppPenner and the Serilog contributors</Authors>
+        <Company>SeppPenner and the Serilog contributors</Company>
+        <Copyright>Copyright © SeppPenner and the Serilog contributors</Copyright>
+        <Description>Serilog.Sinks.AmazonS3 is a library to save logging information from https://github.com/serilog/serilog to https://aws.amazon.com/s3/. The idea there was to upload log files to https://aws.amazon.com/s3/ to later evaluate them with https://aws.amazon.com/emr/ services. This project makes use of the https://github.com/serilog/serilog-sinks-file's code in a major part, so thanks to all the https://github.com/serilog/serilog-sinks-file/graphs/contributors of this project :thumbsup:.</Description>
+        <PackageTags>c# csharp serilog amazon s3 amazons3 sink logging log</PackageTags>
+        <PackageProjectUrl>https://www.nuget.org/packages/Serilog.Sinks.AmazonS3/</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/SeppPenner/Serilog.Sinks.AmazonS3</RepositoryUrl>
+        <PackageIcon>Icon.png</PackageIcon>
+        <RepositoryType>Github</RepositoryType>
+        <PackageReleaseNotes>Version 1.4.0.0 (2023-04-07): Updated nuget packages, removed support for NetCore3.1, hopefully fixes rolling interval bug from https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/issues/52.</PackageReleaseNotes>
+        <PackageLicenseFile>License.txt</PackageLicenseFile>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <NoWarn>NU1803</NoWarn>
+        <WarningsAsErrors>true</WarningsAsErrors>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.7.103.44" />
-    <PackageReference Include="GitVersion.MsBuild" Version="5.12.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Serilog" Version="2.12.0" />
-    <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="3.1.0" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="AWSSDK.S3" Version="3.7.104.28" />
+        <PackageReference Include="GitVersion.MsBuild" Version="5.12.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="Serilog" Version="2.12.0" />
+        <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="3.1.0" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\..\Icon.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="..\..\License.txt">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="..\..\README.md">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="..\..\Changelog.md">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="..\..\HowToUse.md">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="..\..\PolicyExample.json">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
+    <ItemGroup>
+        <None Include="..\..\Icon.png">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+        <None Include="..\..\License.txt">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+        <None Include="..\..\README.md">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+        <None Include="..\..\Changelog.md">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+        <None Include="..\..\HowToUse.md">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+        <None Include="..\..\PolicyExample.json">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+    </ItemGroup>
 
 </Project>
