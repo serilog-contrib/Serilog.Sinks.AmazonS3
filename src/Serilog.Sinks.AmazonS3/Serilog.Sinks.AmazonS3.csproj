@@ -26,7 +26,8 @@
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <ImplicitUsings>enable</ImplicitUsings>
         <NoWarn>NU1803</NoWarn>
-        <WarningsAsErrors>true</WarningsAsErrors>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
