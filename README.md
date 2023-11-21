@@ -21,6 +21,7 @@ so thanks to all the [contributors](https://github.com/serilog/serilog-sinks-fil
 ## Available for
 * Net 6.0
 * Net 7.0
+* Net 8.0
 
 ## Net Core and Net Framework latest and LTS versions
 * https://dotnet.microsoft.com/download/dotnet
