@@ -1,6 +1,7 @@
 Change history
 --------------
 
+* **Version 1.5.1.0 (2024-03-03)**: Updated NuGet packages.
 * **Version 1.5.0.0 (2023-11-21)** : Updated NuGet packages, removed support for netstandard, added support for Net8.0.
 * **Version 1.4.1.0 (2023-06-06)** : Updated NuGet packages, added option to disable Amazon S3 SigV4 payload signing (Thanks to [jawand](https://github.com/jawand)).
 * **Version 1.4.0.0 (2023-04-07)** : Updated NuGet packages, removed support for NetCore3.1, hopefully fixes rolling interval bug from https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/issues/52.
