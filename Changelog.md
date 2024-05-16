@@ -1,6 +1,7 @@
 Change history
 --------------
 
+* **Version 1.5.2.0 (2024-05-16)** : Removed support for Net7.0.
 * **Version 1.5.1.0 (2024-03-03)**: Updated NuGet packages.
 * **Version 1.5.0.0 (2023-11-21)** : Updated NuGet packages, removed support for netstandard, added support for Net8.0.
 * **Version 1.4.1.0 (2023-06-06)** : Updated NuGet packages, added option to disable Amazon S3 SigV4 payload signing (Thanks to [jawand](https://github.com/jawand)).
