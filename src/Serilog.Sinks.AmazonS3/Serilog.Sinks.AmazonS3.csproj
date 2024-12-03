@@ -17,7 +17,7 @@
         <PackageIcon>Icon.png</PackageIcon>
         <RepositoryType>Github</RepositoryType>
         <PackageReleaseNotes>Version 1.5.2.0 (2024-05-16): Removed support for Net7.0.</PackageReleaseNotes>
-        <PackageLicenseFile>License.txt</PackageLicenseFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
