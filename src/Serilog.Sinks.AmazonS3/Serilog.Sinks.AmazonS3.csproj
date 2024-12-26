@@ -16,7 +16,7 @@
         <RepositoryUrl>https://github.com/SeppPenner/Serilog.Sinks.AmazonS3</RepositoryUrl>
         <PackageIcon>Icon.png</PackageIcon>
         <RepositoryType>Github</RepositoryType>
-        <PackageReleaseNotes>Version 1.5.2.0 (2024-05-16): Removed support for Net7.0.</PackageReleaseNotes>
+        <PackageReleaseNotes>Version 1.5.3.0 (2024-12-26): Removed support for Net6.0, added support for Net9.0, updated NuGet packages.</PackageReleaseNotes>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
