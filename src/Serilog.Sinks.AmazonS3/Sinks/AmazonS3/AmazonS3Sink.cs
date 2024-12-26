@@ -9,6 +9,8 @@
 
 namespace Serilog.Sinks.AmazonS3;
 
+using IBatchedLogEventSink = PeriodicBatching.IBatchedLogEventSink;
+
 /// <summary>
 /// This class is the main class and contains all logic for the AmazonS3 sink.
 /// </summary>
