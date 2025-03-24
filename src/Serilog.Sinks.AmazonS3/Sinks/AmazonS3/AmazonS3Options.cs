@@ -62,6 +62,7 @@ public class AmazonS3Options
     /// <summary>
     /// Gets or sets the failure callback.
     /// </summary>
+    [Obsolete("Use fallback logging instead. Check https://nblumhardt.com/2024/10/fallback-logging/.")]
     public Action<Exception>? FailureCallback { get; set; }
 
     /// <summary>

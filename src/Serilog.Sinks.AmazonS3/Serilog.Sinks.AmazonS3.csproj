@@ -16,7 +16,7 @@
         <RepositoryUrl>https://github.com/SeppPenner/Serilog.Sinks.AmazonS3</RepositoryUrl>
         <PackageIcon>Icon.png</PackageIcon>
         <RepositoryType>Github</RepositoryType>
-        <PackageReleaseNotes>Version 1.5.3.0 (2024-12-26): Removed support for Net6.0, added support for Net9.0, updated NuGet packages.</PackageReleaseNotes>
+        <PackageReleaseNotes>Version 1.6.0.0 (2025-03-24): Fixes https://github.com/serilog-contrib/Serilog.Sinks.Postgresql.Alternative/issues/83, updates NuGet packages, deprecates `failureCallback`.</PackageReleaseNotes>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
@@ -31,13 +31,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AWSSDK.S3" Version="3.7.410.11" />
-        <PackageReference Include="GitVersion.MsBuild" Version="6.0.5">
+        <PackageReference Include="AWSSDK.S3" Version="3.7.415.23" />
+        <PackageReference Include="GitVersion.MsBuild" Version="6.1.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="4.0.0" />
+        <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="5.0.0" />
         <PackageReference Include="Serilog" Version="4.2.0" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
     </ItemGroup>

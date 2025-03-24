@@ -150,6 +150,7 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
+#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             Path = path,
@@ -161,10 +162,12 @@ public static class LoggerConfigurationAmazonS3Extensions
             FormatProvider = formatProvider,
             RollingInterval = rollingInterval,
             Encoding = encoding,
+            // Todo: Remove this in next version!
             FailureCallback = failureCallback,
             BucketPath = bucketPath,
             DisablePayloadSigning = disablePayloadSigning
         };
+#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -279,6 +282,7 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
+#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             Path = path,
@@ -289,10 +293,12 @@ public static class LoggerConfigurationAmazonS3Extensions
             Formatter = formatter,
             RollingInterval = rollingInterval,
             Encoding = encoding,
+            // Todo: Remove this in next version!
             FailureCallback = failureCallback,
             BucketPath = bucketPath,
             DisablePayloadSigning = disablePayloadSigning
         };
+#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -406,6 +412,7 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
+#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             Path = path,
@@ -415,10 +422,12 @@ public static class LoggerConfigurationAmazonS3Extensions
             FormatProvider = formatProvider,
             RollingInterval = rollingInterval,
             Encoding = encoding,
+            // Todo: Remove this in next version!
             FailureCallback = failureCallback,
             BucketPath = bucketPath,
             DisablePayloadSigning = disablePayloadSigning
         };
+#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -519,6 +528,7 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
+#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             Path = path,
@@ -527,10 +537,12 @@ public static class LoggerConfigurationAmazonS3Extensions
             Formatter = formatter,
             RollingInterval = rollingInterval,
             Encoding = encoding,
+            // Todo: Remove this in next version!
             FailureCallback = failureCallback,
             BucketPath = bucketPath,
 			DisablePayloadSigning = disablePayloadSigning
 		};
+#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -656,6 +668,7 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
+#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             Path = path,
@@ -667,11 +680,13 @@ public static class LoggerConfigurationAmazonS3Extensions
             FormatProvider = formatProvider,
             RollingInterval = rollingInterval,
             Encoding = encoding,
+            // Todo: Remove this in next version!
             FailureCallback = failureCallback,
             BucketPath = bucketPath,
             Endpoint = null,
             DisablePayloadSigning = disablePayloadSigning
         };
+#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -791,6 +806,7 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
+#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             Path = path,
@@ -801,11 +817,13 @@ public static class LoggerConfigurationAmazonS3Extensions
             Formatter = formatter,
             RollingInterval = rollingInterval,
             Encoding = encoding,
+            // Todo: Remove this in next version!
             FailureCallback = failureCallback,
             BucketPath = bucketPath,
             Endpoint = null,
             DisablePayloadSigning = disablePayloadSigning
         };
+#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -924,6 +942,7 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
+#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             Path = path,
@@ -933,11 +952,13 @@ public static class LoggerConfigurationAmazonS3Extensions
             FormatProvider = formatProvider,
             RollingInterval = rollingInterval,
             Encoding = encoding,
+            // Todo: Remove this in next version!
             FailureCallback = failureCallback,
             BucketPath = bucketPath,
             Endpoint = null,
             DisablePayloadSigning = disablePayloadSigning
         };
+#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -1043,6 +1064,7 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
+#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             Path = path,
@@ -1051,11 +1073,13 @@ public static class LoggerConfigurationAmazonS3Extensions
             Formatter = formatter,
             RollingInterval = rollingInterval,
             Encoding = encoding,
+            // Todo: Remove this in next version!
             FailureCallback = failureCallback,
             BucketPath = bucketPath,
             Endpoint = null,
             DisablePayloadSigning = disablePayloadSigning
         };
+#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -1169,6 +1193,7 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
+#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             AmazonS3Client = client,
@@ -1178,10 +1203,12 @@ public static class LoggerConfigurationAmazonS3Extensions
             FormatProvider = formatProvider,
             RollingInterval = rollingInterval,
             Encoding = encoding,
+            // Todo: Remove this in next version!
             FailureCallback = failureCallback,
             BucketPath = bucketPath,
             DisablePayloadSigning = disablePayloadSigning
         };
+#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -1282,6 +1309,7 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
+#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             AmazonS3Client = client,
@@ -1290,10 +1318,12 @@ public static class LoggerConfigurationAmazonS3Extensions
             Formatter = formatter,
             RollingInterval = rollingInterval,
             Encoding = encoding,
+            // Todo: Remove this in next version!
             FailureCallback = failureCallback,
             BucketPath = bucketPath,
             DisablePayloadSigning = disablePayloadSigning
         };
+#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 

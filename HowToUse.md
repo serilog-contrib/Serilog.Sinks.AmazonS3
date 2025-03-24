@@ -82,7 +82,7 @@ For more information regarding this use case, see [Issue number 10](https://gith
 
 
 ## Exception handling
-You can pass a callback to the sink parameters on failure to define which action needs to be done if an exception occured on the sink side. If something is going wrong in the sink code, `failureCallback` will be executed.
+You can pass a callback to the sink parameters on failure to define which action needs to be done if an exception occured on the sink side. If something is going wrong in the sink code, `failureCallback` will be executed. This is deprecated with version 1.6.0+. Use fallback logging instead. Check https://nblumhardt.com/2024/10/fallback-logging/.
 
 ```csharp
 var logger = new LoggerConfiguration().WriteTo
@@ -122,7 +122,7 @@ The project can be found on [nuget](https://www.nuget.org/packages/Serilog.Sinks
 |levelSwitch|A switch allowing the pass-through minimum level to be changed at runtime.<br>Check: https://nblumhardt.com/2014/10/dynamically-changing-the-serilog-level/.|`var levelSwitch = new LoggingLevelSwitch(); levelSwitch.MinimumLevel = LogEventLevel.Warning;`|`null`|
 |rollingInterval|The interval at which logging will roll over to a new file.<br>Check: https://github.com/serilog/serilog-sinks-file/blob/dev/src/Serilog.Sinks.File/RollingInterval.cs.|`rollingInterval: RollingInterval.Minute`|`RollingInterval.Day`|
 |encoding|Character encoding used to write the text file.<br>Check: https://docs.microsoft.com/de-de/dotnet/api/system.text.encoding?view=netframework-4.8.|`encoding: Encoding.Unicode`|`null` meaning `Encoding.UTF8`|
-|failureCallback|Optionally execute a callback if an exception has been thrown by the sink.|`failureCallback: e => Console.WriteLine($"An error occured in my sink: {e.Message}"))`|None.|
+|~~failureCallback~~|~~Adds an option to add a failure callback action.~~  (Deprecated, use fallback logging instead.Check https://nblumhardt.com/2024/10/fallback-logging/.)|~~`failureCallback: e => Console.WriteLine($"Sink error: {e.Message}")`~~|~~`null`~~|
 |bucketPath|Optionally add a sub-path for the bucket. Files are stored on S3 `mytestbucket-aws/awsSubPath/log.txt` in the example below.|`bucketPath = "awsSubPath"`|`null`|
 |batchSizeLimit|The maximum number of events to include in a single batch. This means an upload of events as a file to S3 will contain at most this number of events.<br>Check: https://github.com/serilog/serilog-sinks-periodicbatching|`batchSizeLimit = 20`|`100`|
 |batchingPeriod|The time to wait between checking for unemitted events. If there are any unemitted events, they will then be uploaded to S3 in a batch of maximum size `batchSizeLimit`.<br>Check: https://github.com/serilog/serilog-sinks-periodicbatching|`batchingPeriod = TimeSpan.FromSeconds(5)`|`TimeSpan.FromSeconds(2)`|
