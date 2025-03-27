@@ -56,7 +56,6 @@ public class AmazonS3BasicTests
                 levelSwitch: null,
                 rollingInterval: RollingInterval.Minute,
                 encoding: null,
-                failureCallback: e => Console.WriteLine($"Sink error: {e.Message}, {e.StackTrace}"),
                 bucketPath: null,
                 batchSizeLimit: null,
                 batchingPeriod: null,
@@ -95,7 +94,6 @@ public class AmazonS3BasicTests
                 levelSwitch: null,
                 rollingInterval: RollingInterval.Minute,
                 encoding: null,
-                failureCallback: e => Console.WriteLine($"Sink error: {e.Message}, {e.StackTrace}"),
                 bucketPath: null,
                 batchSizeLimit: null,
                 batchingPeriod: null,
@@ -133,7 +131,6 @@ public class AmazonS3BasicTests
                 levelSwitch: null,
                 rollingInterval: RollingInterval.Minute,
                 encoding: null,
-                failureCallback: e => Console.WriteLine($"Sink error: {e.Message}, {e.StackTrace}"),
                 bucketPath: null,
                 batchSizeLimit: null,
                 batchingPeriod: null,
@@ -201,8 +198,7 @@ public class AmazonS3BasicTests
                 eagerlyEmitFirstEvent: false,
                 formatter: new JsonFormatter(),
                 batchingPeriod: TimeSpan.FromHours(2),
-                batchSizeLimit: 100,
-                failureCallback: e => Console.WriteLine($"Sink error: {e.Message}, {e.StackTrace}"))
+                batchSizeLimit: 100)
             .CreateLogger();
 
         for (var x = 0; x < 200; x++)

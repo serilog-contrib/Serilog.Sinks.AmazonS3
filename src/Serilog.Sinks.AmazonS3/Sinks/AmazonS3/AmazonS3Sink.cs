@@ -45,10 +45,6 @@ public class AmazonS3Sink : IBatchedLogEventSink
             this.amazonS3Options.Formatter = amazonS3Options.Formatter;
         }
 
-#pragma warning disable CS0618 // Typ oder Element ist veraltet
-        // Todo: Remove this in next version!
-        this.amazonS3Options.FailureCallback = amazonS3Options.FailureCallback;
-#pragma warning restore CS0618 // Typ oder Element ist veraltet
         this.amazonS3Options.ServiceUrl = amazonS3Options.ServiceUrl;
         this.amazonS3Options.PathRoller = new PathRoller(amazonS3Options.Path, amazonS3Options.RollingInterval);
         this.amazonS3Options.RollingInterval = amazonS3Options.RollingInterval;
@@ -77,19 +73,8 @@ public class AmazonS3Sink : IBatchedLogEventSink
         await fileInformation.OutputWriter.FlushAsync();
         fileInformation.OutputWriter.Close();
 
-        try
-        {
-            _ = await this.UploadFileToS3(fileInformation.FileName);
-            File.Delete(fileInformation.FileName);
-        }
-        catch (Exception ex)
-        {
-#pragma warning disable CS0618 // Typ oder Element ist veraltet
-            // Todo: Remove this in next version!
-            this.amazonS3Options.FailureCallback?.Invoke(ex);
-#pragma warning restore CS0618 // Typ oder Element ist veraltet
-            throw;
-        }
+        _ = await this.UploadFileToS3(fileInformation.FileName);
+        File.Delete(fileInformation.FileName);
     }
 
     /// <summary>

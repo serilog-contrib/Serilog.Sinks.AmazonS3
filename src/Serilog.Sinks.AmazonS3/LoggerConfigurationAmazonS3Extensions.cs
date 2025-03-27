@@ -83,7 +83,6 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// Character encoding used to write the text file. The
     /// default is UTF-8 without BOM.
     /// </param>
-    /// <param name="failureCallback">The failure callback.</param>
     /// <param name="bucketPath">The Amazon S3 bucket path.</param>
     /// <param name="batchSizeLimit">The batch size limit.</param>
     /// <param name="batchingPeriod">The batching period.</param>
@@ -104,7 +103,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         LoggingLevelSwitch? levelSwitch = null,
         RollingInterval rollingInterval = RollingInterval.Day,
         Encoding? encoding = null,
-        Action<Exception>? failureCallback = null,
         string? bucketPath = null,
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
@@ -150,7 +148,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
-#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             Path = path,
@@ -162,12 +159,9 @@ public static class LoggerConfigurationAmazonS3Extensions
             FormatProvider = formatProvider,
             RollingInterval = rollingInterval,
             Encoding = encoding,
-            // Todo: Remove this in next version!
-            FailureCallback = failureCallback,
             BucketPath = bucketPath,
             DisablePayloadSigning = disablePayloadSigning
         };
-#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -216,7 +210,6 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// Character encoding used to write the text file. The
     /// default is UTF-8 without BOM.
     /// </param>
-    /// <param name="failureCallback">The failure callback.</param>
     /// <param name="bucketPath">The Amazon S3 bucket path.</param>
     /// <param name="batchSizeLimit">The batch size limit.</param>
     /// <param name="batchingPeriod">The batching period.</param>
@@ -236,7 +229,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         ITextFormatter? formatter = null,
         RollingInterval rollingInterval = RollingInterval.Day,
         Encoding? encoding = null,
-        Action<Exception>? failureCallback = null,
         string? bucketPath = null,
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
@@ -282,7 +274,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
-#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             Path = path,
@@ -293,12 +284,9 @@ public static class LoggerConfigurationAmazonS3Extensions
             Formatter = formatter,
             RollingInterval = rollingInterval,
             Encoding = encoding,
-            // Todo: Remove this in next version!
-            FailureCallback = failureCallback,
             BucketPath = bucketPath,
             DisablePayloadSigning = disablePayloadSigning
         };
-#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -357,7 +345,6 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// Character encoding used to write the text file. The
     /// default is UTF-8 without BOM.
     /// </param>
-    /// <param name="failureCallback">The failure callback.</param>
     /// <param name="bucketPath">The Amazon S3 bucket path.</param>
     /// <param name="batchSizeLimit">The batch size limit.</param>
     /// <param name="batchingPeriod">The batching period.</param>
@@ -376,7 +363,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         IFormatProvider? formatProvider = null,
         RollingInterval rollingInterval = RollingInterval.Day,
         Encoding? encoding = null,
-        Action<Exception>? failureCallback = null,
         string? bucketPath = null,
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
@@ -412,7 +398,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
-#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             Path = path,
@@ -422,12 +407,9 @@ public static class LoggerConfigurationAmazonS3Extensions
             FormatProvider = formatProvider,
             RollingInterval = rollingInterval,
             Encoding = encoding,
-            // Todo: Remove this in next version!
-            FailureCallback = failureCallback,
             BucketPath = bucketPath,
             DisablePayloadSigning = disablePayloadSigning
         };
-#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -474,7 +456,6 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// Character encoding used to write the text file. The
     /// default is UTF-8 without BOM.
     /// </param>
-    /// <param name="failureCallback">The failure callback.</param>
     /// <param name="bucketPath">The Amazon S3 bucket path.</param>
     /// <param name="batchSizeLimit">The batch size limit.</param>
     /// <param name="batchingPeriod">The batching period.</param>
@@ -492,7 +473,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         ITextFormatter? formatter = null,
         RollingInterval rollingInterval = RollingInterval.Day,
         Encoding? encoding = null,
-        Action<Exception>? failureCallback = null,
         string? bucketPath = null,
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
@@ -528,7 +508,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
-#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             Path = path,
@@ -537,12 +516,9 @@ public static class LoggerConfigurationAmazonS3Extensions
             Formatter = formatter,
             RollingInterval = rollingInterval,
             Encoding = encoding,
-            // Todo: Remove this in next version!
-            FailureCallback = failureCallback,
             BucketPath = bucketPath,
 			DisablePayloadSigning = disablePayloadSigning
 		};
-#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -596,7 +572,6 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// Character encoding used to write the text file. The
     /// default is UTF-8 without BOM.
     /// </param>
-    /// <param name="failureCallback">The failure callback.</param>
     /// <param name="bucketPath">The Amazon S3 bucket path.</param>
     /// <param name="batchSizeLimit">The batch size limit.</param>
     /// <param name="batchingPeriod">The batching period.</param>
@@ -617,7 +592,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         LoggingLevelSwitch? levelSwitch = null,
         RollingInterval rollingInterval = RollingInterval.Day,
         Encoding? encoding = null,
-        Action<Exception>? failureCallback = null,
         string? bucketPath = null,
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
@@ -668,7 +642,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
-#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             Path = path,
@@ -680,13 +653,10 @@ public static class LoggerConfigurationAmazonS3Extensions
             FormatProvider = formatProvider,
             RollingInterval = rollingInterval,
             Encoding = encoding,
-            // Todo: Remove this in next version!
-            FailureCallback = failureCallback,
             BucketPath = bucketPath,
             Endpoint = null,
             DisablePayloadSigning = disablePayloadSigning
         };
-#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -735,7 +705,6 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// Character encoding used to write the text file. The
     /// default is UTF-8 without BOM.
     /// </param>
-    /// <param name="failureCallback">The failure callback.</param>
     /// <param name="bucketPath">The Amazon S3 bucket path.</param>
     /// <param name="batchSizeLimit">The batch size limit.</param>
     /// <param name="batchingPeriod">The batching period.</param>
@@ -755,7 +724,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         ITextFormatter? formatter = null,
         RollingInterval rollingInterval = RollingInterval.Day,
         Encoding? encoding = null,
-        Action<Exception>? failureCallback = null,
         string? bucketPath = null,
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
@@ -806,7 +774,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
-#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             Path = path,
@@ -817,13 +784,10 @@ public static class LoggerConfigurationAmazonS3Extensions
             Formatter = formatter,
             RollingInterval = rollingInterval,
             Encoding = encoding,
-            // Todo: Remove this in next version!
-            FailureCallback = failureCallback,
             BucketPath = bucketPath,
             Endpoint = null,
             DisablePayloadSigning = disablePayloadSigning
         };
-#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -882,7 +846,6 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// Character encoding used to write the text file. The
     /// default is UTF-8 without BOM.
     /// </param>
-    /// <param name="failureCallback">The failure callback.</param>
     /// <param name="bucketPath">The Amazon S3 bucket path.</param>
     /// <param name="batchSizeLimit">The batch size limit.</param>
     /// <param name="batchingPeriod">The batching period.</param>
@@ -901,7 +864,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         IFormatProvider? formatProvider = null,
         RollingInterval rollingInterval = RollingInterval.Day,
         Encoding? encoding = null,
-        Action<Exception>? failureCallback = null,
         string? bucketPath = null,
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
@@ -942,7 +904,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
-#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             Path = path,
@@ -952,13 +913,10 @@ public static class LoggerConfigurationAmazonS3Extensions
             FormatProvider = formatProvider,
             RollingInterval = rollingInterval,
             Encoding = encoding,
-            // Todo: Remove this in next version!
-            FailureCallback = failureCallback,
             BucketPath = bucketPath,
             Endpoint = null,
             DisablePayloadSigning = disablePayloadSigning
         };
-#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -1005,7 +963,6 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// Character encoding used to write the text file. The
     /// default is UTF-8 without BOM.
     /// </param>
-    /// <param name="failureCallback">The failure callback.</param>
     /// <param name="bucketPath">The Amazon S3 bucket path.</param>
     /// <param name="batchSizeLimit">The batch size limit.</param>
     /// <param name="batchingPeriod">The batching period.</param>
@@ -1023,7 +980,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         ITextFormatter? formatter = null,
         RollingInterval rollingInterval = RollingInterval.Day,
         Encoding? encoding = null,
-        Action<Exception>? failureCallback = null,
         string? bucketPath = null,
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
@@ -1064,7 +1020,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
-#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             Path = path,
@@ -1073,13 +1028,10 @@ public static class LoggerConfigurationAmazonS3Extensions
             Formatter = formatter,
             RollingInterval = rollingInterval,
             Encoding = encoding,
-            // Todo: Remove this in next version!
-            FailureCallback = failureCallback,
             BucketPath = bucketPath,
             Endpoint = null,
             DisablePayloadSigning = disablePayloadSigning
         };
-#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -1138,7 +1090,6 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// Character encoding used to write the text file. The
     /// default is UTF-8 without BOM.
     /// </param>
-    /// <param name="failureCallback">The failure callback.</param>
     /// <param name="bucketPath">The Amazon S3 bucket path.</param>
     /// <param name="batchSizeLimit">The batch size limit.</param>
     /// <param name="batchingPeriod">The batching period.</param>
@@ -1157,7 +1108,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         LoggingLevelSwitch? levelSwitch = null,
         RollingInterval rollingInterval = RollingInterval.Day,
         Encoding? encoding = null,
-        Action<Exception>? failureCallback = null,
         string? bucketPath = null,
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
@@ -1193,7 +1143,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
-#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             AmazonS3Client = client,
@@ -1203,12 +1152,9 @@ public static class LoggerConfigurationAmazonS3Extensions
             FormatProvider = formatProvider,
             RollingInterval = rollingInterval,
             Encoding = encoding,
-            // Todo: Remove this in next version!
-            FailureCallback = failureCallback,
             BucketPath = bucketPath,
             DisablePayloadSigning = disablePayloadSigning
         };
-#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 
@@ -1255,7 +1201,6 @@ public static class LoggerConfigurationAmazonS3Extensions
     /// Character encoding used to write the text file. The
     /// default is UTF-8 without BOM.
     /// </param>
-    /// <param name="failureCallback">The failure callback.</param>
     /// <param name="bucketPath">The Amazon S3 bucket path.</param>
     /// <param name="batchSizeLimit">The batch size limit.</param>
     /// <param name="batchingPeriod">The batching period.</param>
@@ -1273,7 +1218,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         ITextFormatter? formatter = null,
         RollingInterval rollingInterval = RollingInterval.Day,
         Encoding? encoding = null,
-        Action<Exception>? failureCallback = null,
         string? bucketPath = null,
         int? batchSizeLimit = DefaultBatchSizeLimit,
         TimeSpan? batchingPeriod = null,
@@ -1309,7 +1253,6 @@ public static class LoggerConfigurationAmazonS3Extensions
         encoding ??= DefaultEncoding;
         batchingPeriod ??= DefaultBatchingPeriod;
 
-#pragma warning disable CS0618 // Typ oder Element ist veraltet
         var options = new AmazonS3Options
         {
             AmazonS3Client = client,
@@ -1318,12 +1261,9 @@ public static class LoggerConfigurationAmazonS3Extensions
             Formatter = formatter,
             RollingInterval = rollingInterval,
             Encoding = encoding,
-            // Todo: Remove this in next version!
-            FailureCallback = failureCallback,
             BucketPath = bucketPath,
             DisablePayloadSigning = disablePayloadSigning
         };
-#pragma warning restore CS0618 // Typ oder Element ist veraltet
 
         var amazonS3Sink = new AmazonS3Sink(options);
 

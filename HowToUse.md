@@ -151,7 +151,6 @@ var logger = new LoggerConfiguration().WriteTo
         levelSwitch: levelSwitch,
         rollingInterval: RollingInterval.Minute,
         encoding: Encoding.Unicode,
-		failureCallback: e => Console.WriteLine($"An error occured in my sink: {e.Message}"),
 		bucketPath = "awsSubPath"
 		)
     .CreateLogger();

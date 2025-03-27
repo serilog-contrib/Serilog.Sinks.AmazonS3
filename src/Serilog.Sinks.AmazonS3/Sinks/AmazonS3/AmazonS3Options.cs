@@ -60,12 +60,6 @@ public class AmazonS3Options
     public ITextFormatter? Formatter { get; set; }
 
     /// <summary>
-    /// Gets or sets the failure callback.
-    /// </summary>
-    [Obsolete("Use fallback logging instead. Check https://nblumhardt.com/2024/10/fallback-logging/.")]
-    public Action<Exception>? FailureCallback { get; set; }
-
-    /// <summary>
     /// Gets or sets the Amazon S3 service url.
     /// </summary>
     public string ServiceUrl { get; set; } = "https://s3.amazonaws.com";
