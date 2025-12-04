@@ -93,7 +93,7 @@ public class AmazonS3Sink : IBatchedLogEventSink
     /// <returns>The <see cref="FileInformation"/>.</returns>
     private FileInformation OpenFile()
     {
-        var fileName = this.AlignCurrentFileTo(DateTime.Now, true);
+        var fileName = this.AlignCurrentFileTo(DateTime.Now, false);
 
         var directory = Path.GetDirectoryName(this.amazonS3Options.Path);
 
