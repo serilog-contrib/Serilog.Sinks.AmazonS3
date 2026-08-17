@@ -197,12 +197,17 @@ Do not silently "clean up" these, they are existing behaviour:
 5. Tag the commit with the plain version number, no `v` prefix (`1.6.0`, `1.5.3`, ...). The existing
    tags are lightweight tags, create new ones the same way.
 6. Push the commits and the tag.
-7. Only then build the package. GitVersion takes the version from the tag, a build before the tag
-   produces a prerelease version like `1.7.0-1+Branch.master.Sha...` and that version would end up
-   on nuget.org.
+7. Only then build the package, and build it while the tag is the newest commit. GitVersion takes
+   the version from the tag plus the distance to it, so a build before the tag or after another
+   commit produces a prerelease version like `1.7.1-3+Branch.master.Sha...`, and that version would
+   end up on nuget.org. `git describe --tags` has to answer with the plain tag.
 8. `BuildAndPushPackage.bat` deletes all `bin` and `obj` folders, builds in release and pushes the
    `.nupkg` and the `.snupkg` to nuget.org with `%NUGET_API_KEY%`. It ends with `PAUSE`, so it wants
-   a console.
+   a console. Because it always rebuilds, it is only correct as long as no commit sits on top of the
+   tag. If one does, push the packages that were built from the tagged state instead:
+   `dotnet nuget push *.nupkg -s "nuget.org" --skip-duplicate -k %NUGET_API_KEY%` in
+   `src/Serilog.Sinks.AmazonS3/bin/Release`. That command takes the matching `.snupkg` with it, the
+   second push line of the script is a no-op then.
 
 The version in the `Changelog.md` has four parts (`1.7.0.0`), the tag has three (`1.7.0`).
 
