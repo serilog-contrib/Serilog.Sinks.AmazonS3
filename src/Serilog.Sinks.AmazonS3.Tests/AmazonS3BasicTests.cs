@@ -11,6 +11,8 @@ namespace Serilog.Sinks.AmazonS3.Tests;
 
 /// <summary>
 /// This class is used for some basic test regarding the Amazon S3 sink.
+/// These tests upload to a real bucket, they report an inconclusive result if the environment
+/// variables AwsBucketName, AwsAccessKeyId and AwsSecretAccessKey are not set.
 /// </summary>
 [TestClass]
 public class AmazonS3BasicTests
@@ -45,7 +47,9 @@ public class AmazonS3BasicTests
     [TestMethod]
     public void BasicFileUploadAuthorizedTest()
     {
-        var logger = new LoggerConfiguration()
+        this.EnsureBucketIsConfigured();
+
+        using var logger = new LoggerConfiguration()
             .WriteTo.AmazonS3(
                 "log.txt",
                 this.awsBucketName,
@@ -64,15 +68,7 @@ public class AmazonS3BasicTests
                 disablePayloadSigning: null)
             .CreateLogger();
 
-        for (var x = 0; x < 200; x++)
-        {
-            var ex = new Exception("Test");
-#pragma warning disable Serilog004 // Constant MessageTemplate verifier
-            logger.Error(ex.ToString());
-#pragma warning restore Serilog004 // Constant MessageTemplate verifier
-        }
-
-        Log.CloseAndFlush();
+        WriteTestEvents(logger);
     }
 
     /// <summary>
@@ -81,7 +77,9 @@ public class AmazonS3BasicTests
     [TestMethod]
     public void BasicFileUploadTest()
     {
-        var logger = new LoggerConfiguration()
+        this.EnsureCredentialsAreConfigured();
+
+        using var logger = new LoggerConfiguration()
             .WriteTo.AmazonS3(
                 "log.txt",
                 this.awsBucketName,
@@ -102,15 +100,7 @@ public class AmazonS3BasicTests
                 disablePayloadSigning: null)
             .CreateLogger();
 
-        for (var x = 0; x < 200; x++)
-        {
-            var ex = new Exception("Test");
-#pragma warning disable Serilog004 // Constant MessageTemplate verifier
-            logger.Error(ex.ToString());
-#pragma warning restore Serilog004 // Constant MessageTemplate verifier
-        }
-
-        Log.CloseAndFlush();
+        WriteTestEvents(logger);
     }
 
     /// <summary>
@@ -119,7 +109,9 @@ public class AmazonS3BasicTests
     [TestMethod]
     public void JsonFileUploadTest()
     {
-        var logger = new LoggerConfiguration()
+        this.EnsureCredentialsAreConfigured();
+
+        using var logger = new LoggerConfiguration()
             .WriteTo.AmazonS3(
                 "log.txt",
                 this.awsBucketName,
@@ -139,15 +131,7 @@ public class AmazonS3BasicTests
                 disablePayloadSigning: null)
             .CreateLogger();
 
-        for (var x = 0; x < 200; x++)
-        {
-            var ex = new Exception("Test");
-#pragma warning disable Serilog004 // Constant MessageTemplate verifier
-            logger.Error(ex.ToString());
-#pragma warning restore Serilog004 // Constant MessageTemplate verifier
-        }
-
-        Log.CloseAndFlush();
+        WriteTestEvents(logger);
     }
 
     /// <summary>
@@ -156,7 +140,9 @@ public class AmazonS3BasicTests
     [TestMethod]
     public void FormattingTest()
     {
-        var logger = new LoggerConfiguration()
+        this.EnsureCredentialsAreConfigured();
+
+        using var logger = new LoggerConfiguration()
             .WriteTo.AmazonS3(
                 "log.txt",
                 this.awsBucketName,
@@ -167,15 +153,7 @@ public class AmazonS3BasicTests
                 "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
             .CreateLogger();
 
-        for (var x = 0; x < 200; x++)
-        {
-            var ex = new Exception("Test");
-#pragma warning disable Serilog004 // Constant MessageTemplate verifier
-            logger.Error(ex.ToString());
-#pragma warning restore Serilog004 // Constant MessageTemplate verifier
-        }
-
-        Log.CloseAndFlush();
+        WriteTestEvents(logger);
     }
 
     /// <summary>
@@ -185,7 +163,9 @@ public class AmazonS3BasicTests
     [TestMethod]
     public void BasicFileUploadRollingIntervalTest()
     {
-        var logger = new LoggerConfiguration()
+        this.EnsureCredentialsAreConfigured();
+
+        using var logger = new LoggerConfiguration()
             .WriteTo.AmazonS3(
                 restrictedToMinimumLevel: LogEventLevel.Debug,
                 path: "log.txt",
@@ -201,6 +181,15 @@ public class AmazonS3BasicTests
                 batchSizeLimit: 100)
             .CreateLogger();
 
+        WriteTestEvents(logger);
+    }
+
+    /// <summary>
+    /// Writes the test events. Disposing the logger afterwards is what uploads them.
+    /// </summary>
+    /// <param name="logger">The logger to write to.</param>
+    private static void WriteTestEvents(Logger logger)
+    {
         for (var x = 0; x < 200; x++)
         {
             var ex = new Exception("Test");
@@ -208,7 +197,30 @@ public class AmazonS3BasicTests
             logger.Error(ex.ToString());
 #pragma warning restore Serilog004 // Constant MessageTemplate verifier
         }
+    }
 
-        Log.CloseAndFlush();
+    /// <summary>
+    /// Reports an inconclusive result if no bucket name is configured. Without a bucket the test would
+    /// pass without ever reaching Amazon S3, because the periodic batching sink swallows every error.
+    /// </summary>
+    private void EnsureBucketIsConfigured()
+    {
+        if (string.IsNullOrWhiteSpace(this.awsBucketName))
+        {
+            Assert.Inconclusive("The environment variable AwsBucketName is not set, this test needs a real bucket.");
+        }
+    }
+
+    /// <summary>
+    /// Reports an inconclusive result if no bucket name or no credentials are configured.
+    /// </summary>
+    private void EnsureCredentialsAreConfigured()
+    {
+        this.EnsureBucketIsConfigured();
+
+        if (string.IsNullOrWhiteSpace(this.awsAccessKeyId) || string.IsNullOrWhiteSpace(this.awsSecretAccessKey))
+        {
+            Assert.Inconclusive("The environment variables AwsAccessKeyId and AwsSecretAccessKey are not set, this test needs real credentials.");
+        }
     }
 }

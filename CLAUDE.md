@@ -43,8 +43,16 @@ Layout inside `src/Serilog.Sinks.AmazonS3`:
 Layout inside `src/Serilog.Sinks.AmazonS3.Tests`:
 
 - `AmazonS3BasicTests.cs`: five integration tests against a real bucket, driven by the environment
-  variables `AwsAccessKeyId`, `AwsSecretAccessKey` and `AwsBucketName`. Read "Known quirks" before
-  you trust a green run.
+  variables `AwsAccessKeyId`, `AwsSecretAccessKey` and `AwsBucketName`. They report an inconclusive
+  result when those are missing. Read "Known quirks" before you trust a green run.
+- `AmazonS3SinkTests.cs`: the sink end to end without a network. `AmazonS3Client.PutObjectAsync` is
+  virtual, so `FakeAmazonS3Client` overrides it and captures bucket name, key and bytes. These tests
+  pin the file names of consecutive batches, the bucket path in front of the key, the deletion of
+  the local file and the encoding.
+- `PathRollerTests.cs` and `RollingIntervalExtensionsTests.cs`: the rolling file name logic.
+- `LoggerConfigurationAmazonS3ExtensionsTests.cs`: what the ten overloads refuse. Every call there
+  needs enough named arguments to pick one overload, `outputTemplate` or `formatter` usually does
+  it, otherwise the call is ambiguous.
 - `GlobalUsings.cs`: all usings of the test project.
 
 Repository root: `README.md` (badges, target frameworks, install), `HowToUse.md` (the actual usage
@@ -121,13 +129,12 @@ Follow the surrounding code, it is consistent throughout every file:
 
 Do not silently "clean up" these, they are existing behaviour:
 
-- **The tests pass without AWS and without asserting anything.** `dotnet test` reports five green
-  tests in about three seconds on a machine with no credentials and no bucket. None of the five test
-  methods contains a single `Assert`, they only configure a logger and write 200 events. On top of
-  that they call `Log.CloseAndFlush()`, which closes the static `Log.Logger`, not the local `logger`
-  instance they just created, so the batch is usually never flushed at all. A green run therefore
-  proves that the configuration overloads do not throw, nothing more. Do not present it as proof
-  that an upload works.
+- **A green `AmazonS3BasicTests` still proves very little.** Those five tests contain no `Assert`,
+  they configure a logger, write 200 events and dispose it. Since the sink swallows every error (see
+  below), they stay green whether the upload worked or not. They report an inconclusive result when
+  the environment variables are missing, which at least separates "not configured" from "ran". The
+  real assertions live in the other four test classes, which need neither credentials nor network.
+  Never present a green run as proof that an upload arrived in the bucket.
 - **Every exception inside the sink is swallowed.** `PeriodicBatchingSink` catches whatever
   `EmitBatchAsync` throws and writes it to Serilog's `SelfLog`. A failing upload, missing
   credentials or a wrong bucket name are invisible unless `SelfLog.Enable(...)` is called, which is
@@ -139,6 +146,12 @@ Do not silently "clean up" these, they are existing behaviour:
   The rolling interval only controls the date part of the name. The `return string.Empty` branch in
   `AlignCurrentFileTo` is therefore unreachable from the sink, it is a leftover of the Serilog file
   sink logic.
+- **The first batch has no sequence number, and `RollingInterval.Infinite` has none at all.**
+  `AlignCurrentFileTo` returns the plain name as long as `NextCheckpoint` is not set yet, so the
+  keys of the first batches are `log20260817.txt`, `log20260817_001.txt`, `log20260817_002.txt`.
+  With `RollingInterval.Infinite` there is no checkpoint at all, so every batch is uploaded as
+  `log.txt` and overwrites the object of the batch before it. `AmazonS3SinkTests` pins the first
+  half of that, the second half is a trap, not a feature.
 - **The local file is a temporary file.** It is written next to `path`, uploaded and deleted right
   after. The bucket key is `bucketPath` plus the file name with backslashes replaced by slashes, the
   local directory structure never reaches S3.
