@@ -4,6 +4,7 @@ global using System.Text;
 global using System.Text.RegularExpressions;
 
 global using Amazon;
+global using Amazon.Runtime;
 global using Amazon.S3;
 global using Amazon.S3.Model;
 

@@ -243,42 +243,28 @@ public class AmazonS3Sink : IBatchedLogEventSink, IDisposable
             return this.amazonS3Options.AmazonS3Client;
         }
 
-        var endpoint = this.amazonS3Options.Endpoint;
-        AmazonS3Client client;
+        var config = new AmazonS3Config();
 
-        // In the case that awsAccessKeyId and awsSecretAccessKey is passed, we use it. Otherwise authorization is given by roles in AWS directly.
-        if (!string.IsNullOrEmpty(this.amazonS3Options.AwsAccessKeyId) && !string.IsNullOrEmpty(this.amazonS3Options.AwsSecretAccessKey))
+        if (this.amazonS3Options.Endpoint is not null)
         {
-            if (endpoint is not null)
-            {
-                client = new AmazonS3Client(this.amazonS3Options.AwsAccessKeyId, this.amazonS3Options.AwsSecretAccessKey, endpoint);
-            }
-            else
-            {
-                client = new AmazonS3Client(
-                    this.amazonS3Options.AwsAccessKeyId,
-                    this.amazonS3Options.AwsSecretAccessKey,
-                    new AmazonS3Config
-                    {
-                        ServiceURL = this.amazonS3Options.ServiceUrl
-                    });
-            }
+            config.RegionEndpoint = this.amazonS3Options.Endpoint;
         }
         else
         {
-            if (endpoint is not null)
-            {
-                client = new AmazonS3Client(endpoint);
-            }
-            else
-            {
-                client = new AmazonS3Client(
-                    new AmazonS3Config
-                    {
-                        ServiceURL = this.amazonS3Options.ServiceUrl
-                    });
-            }
+            config.ServiceURL = this.amazonS3Options.ServiceUrl;
         }
+
+        // Since version 4 the AWS SDK adds a checksum to every request by default. Providers that need the payload
+        // signing switched off usually don't support those checksums either, so the same option covers both.
+        if (this.amazonS3Options.DisablePayloadSigning ?? false)
+        {
+            config.RequestChecksumCalculation = RequestChecksumCalculation.WHEN_REQUIRED;
+        }
+
+        // In the case that awsAccessKeyId and awsSecretAccessKey is passed, we use it. Otherwise authorization is given by roles in AWS directly.
+        var client = !string.IsNullOrEmpty(this.amazonS3Options.AwsAccessKeyId) && !string.IsNullOrEmpty(this.amazonS3Options.AwsSecretAccessKey)
+            ? new AmazonS3Client(this.amazonS3Options.AwsAccessKeyId, this.amazonS3Options.AwsSecretAccessKey, config)
+            : new AmazonS3Client(config);
 
         // The client is kept for the lifetime of the sink, creating one per batch would open a new connection pool every time.
         this.amazonS3Options.AmazonS3Client = client;

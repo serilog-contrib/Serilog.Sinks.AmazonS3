@@ -64,11 +64,13 @@ dotnet build src/Serilog.Sinks.AmazonS3.sln
 dotnet test src/Serilog.Sinks.AmazonS3.sln
 ```
 
-- The library multi targets `net8.0;net9.0`, the test project targets `net9.0` only. Both values
+- The library multi targets `net8.0;net10.0`, the test project targets `net10.0` only. Both values
   live in the two `.csproj` files, there is no `TargetFrameworks` property anywhere else. Keep the
   test project on the newest framework the library targets.
 - `src/Directory.Build.props` exists but contains nothing except `GenerateDocumentationFile`. All
-  other build properties live directly in the two `.csproj` files and are duplicated there.
+  other build properties live directly in the two `.csproj` files and are duplicated there. That one
+  property covers the test project as well, so a test class without XML documentation breaks the
+  build with `CS1591`, which counts as an error here.
 - `TreatWarningsAsErrors` is enabled in both projects, so every warning breaks the build, NuGet
   warnings (`NU****`) from restore included. A clean build reports zero warnings, keep it that way.
 - `NU1803` (HTTP source usage during restore) is the one warning suppressed via `NoWarn`. Fix
@@ -145,8 +147,12 @@ Do not silently "clean up" these, they are existing behaviour:
   the period and the sequence number in between.
 - **An empty file is refused.** `UploadFileToS3` throws `InvalidOperationException` when the file
   length is 0 instead of uploading it, because S3 would happily store an empty object.
-- **`Newtonsoft.Json` is referenced but never used.** No file in the library mentions it. It is a
-  dependency the package forces on its consumers for nothing.
+- **`disablePayloadSigning` also turns off the SDK checksums.** Since AWS SDK version 4 a checksum
+  is calculated for every request by default. The providers that need the payload signing switched
+  off, Cloudflare R2 for example, usually reject those checksums as well, so `GetOrCreateClient`
+  sets `RequestChecksumCalculation.WHEN_REQUIRED` on the config it builds. That only applies to a
+  client the sink creates itself, a client passed in through the configuration keeps whatever its
+  own config says.
 - **`Serilog.Debugging` sits in the library's `GlobalUsings.cs` unused.** `SelfLog` is only used in
   the test project. Unused global usings are not reported by `IDE0005`.
 - **Ten overloads, one implementation.** The bodies of the ten `AmazonS3` extension methods are
