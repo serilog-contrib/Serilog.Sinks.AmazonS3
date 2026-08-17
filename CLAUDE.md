@@ -185,10 +185,10 @@ Do not silently "clean up" these, they are existing behaviour:
 - **No CI in the repository.** There is no `.github` folder and no pipeline file, the badges in the
   README point at services configured outside of this repository.
 - **The repository moved organisations.** Code, README and issue links point at
-  `github.com/serilog-contrib/Serilog.Sinks.AmazonS3`, the git remote still points at
-  `github.com/SeppPenner/Serilog.Sinks.AmazonS3`. GitHub redirects, every push answers with
-  "This repository moved. Please use the new location". The push works, the message is not an error.
-  Do not "fix" the links in the documentation, they are the canonical ones.
+  `github.com/serilog-contrib/Serilog.Sinks.AmazonS3`, and since 2026-08-17 the git remote does as
+  well. Before that it still pointed at `github.com/SeppPenner/Serilog.Sinks.AmazonS3`, which GitHub
+  redirects, so every push answered with "This repository moved. Please use the new location".
+  If that message shows up again, the remote was reset, it is not an error of the push itself.
 
 ## Releasing
 
