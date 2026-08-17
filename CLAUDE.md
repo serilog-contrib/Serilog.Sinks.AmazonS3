@@ -171,6 +171,11 @@ Do not silently "clean up" these, they are existing behaviour:
 - **Ten overloads, one implementation.** The bodies of the ten `AmazonS3` extension methods are
   copies of each other. That is deliberate, the overloads exist so that the sink can be configured
   from `appsettings.json`, where Serilog matches parameter names.
+- **Every call needs `outputTemplate` or `formatter` by name.** The template overload and the
+  formatter overload of a pair differ only in optional parameters, so a call that names neither is
+  `CS0121`, ambiguous. `outputTemplate: null` is enough, the sink falls back to its default template.
+  That is not theory, two samples in `HowToUse.md` were written without it and did not compile. When
+  you touch a sample or write a test, compile it.
 - **`.gitattributes` sets `* text=auto`** and every rule of the Visual Studio template below it is
   commented out. There is no binary file in this repository that needs its own rule, `Icon.png` is
   detected by git itself.

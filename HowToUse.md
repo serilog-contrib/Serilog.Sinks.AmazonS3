@@ -7,6 +7,7 @@ var logger = new LoggerConfiguration().WriteTo
         Amazon.RegionEndpoint.EUWest2,
         "ABCDEFGHIJKLMNOP",
         "c3fghsrgwegfn://asdfsdfsdgfsdg",
+        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
         rollingInterval: RollingInterval.Minute)
     .CreateLogger();
 
@@ -17,6 +18,11 @@ for (var x = 0; x < 200; x++)
 }
 ```
 
+Either `outputTemplate` or `formatter` has to be part of the call, and by name. Both exist in their
+own set of overloads, and without one of them the compiler cannot tell which overload is meant and
+reports `CS0121`. Passing `outputTemplate: null` is allowed as well, the sink then uses the default
+template shown above.
+
 ## Usage with role based authentication in AWS
 Use this method if you gave access to Amazon S3 from your AWS program execution machine using roles. In this case, authorization is managed by AWS and `awsAccessKeyId` and `awsSecretAccessKey` are not required.
 
@@ -26,6 +32,7 @@ var logger = new LoggerConfiguration().WriteTo
         "log.txt",
         "mytestbucket-aws",
         Amazon.RegionEndpoint.EUWest2,
+        outputTemplate: null,
         rollingInterval: RollingInterval.Minute)
     .CreateLogger();
 
@@ -38,24 +45,24 @@ for (var x = 0; x < 200; x++)
 
 ## Using JSON or custom formatters
 ```csharp
-var levelSwitch = new LoggingLevelSwitch { MinimumLevel = LogEventLevel.Information };
-
 var logger = new LoggerConfiguration()
-	.WriteTo.AmazonS3(
-		new CompactJsonFormatter(),
+    .WriteTo.AmazonS3(
         "log.json",
         "mytestbucket-aws",
         Amazon.RegionEndpoint.EUWest2,
-        rollingInterval: RollingInterval.Minute,
-	)
-	.CreateLogger();
+        formatter: new CompactJsonFormatter(),
+        rollingInterval: RollingInterval.Minute)
+    .CreateLogger();
 
 for (var x = 0; x < 200; x++)
 {
-	var ex = new Exception("Test");
-	logger.Error(ex.ToString());
+    var ex = new Exception("Test");
+    logger.Error(ex.ToString());
 }
 ```
+
+`formatter` picks the overloads that format the events themselves, `outputTemplate` and
+`formatProvider` are not used then.
 
 ## Configuring from appsettings.json files
 ```json
@@ -82,25 +89,17 @@ For more information regarding this use case, see [Issue number 10](https://gith
 
 
 ## Exception handling
-You can pass a callback to the sink parameters on failure to define which action needs to be done if an exception occured on the sink side. If something is going wrong in the sink code, `failureCallback` will be executed. This is deprecated with version 1.6.0+. Use fallback logging instead. Check https://nblumhardt.com/2024/10/fallback-logging/.
+The sink does not report failures to your application. Everything that goes wrong while a batch is
+uploaded, a wrong bucket name, missing rights or an unreachable endpoint, is caught by the periodic
+batching sink and written to Serilog's `SelfLog`. Enable it to see those messages:
 
 ```csharp
-var logger = new LoggerConfiguration().WriteTo
-    .AmazonS3(
-        "log.txt",
-        "mytestbucket-aws",
-        Amazon.RegionEndpoint.EUWest2,
-        rollingInterval: RollingInterval.Minute,
-		failureCallback: e => Console.WriteLine($"An error occured in my sink: {e.Message}")
-		)
-    .CreateLogger();
-
-for (var x = 0; x < 200; x++)
-{
-    var ex = new Exception("Test");
-    logger.Error(ex.ToString());
-}
+Serilog.Debugging.SelfLog.Enable(Console.Error);
 ```
+
+The `failureCallback` parameter that earlier versions offered is gone since version 1.6.0.0. Use
+fallback logging instead, so that events survive when this sink cannot deliver them. Check
+https://nblumhardt.com/2024/10/fallback-logging/.
 
 The project can be found on [nuget](https://www.nuget.org/packages/Serilog.Sinks.AmazonS3/).
 
@@ -121,14 +120,14 @@ The project can be found on [nuget](https://www.nuget.org/packages/Serilog.Sinks
 |formatProvider|The `IFormatProvider` to use. Supplies culture-specific formatting information.<br>Check: https://docs.microsoft.com/en-us/dotnet/api/system.iformatprovider?view=netframework-4.8.|`new CultureInfo("de-DE")`|`null`.  If `formatter` is specified: Not needed.|
 |levelSwitch|A switch allowing the pass-through minimum level to be changed at runtime.<br>Check: https://nblumhardt.com/2014/10/dynamically-changing-the-serilog-level/.|`var levelSwitch = new LoggingLevelSwitch(); levelSwitch.MinimumLevel = LogEventLevel.Warning;`|`null`|
 |rollingInterval|The interval at which logging will roll over to a new file.<br>Check: https://github.com/serilog/serilog-sinks-file/blob/dev/src/Serilog.Sinks.File/RollingInterval.cs.|`rollingInterval: RollingInterval.Minute`|`RollingInterval.Day`|
-|encoding|Character encoding used to write the text file.<br>Check: https://docs.microsoft.com/de-de/dotnet/api/system.text.encoding?view=netframework-4.8.|`encoding: Encoding.Unicode`|`null` meaning `Encoding.UTF8`|
-|~~failureCallback~~|~~Adds an option to add a failure callback action.~~  (Deprecated, use fallback logging instead.Check https://nblumhardt.com/2024/10/fallback-logging/.)|~~`failureCallback: e => Console.WriteLine($"Sink error: {e.Message}")`~~|~~`null`~~|
-|bucketPath|Optionally add a sub-path for the bucket. Files are stored on S3 `mytestbucket-aws/awsSubPath/log.txt` in the example below.|`bucketPath = "awsSubPath"`|`null`|
-|batchSizeLimit|The maximum number of events to include in a single batch. This means an upload of events as a file to S3 will contain at most this number of events.<br>Check: https://github.com/serilog/serilog-sinks-periodicbatching|`batchSizeLimit = 20`|`100`|
-|batchingPeriod|The time to wait between checking for unemitted events. If there are any unemitted events, they will then be uploaded to S3 in a batch of maximum size `batchSizeLimit`.<br>Check: https://github.com/serilog/serilog-sinks-periodicbatching|`batchingPeriod = TimeSpan.FromSeconds(5)`|`TimeSpan.FromSeconds(2)`|
-|eagerlyEmitFirstEvent|A value indicating whether the first event should be emitted immediately or not.|`eagerlyEmitFirstEvent = false`|`true`|
-|queueSizeLimit|The queue size limit meaning the limit until the last not emitted events are discarded (Standard mechanims to stop queue overflows).|`queueSizeLimit = 2000`|`10000`|
-|disablePayloadSigning|Setting `disablePayloadSigning` to `true` disables the Amazon S3 SigV4 payload signing data integrity check on each upload request. This option is provided if you are using other cloud storage providers e.g. Cloudflare R2 and they support AWS S3 APIs but currently lack support for the Streaming SigV4 implementation used by AWSSDK.S3.|`disablePayloadSigning = true`| Default is `false`. Even a null value will also result in a `false` setting.|
+|encoding|Character encoding used to write the text file.<br>Check: https://docs.microsoft.com/de-de/dotnet/api/system.text.encoding?view=netframework-4.8.|`encoding: Encoding.Unicode`|`null` meaning UTF-8 without a byte order mark|
+|~~failureCallback~~|~~Adds an option to add a failure callback action.~~  (Removed in version 1.6.0.0, use fallback logging instead. Check https://nblumhardt.com/2024/10/fallback-logging/.)|~~`failureCallback: e => Console.WriteLine($"Sink error: {e.Message}")`~~|~~`null`~~|
+|bucketPath|Optionally add a sub-path for the bucket. Files are stored on S3 `mytestbucket-aws/awsSubPath/log.txt` in the example below.|`bucketPath: "awsSubPath"`|`null`|
+|batchSizeLimit|The maximum number of events to include in a single batch. This means an upload of events as a file to S3 will contain at most this number of events.<br>Check: https://github.com/serilog/serilog-sinks-periodicbatching|`batchSizeLimit: 20`|`100`|
+|batchingPeriod|The time to wait between checking for unemitted events. If there are any unemitted events, they will then be uploaded to S3 in a batch of maximum size `batchSizeLimit`.<br>Check: https://github.com/serilog/serilog-sinks-periodicbatching|`batchingPeriod: TimeSpan.FromSeconds(5)`|`TimeSpan.FromSeconds(2)`|
+|eagerlyEmitFirstEvent|A value indicating whether the first event should be emitted immediately or not.|`eagerlyEmitFirstEvent: false`|`true`|
+|queueSizeLimit|The queue size limit meaning the limit until the last not emitted events are discarded (Standard mechanims to stop queue overflows).|`queueSizeLimit: 2000`|`10000`|
+|disablePayloadSigning|Setting `disablePayloadSigning` to `true` disables the Amazon S3 SigV4 payload signing data integrity check on each upload request. This option is provided if you are using other cloud storage providers e.g. Cloudflare R2 and they support AWS S3 APIs but currently lack support for the Streaming SigV4 implementation used by AWSSDK.S3. Since version 1.7.0.0 it also sets `RequestChecksumCalculation` to `WHEN_REQUIRED` on the client the sink builds, because AWSSDK.S3 4.x adds a checksum to every request by default and those providers usually reject it. If you pass your own `client`, set that on its config yourself.|`disablePayloadSigning: true`| Default is `false`. Even a null value will also result in a `false` setting.|
 
 Hint: Only `outputTemplate` and `formatProvider` together or the `formatter` can be used.
 
@@ -151,8 +150,7 @@ var logger = new LoggerConfiguration().WriteTo
         levelSwitch: levelSwitch,
         rollingInterval: RollingInterval.Minute,
         encoding: Encoding.Unicode,
-		bucketPath = "awsSubPath"
-		)
+        bucketPath: "awsSubPath")
     .CreateLogger();
 
 for (var x = 0; x < 200; x++)
