@@ -1,6 +1,7 @@
 Change history
 --------------
 
+* **Version 1.7.0.0 (2026-08-17)** : Removed support for Net9.0, added support for Net10.0, updated NuGet packages (AWSSDK.S3 to 4.x), removed the unused Newtonsoft.Json dependency, the Amazon S3 client is created once instead of once per batch, log files are written as UTF-8 without BOM as documented, `disablePayloadSigning` also relaxes the AWS SDK checksum calculation, fixed the samples in the how to use file.
 * **Version 1.6.0.0 (2025-03-24)** : Fixes https://github.com/serilog-contrib/Serilog.Sinks.Postgresql.Alternative/issues/83, updates NuGet packages, deprecates `failureCallback`.
 * **Version 1.5.3.0 (2024-12-26)** : Removed support for Net6.0, added support for Net9.0, updated NuGet packages.
 * **Version 1.5.2.0 (2024-05-16)** : Removed support for Net7.0.

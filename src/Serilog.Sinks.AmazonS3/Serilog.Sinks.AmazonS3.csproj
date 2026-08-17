@@ -16,7 +16,7 @@
         <RepositoryUrl>https://github.com/SeppPenner/Serilog.Sinks.AmazonS3</RepositoryUrl>
         <PackageIcon>Icon.png</PackageIcon>
         <RepositoryType>Github</RepositoryType>
-        <PackageReleaseNotes>Version 1.6.0.0 (2025-03-24): Fixes https://github.com/serilog-contrib/Serilog.Sinks.Postgresql.Alternative/issues/83, updates NuGet packages, deprecates `failureCallback`.</PackageReleaseNotes>
+        <PackageReleaseNotes>Version 1.7.0.0 (2026-08-17): Removes support for Net9.0, adds support for Net10.0, updates NuGet packages (AWSSDK.S3 to 4.x), removes the unused Newtonsoft.Json dependency, creates the Amazon S3 client once instead of once per batch, writes log files as UTF-8 without BOM as documented, lets `disablePayloadSigning` relax the AWS SDK checksum calculation, fixes the samples in the how to use file.</PackageReleaseNotes>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
