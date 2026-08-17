@@ -40,9 +40,9 @@ public class AmazonS3Options
     public string? BucketPath { get; set; }
 
     /// <summary>
-    /// Gets or sets the encoding.
+    /// Gets or sets the encoding. The default is UTF-8 without a byte order mark.
     /// </summary>
-    public Encoding Encoding { get; set; } = Encoding.UTF8;
+    public Encoding Encoding { get; set; } = new UTF8Encoding(false);
 
     /// <summary>
     /// Gets or sets the Amazon S3 key endpoint.

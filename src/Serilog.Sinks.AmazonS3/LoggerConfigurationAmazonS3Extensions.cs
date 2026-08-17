@@ -36,9 +36,10 @@ public static class LoggerConfigurationAmazonS3Extensions
     private const int DefaultQueueSizeLimit = 10000;
 
     /// <summary>
-    /// The default encoding.
+    /// The default encoding. UTF-8 without a byte order mark, because every batch is uploaded as its own object
+    /// and a byte order mark in front of each of them breaks readers that do not expect one.
     /// </summary>
-    private static readonly Encoding DefaultEncoding = Encoding.UTF8;
+    private static readonly Encoding DefaultEncoding = new UTF8Encoding(false);
 
     /// <summary>
     /// The default batching period.
