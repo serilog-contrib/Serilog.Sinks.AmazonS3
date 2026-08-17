@@ -14,12 +14,17 @@ using IBatchedLogEventSink = PeriodicBatching.IBatchedLogEventSink;
 /// <summary>
 /// This class is the main class and contains all logic for the AmazonS3 sink.
 /// </summary>
-public class AmazonS3Sink : IBatchedLogEventSink
+public class AmazonS3Sink : IBatchedLogEventSink, IDisposable
 {
     /// <summary>
     /// The Amazon S3 options.
     /// </summary>
     private readonly AmazonS3Options amazonS3Options = new();
+
+    /// <summary>
+    /// A value indicating whether the sink created the Amazon S3 client itself and therefore needs to dispose it.
+    /// </summary>
+    private bool ownsAmazonS3Client;
 
     /// <summary>Initializes a new instance of the <see cref="AmazonS3Sink" /> class. </summary>
     /// <exception cref="ArgumentNullException">A given value is null.</exception>
@@ -65,13 +70,20 @@ public class AmazonS3Sink : IBatchedLogEventSink
             throw new InvalidOperationException($"The output writer was not properly set for {fileInformation.FileName}");
         }
 
-        foreach (var logEvent in batch)
+        try
         {
-            this.amazonS3Options.Formatter?.Format(logEvent, fileInformation.OutputWriter);
-        }
+            foreach (var logEvent in batch)
+            {
+                this.amazonS3Options.Formatter?.Format(logEvent, fileInformation.OutputWriter);
+            }
 
-        await fileInformation.OutputWriter.FlushAsync();
-        fileInformation.OutputWriter.Close();
+            await fileInformation.OutputWriter.FlushAsync();
+        }
+        finally
+        {
+            // The writer needs to be closed in any case, otherwise a formatter that throws leaves the file locked.
+            await fileInformation.OutputWriter.DisposeAsync();
+        }
 
         _ = await this.UploadFileToS3(fileInformation.FileName);
         File.Delete(fileInformation.FileName);
@@ -82,9 +94,30 @@ public class AmazonS3Sink : IBatchedLogEventSink
     /// or timers (thus avoiding additional flush/shut-down complexity).
     /// </summary>
     /// <returns>A <see cref="Task"/> returning any asynchronous operation.</returns>
-    public async Task OnEmptyBatchAsync()
+    public Task OnEmptyBatchAsync() => Task.CompletedTask;
+
+    /// <inheritdoc cref="IDisposable"/>
+    /// <seealso cref="IDisposable"/>
+    public void Dispose()
     {
-        await Task.Delay(0);
+        this.Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    /// <summary>
+    /// Releases the Amazon S3 client if the sink created it itself.
+    /// </summary>
+    /// <param name="disposing">A value indicating whether the managed resources should be released or not.</param>
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposing || !this.ownsAmazonS3Client)
+        {
+            return;
+        }
+
+        this.amazonS3Options.AmazonS3Client?.Dispose();
+        this.amazonS3Options.AmazonS3Client = null;
+        this.ownsAmazonS3Client = false;
     }
 
     /// <summary>
@@ -200,9 +233,63 @@ public class AmazonS3Sink : IBatchedLogEventSink
     }
 
     /// <summary>
-    /// Uploads the file to a specified Amazon S3 bucket. 
+    /// Gets the Amazon S3 client and creates it from the options if it wasn't given or created before.
     /// </summary>
-    /// <param name="fileName"> he file name.</param>
+    /// <returns>The <see cref="AmazonS3Client"/> to upload with.</returns>
+    private AmazonS3Client GetOrCreateClient()
+    {
+        if (this.amazonS3Options.AmazonS3Client is not null)
+        {
+            return this.amazonS3Options.AmazonS3Client;
+        }
+
+        var endpoint = this.amazonS3Options.Endpoint;
+        AmazonS3Client client;
+
+        // In the case that awsAccessKeyId and awsSecretAccessKey is passed, we use it. Otherwise authorization is given by roles in AWS directly.
+        if (!string.IsNullOrEmpty(this.amazonS3Options.AwsAccessKeyId) && !string.IsNullOrEmpty(this.amazonS3Options.AwsSecretAccessKey))
+        {
+            if (endpoint is not null)
+            {
+                client = new AmazonS3Client(this.amazonS3Options.AwsAccessKeyId, this.amazonS3Options.AwsSecretAccessKey, endpoint);
+            }
+            else
+            {
+                client = new AmazonS3Client(
+                    this.amazonS3Options.AwsAccessKeyId,
+                    this.amazonS3Options.AwsSecretAccessKey,
+                    new AmazonS3Config
+                    {
+                        ServiceURL = this.amazonS3Options.ServiceUrl
+                    });
+            }
+        }
+        else
+        {
+            if (endpoint is not null)
+            {
+                client = new AmazonS3Client(endpoint);
+            }
+            else
+            {
+                client = new AmazonS3Client(
+                    new AmazonS3Config
+                    {
+                        ServiceURL = this.amazonS3Options.ServiceUrl
+                    });
+            }
+        }
+
+        // The client is kept for the lifetime of the sink, creating one per batch would open a new connection pool every time.
+        this.amazonS3Options.AmazonS3Client = client;
+        this.ownsAmazonS3Client = true;
+        return client;
+    }
+
+    /// <summary>
+    /// Uploads the file to a specified Amazon S3 bucket.
+    /// </summary>
+    /// <param name="fileName">The file name.</param>
     /// <exception cref="UnauthorizedAccessException">
     /// Thrown when an Unauthorized Access error
     /// condition occurs.
@@ -219,42 +306,7 @@ public class AmazonS3Sink : IBatchedLogEventSink
     /// </returns>
     private async Task<PutObjectResponse?> UploadFileToS3(string fileName)
     {
-        var client = this.amazonS3Options.AmazonS3Client;
-
-        if (client is null)
-        {
-            if (this.amazonS3Options.Endpoint != null)
-            {
-                client = new AmazonS3Client(this.amazonS3Options.Endpoint);
-            }
-            else
-            {
-                client = new AmazonS3Client(
-                    new AmazonS3Config
-                    {
-                        ServiceURL = this.amazonS3Options.ServiceUrl
-                    });
-            }
-
-            // In the case that awsAccessKeyId and awsSecretAccessKey is passed, we use it. Otherwise authorization is given by roles in AWS directly.
-            if (!string.IsNullOrEmpty(this.amazonS3Options.AwsAccessKeyId) && !string.IsNullOrEmpty(this.amazonS3Options.AwsSecretAccessKey))
-            {
-                if (this.amazonS3Options.Endpoint != null)
-                {
-                    client = new AmazonS3Client(this.amazonS3Options.AwsAccessKeyId, this.amazonS3Options.AwsSecretAccessKey, this.amazonS3Options.Endpoint);
-                }
-                else
-                {
-                    client = new AmazonS3Client(
-                        this.amazonS3Options.AwsAccessKeyId,
-                        this.amazonS3Options.AwsSecretAccessKey,
-                        new AmazonS3Config
-                        {
-                            ServiceURL = this.amazonS3Options.ServiceUrl
-                        });
-                }
-            }
-        }
+        var client = this.GetOrCreateClient();
 
         try
         {
