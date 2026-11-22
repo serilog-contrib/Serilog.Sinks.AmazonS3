@@ -64,6 +64,8 @@ and `Icon.png` are packed into the NuGet package, so a change to them changes th
 
 ## Build
 
+Install the .NET 11 SDK to build the solution.
+
 ```powershell
 dotnet build src/Serilog.Sinks.AmazonS3.sln
 ```
@@ -72,7 +74,7 @@ dotnet build src/Serilog.Sinks.AmazonS3.sln
 dotnet test src/Serilog.Sinks.AmazonS3.sln
 ```
 
-- The library multi targets `net8.0;net10.0`, the test project targets `net10.0` only. Both values
+- The library targets both `net10.0` and `net11.0`. The test project targets `net11.0`. Both values
   live in the two `.csproj` files, there is no `TargetFrameworks` property anywhere else. Keep the
   test project on the newest framework the library targets.
 - `src/Directory.Build.props` exists but contains nothing except `GenerateDocumentationFile`. All
