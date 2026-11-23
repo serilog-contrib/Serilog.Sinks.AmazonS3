@@ -189,29 +189,58 @@ Do not silently "clean up" these, they are existing behaviour:
 
 ## Releasing
 
+**Every new version is released completely.** Changelog, README, nuget.org, GitHub Packages and a
+GitHub release belong to every version, none of these steps is optional and none of them waits for
+a separate request.
+
 1. Make the change.
 2. Add an entry at the top of `Changelog.md` in the existing format:
    `* **Version 1.7.0.0 (2026-08-17)** : Short description.`
 3. Update `PackageReleaseNotes` in `src/Serilog.Sinks.AmazonS3/Serilog.Sinks.AmazonS3.csproj` to the
    same text. It is the only place in the build files that names a version, and it is duplicated
    from the changelog by hand.
-4. Commit that.
-5. Tag the commit with the plain version number, no `v` prefix (`1.6.0`, `1.5.3`, ...). The existing
+4. Update `README.md` for every version, the part above `## Contributors`. The `## Available for`
+   list has to match the target frameworks, and nothing there may describe a state the package has
+   left behind.
+5. Commit that.
+6. Tag the commit with the plain version number, no `v` prefix (`1.6.0`, `1.5.3`, ...). The existing
    tags are lightweight tags, create new ones the same way.
-6. Push the commits and the tag.
-7. Only then build the package, and build it while the tag is the newest commit. GitVersion takes
+7. Push the commits and the tag.
+8. Only then build the package, and build it while the tag is the newest commit. GitVersion takes
    the version from the tag plus the distance to it, so a build before the tag or after another
    commit produces a prerelease version like `1.7.1-3+Branch.master.Sha...`, and that version would
    end up on nuget.org. `git describe --tags` has to answer with the plain tag.
-8. `BuildAndPushPackage.bat` deletes all `bin` and `obj` folders, builds in release and pushes the
-   `.nupkg` and the `.snupkg` to nuget.org with `%NUGET_API_KEY%`. It ends with `PAUSE`, so it wants
-   a console. Because it always rebuilds, it is only correct as long as no commit sits on top of the
-   tag. If one does, push the packages that were built from the tagged state instead:
+9. Publish to nuget.org with `BuildAndPushPackage.bat`. It deletes all `bin` and `obj` folders,
+   builds in release and pushes the `.nupkg` and the `.snupkg` to nuget.org with
+   `%NUGET_API_KEY%`. It ends with `PAUSE`, so it wants a console. Call it with its full path: the
+   Claude Code shell sets `NoDefaultCurrentDirectoryInExePath=1`, so cmd does not find a bare
+   `BuildAndPushPackage.bat` in the current directory. Because it always rebuilds, it is only
+   correct as long as no commit sits on top of the tag. If one does, push the packages that were
+   built from the tagged state instead:
    `dotnet nuget push *.nupkg -s "nuget.org" --skip-duplicate -k %NUGET_API_KEY%` in
    `src/Serilog.Sinks.AmazonS3/bin/Release`. That command takes the matching `.snupkg` with it, the
-   second push line of the script is a no-op then.
+   second push line of the script is a no-op then. A push to nuget.org cannot be taken back, the
+   version is burned even after unlisting. nuget.org needs a few minutes to validate a new version
+   before it is listed.
+10. Publish the same `.nupkg` from `src/Serilog.Sinks.AmazonS3/bin/Release` to GitHub Packages,
+    `https://nuget.pkg.github.com/serilog-contrib/index.json`. The script does not do that. The API
+    key is a GitHub token with the scope `write:packages`, for example from `gh auth token`. If
+    `gh auth status` lists no `write:packages`, the user has to run
+    `gh auth refresh -h github.com -s write:packages,read:packages`, it needs a browser login.
+    GitHub Packages takes no symbol packages, push the `.nupkg` only.
+11. Create the GitHub release:
+    `gh release create 1.7.0 -R serilog-contrib/Serilog.Sinks.AmazonS3 --verify-tag --latest --title "Version 1.7.0.0 (2026-08-17)" --notes-file <file>`.
+    The notes are the changelog sentence plus the line
+    `NuGet: https://www.nuget.org/packages/Serilog.Sinks.AmazonS3/1.7.0`. Write credits as
+    `` `@name` `` in backticks, a bare `@name` notifies that person again.
 
 The version in the `Changelog.md` has four parts (`1.7.0.0`), the tag has three (`1.7.0`).
+
+Versions 1.0.0 to 1.1.10 were published under the former package id
+`HaemmerElectronics.SeppPenner.Serilog.Sinks.AmazonS3`, the current id starts with 1.1.11. They are
+not missing on nuget.org, never push them under the current id. On 2026-11-23 no tag had a GitHub
+release yet and GitHub Packages held one version under the current id, the older history there is
+incomplete.
 
 ## Git
 
