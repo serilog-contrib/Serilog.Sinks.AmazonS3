@@ -64,6 +64,29 @@ for (var x = 0; x < 200; x++)
 `formatter` picks the overloads that format the events themselves, `outputTemplate` and
 `formatProvider` are not used then.
 
+With credentials and further options, pass `formatter` and everything after the credentials by name:
+
+```csharp
+var logger = new LoggerConfiguration()
+    .WriteTo.AmazonS3(
+        "log.json",
+        "mytestbucket-aws",
+        Amazon.RegionEndpoint.EUWest2,
+        "ABCDEFGHIJKLMNOP",
+        "c3fghsrgwegfn://asdfsdfsdgfsdg",
+        restrictedToMinimumLevel: LogEventLevel.Information,
+        formatter: new CompactJsonFormatter(),
+        rollingInterval: RollingInterval.Minute,
+        bucketPath: "awsSubPath",
+        eagerlyEmitFirstEvent: false)
+    .CreateLogger();
+```
+
+A call cannot combine `formatter` with `outputTemplate` or `formatProvider`. A template or a format
+provider among the positional arguments selects the template overloads, which have no `formatter`
+parameter, and the compiler reports `CS1739` (`The best overload for 'AmazonS3' does not have a
+parameter named 'formatter'`). See [Issue number 61](https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/issues/61).
+
 ## Configuring from appsettings.json files
 ```json
 "Serilog": {

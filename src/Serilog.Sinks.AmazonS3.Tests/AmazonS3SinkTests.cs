@@ -202,6 +202,40 @@ public class AmazonS3SinkTests
     }
 
     /// <summary>
+    /// This method is used to test that the formatter passed to <c>WriteTo.AmazonS3</c> formats the uploaded file.
+    /// See https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/issues/61.
+    /// </summary>
+    [TestMethod]
+    public void TheConfiguredFormatterFormatsTheUploadedFile()
+    {
+        var directory = CreateTestDirectory();
+
+        try
+        {
+            using var client = new FakeAmazonS3Client();
+
+            // Disposing the logger flushes the batching sink, so the upload has happened afterwards.
+            using (var logger = new LoggerConfiguration().WriteTo.AmazonS3(
+                client,
+                Path.Combine(directory, "log.json"),
+                "mytestbucket-aws",
+                formatter: new CompactJsonFormatter())
+                .CreateLogger())
+            {
+                logger.Information("Hello {Target}", "Amazon S3");
+            }
+
+            StringAssert.StartsWith(client.Content, "{\"@t\":");
+            StringAssert.Contains(client.Content, "\"@mt\":\"Hello {Target}\"");
+            StringAssert.Contains(client.Content, "\"Target\":\"Amazon S3\"");
+        }
+        finally
+        {
+            Directory.Delete(directory, true);
+        }
+    }
+
+    /// <summary>
     /// Creates an empty directory below the temporary directory for a single test.
     /// </summary>
     /// <returns>The path of the created directory.</returns>

@@ -119,4 +119,28 @@ public class LoggerConfigurationAmazonS3ExtensionsTests
 
         Assert.IsNotNull(logger);
     }
+
+    /// <summary>
+    /// This method is used to test that the formatter overload with credentials takes the further options by name,
+    /// as shown in HowToUse.md. See https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/issues/61.
+    /// Nothing is uploaded because no event is written, the logger is only built and disposed again.
+    /// </summary>
+    [TestMethod]
+    public void TheFormatterOverloadWithCredentialsTakesFurtherOptionsByName()
+    {
+        using var logger = new LoggerConfiguration().WriteTo.AmazonS3(
+            "log.json",
+            "mytestbucket-aws",
+            RegionEndpoint.EUWest2,
+            "ABCDEFGHIJKLMNOP",
+            "c3fghsrgwegfn://asdfsdfsdgfsdg",
+            restrictedToMinimumLevel: LogEventLevel.Information,
+            formatter: new CompactJsonFormatter(),
+            rollingInterval: RollingInterval.Minute,
+            bucketPath: "awsSubPath",
+            eagerlyEmitFirstEvent: false)
+            .CreateLogger();
+
+        Assert.IsNotNull(logger);
+    }
 }

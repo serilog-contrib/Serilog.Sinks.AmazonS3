@@ -48,7 +48,7 @@ Layout inside `src/Serilog.Sinks.AmazonS3.Tests`:
 - `AmazonS3SinkTests.cs`: the sink end to end without a network. `AmazonS3Client.PutObjectAsync` is
   virtual, so `FakeAmazonS3Client` overrides it and captures bucket name, key and bytes. These tests
   pin the file names of consecutive batches, the bucket path in front of the key, the deletion of
-  the local file and the encoding.
+  the local file, the encoding and that a configured `formatter` formats the upload.
 - `PathRollerTests.cs` and `RollingIntervalExtensionsTests.cs`: the rolling file name logic.
 - `LoggerConfigurationAmazonS3ExtensionsTests.cs`: what the ten overloads refuse. Every call there
   needs enough named arguments to pick one overload, `outputTemplate` or `formatter` usually does
