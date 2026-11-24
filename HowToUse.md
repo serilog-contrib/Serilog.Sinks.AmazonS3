@@ -132,7 +132,7 @@ The project can be found on [nuget](https://www.nuget.org/packages/Serilog.Sinks
 |-|-|-|-|
 |client|The Amazon S3 client. It will be created in the sink from the given options if the specified one is `null`.|`new AmazonS3Client()`|`null`|
 |formatter|The formatter that can be implemented as desired. See [Issue number 10](https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/issues/10) and [Serilog formatting JSON](https://github.com/serilog/serilog/wiki/Formatting-Output#formatting-json) for more information.|`new CompactJsonFormatter()`|None, is optional.|
-|path|The main log file name used.|`"log.txt"`|None, is mandatory.|
+|path|The main log file name used. The sink writes a temporary file there and uploads it under its file name only, folders in `path` do not reach S3. Use `bucketPath` for folders in the bucket.|`"log.txt"`|None, is mandatory.|
 |bucketName|The name of the Amazon S3 bucket to use.<br>Check: https://docs.aws.amazon.com/general/latest/gr/rande.html.|`"mytestbucket-aws"`|None, is mandatory.|
 |endpoint|The Amazon S3 endpoint location.|`RegionEndpoint.EUWest2`|None, is mandatory. (Either `endpoint` or `serviceUrl` needs to be set.)|
 |serviceUrl|The Amazon S3 service URL.<br>Check: https://docs.aws.amazon.com/general/latest/gr/s3.html.|`https://s3.amazonaws.com`|Default is `https://s3.amazonaws.com`. (Either `endpoint` or `serviceUrl` needs to be set.)|
