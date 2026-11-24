@@ -28,6 +28,8 @@ so thanks to all the [contributors](https://github.com/serilog/serilog-sinks-fil
 ## Basic usage
 Check out the how to use file [here](https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/blob/master/HowToUse.md).
 
+Since version 2.0.0.0 every rolling interval is uploaded as one file once the interval is over or the logger is disposed, see [How the log files reach Amazon S3](https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/blob/master/HowToUse.md#how-the-log-files-reach-amazon-s3). Use `RollingInterval.Hour` or `RollingInterval.Minute` if the logs have to be in the bucket sooner.
+
 ## Install
 
 ```bash
@@ -40,6 +42,8 @@ Otherwise a similar exception is thrown:
 ```log
 Exception while emitting periodic batch from Serilog.Sinks.PeriodicBatching.PeriodicBatchingSink: System.IO.IOException: Read-only file system
 ```
+
+A Lambda environment can disappear before the current rolling interval is uploaded, and its events go with it. Dispose the logger at the end of the work or use a short rolling interval.
 
 Change history
 --------------

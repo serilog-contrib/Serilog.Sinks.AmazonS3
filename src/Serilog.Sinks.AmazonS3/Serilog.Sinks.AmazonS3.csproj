@@ -16,7 +16,7 @@
         <RepositoryUrl>https://github.com/SeppPenner/Serilog.Sinks.AmazonS3</RepositoryUrl>
         <PackageIcon>Icon.png</PackageIcon>
         <RepositoryType>Github</RepositoryType>
-        <PackageReleaseNotes>Version 1.8.0.0 (2026-11-24): Removes support for Net8.0 (Out of support since 2026-11-10), adds support for Net11.0, updates NuGet packages.</PackageReleaseNotes>
+        <PackageReleaseNotes>Version 2.0.0.0 (2026-11-24): Breaking change: every rolling interval is uploaded as one file once the interval is over or the logger is disposed instead of one file per batch, so log events reach Amazon S3 only after their interval (Fixes https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/issues/52). Documented how to combine `formatter` with further options (https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/issues/61) and that folders in `path` do not reach Amazon S3 (https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/issues/60).</PackageReleaseNotes>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>

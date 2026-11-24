@@ -1,6 +1,7 @@
 Change history
 --------------
 
+* **Version 2.0.0.0 (2026-11-24)** : Breaking change: every rolling interval is uploaded as one file once the interval is over or the logger is disposed instead of one file per batch, so log events reach Amazon S3 only after their interval (Fixes https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/issues/52). Documented how to combine `formatter` with further options (https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/issues/61) and that folders in `path` do not reach Amazon S3 (https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/issues/60).
 * **Version 1.8.0.0 (2026-11-24)** : Removed support for Net8.0 (Out of support since 2026-11-10), added support for Net11.0, updated NuGet packages.
 * **Version 1.7.0.0 (2026-08-17)** : Removed support for Net9.0, added support for Net10.0, updated NuGet packages (AWSSDK.S3 to 4.x), removed the unused Newtonsoft.Json dependency, the Amazon S3 client is created once instead of once per batch, log files are written as UTF-8 without BOM as documented, `disablePayloadSigning` also relaxes the AWS SDK checksum calculation, fixed the samples in the how to use file.
 * **Version 1.6.0.0 (2025-03-24)** : Fixes https://github.com/serilog-contrib/Serilog.Sinks.Postgresql.Alternative/issues/83, updates NuGet packages, deprecates `failureCallback`.
