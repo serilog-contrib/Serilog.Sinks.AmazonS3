@@ -1,5 +1,6 @@
 #pragma warning disable IDE0065 // Die using-Anweisung wurde falsch platziert.
 global using System.Globalization;
+global using System.Net;
 global using System.Text;
 global using System.Text.RegularExpressions;
 

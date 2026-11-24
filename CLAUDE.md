@@ -25,9 +25,12 @@ Layout inside `src/Serilog.Sinks.AmazonS3`:
   `sinkConfiguration.Sink(...)`. New parameters therefore have to be added ten times, that
   repetition is the price of the overload matrix.
 - `Sinks/AmazonS3/AmazonS3Sink.cs`: the sink itself, an `IBatchedLogEventSink`.
-  `EmitBatchAsync` opens the file, formats the batch into it, uploads it and deletes it.
-  `OpenFile`, `AlignCurrentFileTo`, `GetFileName` and `UploadFileToS3` do one thing each, keep new
-  logic in that shape.
+  `EmitBatchAsync` formats the batch, appends it to the local file of the current rolling interval
+  and uploads the files of the intervals that are over. `OnEmptyBatchAsync` does the latter while
+  no events arrive, `Dispose` uploads what is left. `GetCurrentFileName`, `OpenFile`,
+  `UploadCompletedFiles`, `TryUploadFile`, `GetKey` and `UploadFileToS3` do one thing each, keep
+  new logic in that shape. The public constructor uses `TimeProvider.System`, the internal one
+  takes the clock of the tests (`InternalsVisibleTo` in the `.csproj`).
 - `Sinks/AmazonS3/AmazonS3Options.cs`: all options in one class, including the three properties
   `PathRoller`, `NextCheckpoint` and `CurrentFileSequence` that are internal state and documented as
   "not to be set by the options".
@@ -45,10 +48,12 @@ Layout inside `src/Serilog.Sinks.AmazonS3.Tests`:
 - `AmazonS3BasicTests.cs`: five integration tests against a real bucket, driven by the environment
   variables `AwsAccessKeyId`, `AwsSecretAccessKey` and `AwsBucketName`. They report an inconclusive
   result when those are missing. Read "Known quirks" before you trust a green run.
-- `AmazonS3SinkTests.cs`: the sink end to end without a network. `AmazonS3Client.PutObjectAsync` is
-  virtual, so `FakeAmazonS3Client` overrides it and captures bucket name, key and bytes. These tests
-  pin the file names of consecutive batches, the bucket path in front of the key, the deletion of
-  the local file, the encoding and that a configured `formatter` formats the upload.
+- `AmazonS3SinkTests.cs`: the sink end to end without a network. `PutObjectAsync` and
+  `GetObjectMetadataAsync` of `AmazonS3Client` are virtual, so `FakeAmazonS3Client` overrides them
+  and keeps the objects in memory, and `FakeTimeProvider` rolls the intervals. These tests pin one
+  file per interval, the upload at the end of an interval and on dispose, both restart cases, the
+  retry after a failed upload, the bucket path, the encoding and that a configured `formatter`
+  formats the upload.
 - `PathRollerTests.cs` and `RollingIntervalExtensionsTests.cs`: the rolling file name logic.
 - `LoggerConfigurationAmazonS3ExtensionsTests.cs`: what the ten overloads refuse. Every call there
   needs enough named arguments to pick one overload, `outputTemplate` or `formatter` usually does
@@ -137,39 +142,41 @@ Do not silently "clean up" these, they are existing behaviour:
   the environment variables are missing, which at least separates "not configured" from "ran". The
   real assertions live in the other four test classes, which need neither credentials nor network.
   Never present a green run as proof that an upload arrived in the bucket.
-- **Every exception inside the sink is swallowed.** `PeriodicBatchingSink` catches whatever
-  `EmitBatchAsync` throws and writes it to Serilog's `SelfLog`. A failing upload, missing
-  credentials or a wrong bucket name are invisible unless `SelfLog.Enable(...)` is called, which is
-  exactly what `ClassInitialize` in the test class does. That is also why the sink can throw freely
-  instead of returning error codes.
-- **A new file per batch, not per rolling interval.** `EmitBatchAsync` calls
-  `AlignCurrentFileTo(DateTime.Now, true)`, always with `nextSequence: true`, so every batch gets the
-  next sequence number and its own file, for example `log20260817_001.txt`, `log20260817_002.txt`.
-  The rolling interval only controls the date part of the name. The `return string.Empty` branch in
-  `AlignCurrentFileTo` is therefore unreachable from the sink, it is a leftover of the Serilog file
-  sink logic.
-- **The first batch has no sequence number, and `RollingInterval.Infinite` has none at all.**
-  `AlignCurrentFileTo` returns the plain name as long as `NextCheckpoint` is not set yet, so the
-  keys of the first batches are `log20260817.txt`, `log20260817_001.txt`, `log20260817_002.txt`.
-  With `RollingInterval.Infinite` there is no checkpoint at all, so every batch is uploaded as
-  `log.txt` and overwrites the object of the batch before it. `AmazonS3SinkTests` pins the first
-  half of that, the second half is a trap, not a feature.
-- **The local file is a temporary file.** It is written next to `path`, uploaded and deleted right
-  after. The bucket key is `bucketPath` plus the file name with backslashes replaced by slashes, the
+- **Every exception inside the sink is swallowed.** `TryUploadFile` and `UploadCompletedFiles` catch
+  every upload error and write it to Serilog's `SelfLog`, the local file stays and is uploaded at
+  the next try. What goes wrong before the batch is in the local file escapes `EmitBatchAsync`,
+  `PeriodicBatchingSink` writes it to `SelfLog` and emits the batch again. Nothing after the append
+  may throw, the batch would end up in the file twice. All of this is invisible unless
+  `SelfLog.Enable(...)` is called, which is exactly what `ClassInitialize` in `AmazonS3BasicTests`
+  does.
+- **One object per rolling interval, uploaded once the interval is over.** S3 objects cannot be
+  appended to, so the batches of an interval go into a local file next to `path`, and the first
+  batch or idle batching cycle after the end of the interval uploads and deletes that file. The
+  events reach S3 up to one interval late, with the default `RollingInterval.Day` after midnight.
+  Uploading the growing file after every batch was ruled out, its traffic grows with the square of
+  the number of batches. See https://github.com/serilog-contrib/Serilog.Sinks.AmazonS3/issues/52.
+- **`Dispose` uploads the current interval and keeps its local file.** A restart within the same
+  interval continues that file, and the upload at the end of the interval replaces the object.
+  Without the local file, in a new container for example, `GetFirstSequenceNotInBucket` asks the
+  bucket with a HEAD request and takes the next free sequence number, `log20260817_001.txt`.
+  Without `s3:ListBucket` Amazon S3 answers a missing key with `Forbidden` instead of `NotFound`,
+  both count as free.
+- **`RollingInterval.Infinite` is uploaded on `Dispose` only.** It has no checkpoint, so its file
+  `log.txt` never completes and grows as long as the local file exists.
+- **The intervals follow local time** (`TimeProvider.GetLocalNow()`), as in Serilog.Sinks.File.
+- **The bucket key is `bucketPath` plus the file name** with backslashes replaced by slashes, the
   local directory structure never reaches S3.
 - **`path` is a name pattern, not a file that is kept.** Callers pass `log.txt` and get
   `log<date>_<sequence>.txt` on S3, `PathRoller` splits the name into prefix and extension and puts
   the period and the sequence number in between.
-- **An empty file is refused.** `UploadFileToS3` throws `InvalidOperationException` when the file
-  length is 0 instead of uploading it, because S3 would happily store an empty object.
+- **An empty file is not uploaded.** `TryUploadFile` skips the upload when the file length is 0 and
+  deletes a completed empty file, because S3 would happily store an empty object.
 - **`disablePayloadSigning` also turns off the SDK checksums.** Since AWS SDK version 4 a checksum
   is calculated for every request by default. The providers that need the payload signing switched
   off, Cloudflare R2 for example, usually reject those checksums as well, so `GetOrCreateClient`
   sets `RequestChecksumCalculation.WHEN_REQUIRED` on the config it builds. That only applies to a
   client the sink creates itself, a client passed in through the configuration keeps whatever its
   own config says.
-- **`Serilog.Debugging` sits in the library's `GlobalUsings.cs` unused.** `SelfLog` is only used in
-  the test project. Unused global usings are not reported by `IDE0005`.
 - **Ten overloads, one implementation.** The bodies of the ten `AmazonS3` extension methods are
   copies of each other. That is deliberate, the overloads exist so that the sink can be configured
   from `appsettings.json`, where Serilog matches parameter names.

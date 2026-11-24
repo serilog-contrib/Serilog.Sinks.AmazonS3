@@ -42,6 +42,11 @@
     </ItemGroup>
 
     <ItemGroup>
+        <!-- The tests pass their own time provider to the internal constructor of the sink to roll the intervals. -->
+        <InternalsVisibleTo Include="Serilog.Sinks.AmazonS3.Tests" />
+    </ItemGroup>
+
+    <ItemGroup>
         <None Include="..\..\Icon.png">
             <Pack>True</Pack>
             <PackagePath></PackagePath>
